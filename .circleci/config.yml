@@ -1,0 +1,23 @@
+version: 2
+
+jobs:
+  build:
+    machine: true
+    steps:
+    - checkout
+    - restore_cache:
+        key: jshift-kit-{{ checksum "pom.xml" }}
+    - run:
+        command: |
+          # Run maven build
+          ./mvnw clean install
+    - save_cache:
+        key: jshift-kit-{{ checksum "pom.xml" }}
+        paths:
+        - ~/.m2
+                
+workflows:
+  version: 2
+  all:
+    jobs:
+    - build
