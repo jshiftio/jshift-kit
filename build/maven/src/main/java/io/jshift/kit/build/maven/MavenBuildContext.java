@@ -78,6 +78,26 @@ public class MavenBuildContext implements BuildContext {
         return registryContext;
     }
 
+    @Override
+    public File inOutputDir(String path) {
+        return inDir(getOutputDirectory(), path);
+    }
+
+    @Override
+    public File inSourceDir(String path) {
+        return inDir(getSourceDirectory(), path);
+    }
+
+    @Override
+    public File inDir(String dir, String path) {
+        File file = new File(path);
+        if (file.isAbsolute()) {
+            return file;
+        }
+        File absoluteSourceDir = new File(getBasedir(), dir);
+        return new File(absoluteSourceDir, path);
+    }
+
     // =======================================================================================
     // Maven specific method not available via interface
 

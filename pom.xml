@@ -24,6 +24,16 @@
       <module>build/service/docker</module>
       <module>config/image</module>
       <module>config/resource</module>
+      <module>generator/api</module>
+      <module>generator/java-exec</module>
+      <module>generator/spring-boot</module>
+      <module>generator/wildfly-swarm</module>
+      <module>generator/quarkus</module>
+      <module>generator/thorntail-v2</module>
+      <module>generator/karaf</module>
+      <module>generator/webapp</module>
+      <module>generator/vertx</module>
+
   </modules>
 
 </project>

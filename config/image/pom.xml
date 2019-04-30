@@ -27,12 +27,17 @@
   <artifactId>jshift-kit-config-image</artifactId>
   <version>0.1-SNAPSHOT</version>
 
-  <name>Fabric8 Kit :: Config :: Image</name>
+  <name>Jshift Kit :: Config :: Image</name>
 
   <dependencies>
     <dependency>
       <groupId>io.jshift</groupId>
       <artifactId>jshift-kit-common</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>docker-maven-plugin</artifactId>
     </dependency>
 
     <dependency>

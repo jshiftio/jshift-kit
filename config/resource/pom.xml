@@ -18,18 +18,37 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.fabric8</groupId>
-    <artifactId>fabric8-kit-parent</artifactId>
+    <groupId>io.jshift</groupId>
+    <artifactId>jshift-kit-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>fabric8-kit-config-resource</artifactId>
+  <artifactId>jshift-kit-config-resource</artifactId>
   <version>0.1-SNAPSHOT</version>
 
-  <name>Fabric8 Kit :: Config :: Resource</name>
+  <name>Jshift Kit :: Config :: Resource</name>
 
   <dependencies>
 
+    <dependency>
+      <groupId>io.jshift</groupId>
+      <artifactId>jshift-kit-common</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
   </dependencies>
 </project>

@@ -1,6 +1,8 @@
 package io.jshift.kit.config.image.build;
 
 
+import org.apache.maven.plugins.assembly.model.Assembly;
+
 import java.io.Serializable;
 
 public class AssemblyConfiguration implements Serializable {
@@ -18,6 +20,8 @@ public class AssemblyConfiguration implements Serializable {
     private String name = "maven";
 
     private String descriptor;
+
+    private Assembly inline;
 
     private String descriptorRef;
 
@@ -87,6 +91,12 @@ public class AssemblyConfiguration implements Serializable {
 
         public AssemblyConfiguration build() {
             return isEmpty ? null : config;
+        }
+
+
+        public Builder assemblyDef(Assembly descriptor) {
+            config.inline = set(descriptor);
+            return this;
         }
 
         public Builder exportTargetDir(Boolean exportTargetDir) {

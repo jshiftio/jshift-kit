@@ -29,20 +29,9 @@ public interface BuildContext {
 
     RegistryContext getRegistryContext();
 
-    default File inSourceDir(String path) {
-        return inDir(getSourceDirectory(), path);
-    }
+    File inSourceDir(String path);
 
-    default File inOutputDir(String path) {
-        return inDir(getOutputDirectory(), path);
-    }
+    File inOutputDir(String path);
 
-    default File inDir(String dir, String path) {
-        File file = new File(path);
-        if (file.isAbsolute()) {
-            return file;
-        }
-        File absoluteSourceDir = new File(getBasedir(), dir);
-        return new File(absoluteSourceDir, path);
-    }
+    File inDir(String dir, String path);
 }
