@@ -16,9 +16,12 @@
 
 package io.jshift.kit.config.resource;
 
-import java.util.Collections;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import org.apache.maven.plugins.annotations.Parameter;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author roland
@@ -26,43 +29,72 @@ import java.util.Map;
  */
 public class ResourceConfig {
 
+    @Parameter
     private Map<String, String> env;
 
+    @Parameter
     private MetaDataConfig labels = new MetaDataConfig();
 
+    @Parameter
     private MetaDataConfig annotations = new MetaDataConfig();
 
+    @Parameter
     private List<VolumeConfig> volumes;
 
+    @Parameter
+    private List<SecretConfig> secrets;
+
+    @Parameter(defaultValue = "${project.artifactId}")
     private String controllerName;
 
+    @Parameter
     private List<ServiceConfig> services;
 
+    @Parameter
+    private List<String> remotes;
+
+    @Parameter
+    private ConfigMap configMap;
+
+    @Parameter
     private ProbeConfig liveness;
 
+    @Parameter
     private ProbeConfig readiness;
 
+    @Parameter
     private MetricsConfig metrics;
 
     // Run container in privileged mode
+    @Parameter
     private boolean containerPrivileged = false;
 
     // How images should be pulled (maps to ImagePullPolicy)
+    @Parameter
     private String imagePullPolicy;
 
     // Mapping of port to names
+    @Parameter
     private Map<String, Integer> ports;
 
     // Number of replicas to create
+    @Parameter
     private int replicas = 1;
 
-    // Service account to use
-    private String serviceAccount;
-
+    @Parameter
     private String namespace;
 
-    public Map<String, String> getEnv() {
-        return env != null ? env : Collections.<String, String>emptyMap();
+    @Parameter
+    private String serviceAccount;
+
+    @Parameter
+    private List<String> customResourceDefinitions;
+
+    @Parameter
+    private List<ServiceAccountConfig> serviceAccounts;
+
+    public Optional<Map<String, String>> getEnv() {
+        return Optional.ofNullable(env);
     }
 
     public MetaDataConfig getLabels() {
@@ -80,6 +112,8 @@ public class ResourceConfig {
     public List<ServiceConfig> getServices() {
         return services;
     }
+
+    public List<SecretConfig> getSecrets() { return secrets; }
 
     public ProbeConfig getLiveness() {
         return liveness;
@@ -117,14 +151,53 @@ public class ResourceConfig {
         return serviceAccount;
     }
 
+    public List<ServiceAccountConfig> getServiceAccounts() {
+        return serviceAccounts;
+    }
+
     public String getNamespace() {
         return namespace;
     }
+
+    public ConfigMap getConfigMap() {
+        return configMap;
+    }
+
+    public List<String> getRemotes() {
+        return remotes;
+    }
+
+    public List<String> getCrdContexts() { return customResourceDefinitions; }
 
     // =============================================================================================
 
     public static class Builder {
         private ResourceConfig config = new ResourceConfig();
+
+        public Builder() { }
+
+        public Builder(ResourceConfig config) {
+            if(config != null) {
+                this.config.env = config.getEnv().orElse(null);
+                this.config.controllerName = config.getControllerName();
+                this.config.imagePullPolicy = config.getImagePullPolicy();
+                this.config.replicas = config.getReplicas();
+                this.config.liveness = config.getLiveness();
+                this.config.readiness = config.getReadiness();
+                this.config.annotations = config.getAnnotations();
+                this.config.serviceAccount = config.getServiceAccount();
+                this.config.serviceAccounts = config.getServiceAccounts();
+                this.config.configMap = config.getConfigMap();
+                this.config.volumes = config.getVolumes();
+                this.config.labels = config.getLabels();
+                this.config.annotations = config.getAnnotations();
+                this.config.secrets = config.getSecrets();
+                this.config.services = config.getServices();
+                this.config.metrics = config.getMetrics();
+                this.config.namespace = config.getNamespace();
+                this.config.remotes = config.remotes;
+            }
+        }
 
         public Builder env(Map<String, String> env) {
             config.env = env;
@@ -146,37 +219,81 @@ public class ResourceConfig {
             return this;
         }
 
+        public Builder volumes(List<VolumeConfig> volumes) {
+            config.volumes = volumes;
+            return this;
+        }
+
+        public Builder withServiceAccount(String serviceAccount) {
+            config.serviceAccount = serviceAccount;
+            return this;
+        }
+
+        public Builder withServiceAccounts(List<ServiceAccountConfig> serviceAccounts) {
+            config.serviceAccounts = serviceAccounts;
+            return this;
+        }
+
+        public Builder withConfigMap(ConfigMap configMap) {
+            config.configMap = configMap;
+            return this;
+        }
+
+        public Builder withLiveness(ProbeConfig liveness) {
+            config.liveness = liveness;
+            return this;
+        }
+
+        public Builder withReadiness(ProbeConfig readiness) {
+            config.readiness = readiness;
+            return this;
+        }
+
+        public Builder withRemotes(List<String> remotes) {
+            config.remotes = remotes;
+            return this;
+        }
+
+        public Builder withNamespace(String s) {
+            config.namespace = s;
+            return this;
+        }
+
+        public Builder withCustomResourceDefinitions(List<String> customResourceDefinitions) {
+            config.customResourceDefinitions = customResourceDefinitions;
+            return this;
+        }
+
         public ResourceConfig build() {
             return config;
         }
-
-
     }
 
     // TODO: SCC
 
     // ===============================
     // TODO:
-    // jshift.extended.environment.metadata
-    // jshift.envProperties
-    // jshift.combineDependencies
-    // jshift.combineJson.target
-    // jshift.combineJson.project
+    // fabric8.extended.environment.metadata
+    // fabric8.envProperties
+    // fabric8.combineDependencies
+    // fabric8.combineJson.target
+    // fabric8.combineJson.project
 
-    // jshift.container.name	 --> alias name ?
-    // jshift.replicationController.name
+    // fabric8.container.name	 --> alias name ?
+    // fabric8.replicationController.name
 
-    // jshift.iconRef
-    // jshift.iconUrl
-    // jshift.iconUrlPrefix
-    // jshift.iconUrlPrefix
+    // fabric8.iconRef
+    // fabric8.iconUrl
+    // fabric8.iconUrlPrefix
+    // fabric8.iconUrlPrefix
 
-    // jshift.imagePullPolicySnapshot
+    // fabric8.imagePullPolicySnapshot
 
-    // jshift.includeAllEnvironmentVariables
-    // jshift.includeNamespaceEnvVar
+    // fabric8.includeAllEnvironmentVariables
+    // fabric8.includeNamespaceEnvVar
 
-    // jshift.namespaceEnvVar
+    // fabric8.namespaceEnvVar
 
-    // jshift.provider
+    // fabric8.provider
 }
+
