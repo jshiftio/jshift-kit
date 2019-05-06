@@ -20,6 +20,7 @@ import java.util.List;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
 import io.fabric8.maven.docker.util.Logger;
+import io.jshift.kit.common.KitLogger;
 
 /**
  * @author roland
@@ -29,9 +30,9 @@ public class InitContainerHandler {
 
     public static final String INIT_CONTAINER_ANNOTATION = "pod.alpha.kubernetes.io/init-containers";
 
-    Logger log;
+    KitLogger log;
 
-    public InitContainerHandler(Logger log) {
+    public InitContainerHandler(KitLogger log) {
         this.log = log;
     }
 

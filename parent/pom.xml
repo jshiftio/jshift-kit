@@ -207,6 +207,12 @@
         <version>${project.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>io.jshift</groupId>
+        <artifactId>jshift-maven-enricher-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
       <!-- == jshift ===================================== -->
 
       <dependency>
@@ -219,6 +225,12 @@
         <groupId>io.fabric8</groupId>
         <artifactId>openshift-client</artifactId>
         <version>${version.openshift-client}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>ianaservicehelper</artifactId>
+        <version>0.0.1</version>
       </dependency>
 
 
@@ -344,6 +356,12 @@
         <groupId>com.google.code.findbugs</groupId>
         <artifactId>jsr305</artifactId>
         <version>3.0.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.25</version>
       </dependency>
 
 

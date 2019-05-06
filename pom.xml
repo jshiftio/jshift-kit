@@ -34,6 +34,7 @@
       <module>generator/webapp</module>
       <module>generator/vertx</module>
       <module>enricher/api</module>
+      <module>enricher/standard</module>
 
   </modules>
 
