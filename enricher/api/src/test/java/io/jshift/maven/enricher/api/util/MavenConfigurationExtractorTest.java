@@ -146,8 +146,8 @@ public class MavenConfigurationExtractorTest {
 
     private Plugin createFakePlugin(String config) {
         Plugin plugin = new Plugin();
-        plugin.setArtifactId("fabric8-maven-plugin");
-        plugin.setGroupId("io.fabric8");
+        plugin.setArtifactId("jshift-maven-plugin");
+        plugin.setGroupId("io.jshift");
         String content = "<configuration>"
             + config
             + "</configuration>";

@@ -27,7 +27,7 @@ import io.jshift.maven.enricher.api.model.Configuration;
  */
 public class EnricherConfig {
 
-    private static final String ENRICHER_PROP_PREFIX = "fabric8.enricher";
+    private static final String ENRICHER_PROP_PREFIX = "jshift.enricher";
 
     private final String name;
     private final Configuration configuration;

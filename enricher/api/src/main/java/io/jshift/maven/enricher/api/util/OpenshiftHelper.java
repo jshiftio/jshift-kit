@@ -114,7 +114,7 @@ public class OpenshiftHelper {
         combineParameters(parameters, template.getParameters());
         String name = KubernetesHelper.getName(template);
         if (StringUtils.isNotBlank(name)) {
-            // lets merge all the fabric8 annotations using the template id qualifier as a postfix
+            // lets merge all the jshift annotations using the template id qualifier as a postfix
             Map<String, String> annotations = KubernetesHelper.getOrCreateAnnotations(firstTemplate);
             Map<String, String> otherAnnotations = KubernetesHelper.getOrCreateAnnotations(template);
             Set<Map.Entry<String, String>> entries = otherAnnotations.entrySet();

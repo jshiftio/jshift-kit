@@ -273,27 +273,27 @@ public class ResourceConfig {
 
     // ===============================
     // TODO:
-    // fabric8.extended.environment.metadata
-    // fabric8.envProperties
-    // fabric8.combineDependencies
-    // fabric8.combineJson.target
-    // fabric8.combineJson.project
+    // jshift.extended.environment.metadata
+    // jshift.envProperties
+    // jshift.combineDependencies
+    // jshift.combineJson.target
+    // jshift.combineJson.project
 
-    // fabric8.container.name	 --> alias name ?
-    // fabric8.replicationController.name
+    // jshift.container.name	 --> alias name ?
+    // jshift.replicationController.name
 
-    // fabric8.iconRef
-    // fabric8.iconUrl
-    // fabric8.iconUrlPrefix
-    // fabric8.iconUrlPrefix
+    // jshift.iconRef
+    // jshift.iconUrl
+    // jshift.iconUrlPrefix
+    // jshift.iconUrlPrefix
 
-    // fabric8.imagePullPolicySnapshot
+    // jshift.imagePullPolicySnapshot
 
-    // fabric8.includeAllEnvironmentVariables
-    // fabric8.includeNamespaceEnvVar
+    // jshift.includeAllEnvironmentVariables
+    // jshift.includeNamespaceEnvVar
 
-    // fabric8.namespaceEnvVar
+    // jshift.namespaceEnvVar
 
-    // fabric8.provider
+    // jshift.provider
 }
 
