@@ -129,32 +129,32 @@ public class BaseEnricher implements Enricher {
     }
 
     protected Boolean isAutomaticTriggerEnabled(MavenEnricherContext enricherContext, Boolean defaultValue) {
-        if(enricherContext.getProperty("fabric8.openshift.enableAutomaticTrigger") != null) {
-            return Boolean.parseBoolean(enricherContext.getProperty("fabric8.openshift.enableAutomaticTrigger").toString());
+        if(enricherContext.getProperty("jshift.openshift.enableAutomaticTrigger") != null) {
+            return Boolean.parseBoolean(enricherContext.getProperty("jshift.openshift.enableAutomaticTrigger").toString());
         } else {
             return defaultValue;
         }
     }
 
     protected Long getOpenshiftDeployTimeoutInSeconds(MavenEnricherContext enricherContext, Long defaultValue) {
-        if (enricherContext.getProperty("fabric8.openshift.deployTimeoutSeconds") != null) {
-            return Long.parseLong(enricherContext.getProperty("fabric8.openshift.deployTimeoutSeconds").toString());
+        if (enricherContext.getProperty("jshift.openshift.deployTimeoutSeconds") != null) {
+            return Long.parseLong(enricherContext.getProperty("jshift.openshift.deployTimeoutSeconds").toString());
         } else {
             return defaultValue;
         }
     }
 
     protected Boolean getImageChangeTriggerFlag(Boolean defaultValue) {
-        if (getContext().getProperty("fabric8.openshift.imageChangeTriggers") != null) {
-            return Boolean.parseBoolean(getContext().getProperty("fabric8.openshift.imageChangeTriggers").toString());
+        if (getContext().getProperty("jshift.openshift.imageChangeTriggers") != null) {
+            return Boolean.parseBoolean(getContext().getProperty("jshift.openshift.imageChangeTriggers").toString());
         } else {
             return defaultValue;
         }
     }
 
     protected Boolean getTrimImageInContainerSpecFlag(Boolean defaultValue) {
-        if (getContext().getProperty("fabric8.openshift.trimImageInContainerSpec") != null) {
-            return Boolean.parseBoolean(getContext().getProperty("fabric8.openshift.trimImageInContainerSpec").toString());
+        if (getContext().getProperty("jshift.openshift.trimImageInContainerSpec") != null) {
+            return Boolean.parseBoolean(getContext().getProperty("jshift.openshift.trimImageInContainerSpec").toString());
         } else {
             return defaultValue;
         }

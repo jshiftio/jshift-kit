@@ -24,7 +24,7 @@ public class ProcessorConfig {
 
     public static final ProcessorConfig EMPTY = new ProcessorConfig();
     /**
-     * Modules to includes, should holde <code>&lt;include&gt;</code> elements
+     * Modules to includes, should hold <code>&lt;include&gt;</code> elements
      */
     @Parameter
     @JsonProperty(value = "includes")

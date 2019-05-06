@@ -474,7 +474,7 @@ public class KubernetesResourceUtil {
 
     public static void validateKubernetesMasterUrl(URL masterUrl) throws MojoExecutionException {
         if (masterUrl == null || StringUtils.isBlank(masterUrl.toString())) {
-            throw new MojoExecutionException("Cannot find Kubernetes master URL. Have you started a cluster via `mvn fabric8:cluster-start` or connected to a remote cluster via `kubectl`?");
+            throw new MojoExecutionException("Cannot find Kubernetes master URL. Have you started a cluster via `mvn jshift:cluster-start` or connected to a remote cluster via `kubectl`?");
         }
     }
 
@@ -482,11 +482,11 @@ public class KubernetesResourceUtil {
         Throwable cause = e.getCause();
         if (cause instanceof UnknownHostException) {
             logger.error( "Could not connect to kubernetes cluster!");
-            logger.error("Have you started a local cluster via `mvn fabric8:cluster-start` or connected to a remote cluster via `kubectl`?");
-            logger.info("For more help see: http://fabric8.io/guide/getStarted/");
+            logger.error("Have you started a local cluster via `mvn jshift:cluster-start` or connected to a remote cluster via `kubectl`?");
+            logger.info("For more help see: http://jshift.io/guide/getStarted/");
             logger.error( "Connection error: %s", cause);
 
-            String message = "Could not connect to kubernetes cluster. Have you started a cluster via `mvn fabric8:cluster-start` or connected to a remote cluster via `kubectl`? Error: " + cause;
+            String message = "Could not connect to kubernetes cluster. Have you started a cluster via `mvn jshift:cluster-start` or connected to a remote cluster via `kubectl`? Error: " + cause;
             throw new MojoExecutionException(message, e);
         } else {
             throw new MojoExecutionException(e.getMessage(), e);
