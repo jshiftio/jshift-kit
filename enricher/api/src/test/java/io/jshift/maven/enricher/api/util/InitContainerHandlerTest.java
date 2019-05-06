@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
-import io.fabric8.maven.docker.util.Logger;
+import io.jshift.kit.common.KitLogger;
 import mockit.Expectations;
 import mockit.Mocked;
 import org.junit.Before;
@@ -43,7 +43,7 @@ import static org.junit.Assert.fail;
 public class InitContainerHandlerTest {
 
     @Mocked
-    Logger log;
+    KitLogger log;
 
     InitContainerHandler handler;
 
