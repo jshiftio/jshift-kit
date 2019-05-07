@@ -45,10 +45,10 @@ public class MavenScmEnricherTest {
 
         final MavenProject project = new MavenProject();
         final Scm scm = new Scm();
-        scm.setConnection("scm:git:git://github.com/fabric8io/jshift-maven-plugin.git");
-        scm.setDeveloperConnection("scm:git:git://github.com/fabric8io/jshift-maven-plugin.git");
+        scm.setConnection("scm:git:git://github.com/jshiftio/kubernetes-maven-plugin.git");
+        scm.setDeveloperConnection("scm:git:git://github.com/jshiftio/kubernetes-maven-plugin.git");
         scm.setTag("HEAD");
-        scm.setUrl("git://github.com/fabric8io/jshift-maven-plugin.git");
+        scm.setUrl("git://github.com/jshiftio/kubernetes-maven-plugin.git");
         project.setScm(scm);
         // Setup mock behaviour
         new Expectations() {
@@ -72,7 +72,7 @@ public class MavenScmEnricherTest {
         Assert.assertEquals(2, scmAnnotations.size());
         assertEquals("HEAD",
                 scmAnnotations.get(JshiftAnnotations.SCM_TAG.value()));
-        assertEquals("git://github.com/fabric8io/jshift-maven-plugin.git",
+        assertEquals("git://github.com/jshiftio/kubernetes-maven-plugin.git",
                 scmAnnotations.get(JshiftAnnotations.SCM_URL.value()));
 
     }
@@ -82,7 +82,7 @@ public class MavenScmEnricherTest {
 
         final MavenProject project = new MavenProject();
         final Scm scm = new Scm();
-        scm.setConnection("scm:git:git://github.com/fabric8io/jshift-maven-plugin.git");
+        scm.setConnection("scm:git:git://github.com/jshiftio/kubernetes-maven-plugin.git");
         project.setScm(scm);
         // Setup mock behaviour
         new Expectations() {
@@ -114,7 +114,7 @@ public class MavenScmEnricherTest {
 
         final MavenProject project = new MavenProject();
         final Scm scm = new Scm();
-        scm.setUrl("git://github.com/fabric8io/jshift-maven-plugin.git");
+        scm.setUrl("git://github.com/jshiftio/kubernetes-maven-plugin.git");
         project.setScm(scm);
         // Setup mock behaviour
         new Expectations() {
@@ -136,7 +136,7 @@ public class MavenScmEnricherTest {
         assertNotNull(scmAnnotations);
 
         Assert.assertEquals(2, scmAnnotations.size());
-        assertEquals("git://github.com/fabric8io/jshift-maven-plugin.git",
+        assertEquals("git://github.com/jshiftio/kubernetes-maven-plugin.git",
                 scmAnnotations.get(JshiftAnnotations.SCM_URL.value()));
         assertEquals("HEAD",
                 scmAnnotations.get(JshiftAnnotations.SCM_TAG.value()));
@@ -148,7 +148,7 @@ public class MavenScmEnricherTest {
 
         final MavenProject project = new MavenProject();
         final Scm scm = new Scm();
-        scm.setDeveloperConnection("scm:git:git://github.com/fabric8io/jshift-maven-plugin.git");
+        scm.setDeveloperConnection("scm:git:git://github.com/jshiftio/kubernetes-maven-plugin.git");
         project.setScm(scm);
         // Setup mock behaviour
         new Expectations() {

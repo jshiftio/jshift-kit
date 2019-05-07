@@ -38,7 +38,7 @@ public class ConfigMapEnricher extends BaseEnricher {
     protected static final String PREFIX_ANNOTATION = "maven.jshift.io/cm/";
 
     public ConfigMapEnricher(MavenEnricherContext enricherContext) {
-        super(enricherContext, "fmp-configmap-file");
+        super(enricherContext, "jshift-configmap-file");
     }
 
     @Override

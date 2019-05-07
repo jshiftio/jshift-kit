@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 public class WebAppHealthCheckEnricher extends AbstractHealthCheckEnricher {
 
     public WebAppHealthCheckEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "f8-healthcheck-webapp");
+        super(buildContext, "jshift-healthcheck-webapp");
     }
 
     // Available configuration keys

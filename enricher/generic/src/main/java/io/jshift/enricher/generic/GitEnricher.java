@@ -52,7 +52,7 @@ public class GitEnricher extends BaseEnricher {
     private String GIT_REMOTE = "jshift.remoteName";
 
     public GitEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-git");
+        super(buildContext, "jshift-git");
     }
 
     private Map<String, String> getAnnotations() {

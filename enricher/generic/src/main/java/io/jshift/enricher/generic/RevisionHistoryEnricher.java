@@ -31,7 +31,7 @@ import io.jshift.maven.enricher.api.MavenEnricherContext;
 
 public class RevisionHistoryEnricher extends BaseEnricher {
 
-    public static final String DEFAULT_NAME = "fmp-revision-history";
+    public static final String DEFAULT_NAME = "jshift-revision-history";
     private static final String DEFAULT_NUMBER_OF_REVISIONS = "2";
 
     // config keys

@@ -48,7 +48,7 @@ import java.util.Set;
  */
 public class VolumePermissionEnricher extends BaseEnricher {
 
-    public static final String ENRICHER_NAME = "fmp-volume-permission";
+    public static final String ENRICHER_NAME = "jshift-volume-permission";
     static final String VOLUME_STORAGE_CLASS_ANNOTATION = "volume.beta.kubernetes.io/storage-class";
 
     private final InitContainerHandler initContainerHandler;

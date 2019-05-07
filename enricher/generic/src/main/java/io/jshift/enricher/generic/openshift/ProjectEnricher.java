@@ -32,7 +32,7 @@ import static io.jshift.maven.enricher.api.util.KubernetesResourceUtil.removeIte
 
 
 public class ProjectEnricher extends BaseEnricher {
-    static final String ENRICHER_NAME = "fmp-openshift-project";
+    static final String ENRICHER_NAME = "jshift-openshift-project";
 
     public ProjectEnricher(MavenEnricherContext context) {
         super(context, ENRICHER_NAME);

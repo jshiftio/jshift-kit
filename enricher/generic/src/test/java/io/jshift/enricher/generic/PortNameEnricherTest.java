@@ -110,7 +110,7 @@ public class PortNameEnricherTest {
 
             Configuration configuration = new Configuration.Builder()
                     .images(Arrays.asList(imageConfiguration))
-                    .processorConfig(new ProcessorConfig(null, null, Collections.singletonMap("fmp-portname", config)))
+                    .processorConfig(new ProcessorConfig(null, null, Collections.singletonMap("jshift-portname", config)))
                     .build();
 
             context.getConfiguration();

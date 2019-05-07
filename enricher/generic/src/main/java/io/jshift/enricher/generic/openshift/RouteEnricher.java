@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class RouteEnricher extends BaseEnricher {
 
     public RouteEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-openshift-route");
+        super(buildContext, "jshift-openshift-route");
     }
 
     @Override

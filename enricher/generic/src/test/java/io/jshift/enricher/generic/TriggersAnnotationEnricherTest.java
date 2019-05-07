@@ -163,7 +163,7 @@ public class TriggersAnnotationEnricherTest {
     public void testConditionalStatefulSetEnrichment() throws IOException {
 
         final Properties props = new Properties();
-        props.put("jshift.enricher.fmp-triggers-annotation.containers", "c2, c3, anotherc");
+        props.put("jshift.enricher.jshift-triggers-annotation.containers", "c2, c3, anotherc");
         new Expectations() {{
             context.getConfiguration(); result = new Configuration.Builder().properties(props).build();
         }};

@@ -44,7 +44,7 @@ import org.apache.commons.lang3.StringUtils;
 public class NameEnricher extends BaseEnricher {
 
     public NameEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-name");
+        super(buildContext, "jshift-name");
     }
 
     private enum Config implements Configs.Key {

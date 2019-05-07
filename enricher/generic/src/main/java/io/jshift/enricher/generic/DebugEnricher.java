@@ -53,7 +53,7 @@ public class DebugEnricher extends BaseEnricher {
     public static final String ENABLE_DEBUG_MAVEN_PROPERTY = "jshift.debug.enabled";
 
     public DebugEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-debug");
+        super(buildContext, "jshift-debug");
     }
 
     @Override

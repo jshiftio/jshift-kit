@@ -31,7 +31,7 @@ public class ThorntailV2HealthCheckEnricher extends AbstractHealthCheckEnricher 
     public static final String IO_THORNTAIL = "io.thorntail";
 
     public ThorntailV2HealthCheckEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "f8-healthcheck-thorntail-v2");
+        super(buildContext, "jshift-healthcheck-thorntail-v2");
     }
 
     // Available configuration keys

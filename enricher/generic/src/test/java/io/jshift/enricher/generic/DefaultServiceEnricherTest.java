@@ -186,11 +186,11 @@ public class DefaultServiceEnricherTest {
 
             Configuration configuration = new Configuration.Builder()
                     .images(Arrays.asList(imageConfigurationWithLabels))
-                    .processorConfig(new ProcessorConfig(null, null, Collections.singletonMap("fmp-service", config)))
+                    .processorConfig(new ProcessorConfig(null, null, Collections.singletonMap("jshift-service", config)))
                     .build();
 
             groupArtifactVersion.getSanitizedArtifactId();
-            result = "fmp-service";
+            result = "jshift-service";
 
             context.getConfiguration();
             result = configuration;
@@ -245,7 +245,7 @@ public class DefaultServiceEnricherTest {
 
             Configuration configuration = new Configuration.Builder()
                 .images(Arrays.asList(imageConfiguration))
-                .processorConfig(new ProcessorConfig(null, null, Collections.singletonMap("fmp-service", config)))
+                .processorConfig(new ProcessorConfig(null, null, Collections.singletonMap("jshift-service", config)))
                 .build();
 
             context.getConfiguration();

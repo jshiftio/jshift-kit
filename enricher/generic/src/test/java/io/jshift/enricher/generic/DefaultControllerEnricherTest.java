@@ -94,12 +94,12 @@ public class DefaultControllerEnricherTest {
         new Expectations() {{
 
             context.getGav();
-            result = new GroupArtifactVersion("", "fmp-controller-test", "0");
+            result = new GroupArtifactVersion("", "jshift-controller-test", "0");
 
             Configuration config =
                 new Configuration.Builder()
                     .processorConfig(new ProcessorConfig(null, null,
-                                                         Collections.singletonMap("fmp-controller", controllerConfig)))
+                                                         Collections.singletonMap("jshift-controller", controllerConfig)))
                     .images(Arrays.asList(imageConfiguration))
                     .build();
             context.getConfiguration();

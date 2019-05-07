@@ -32,7 +32,7 @@ public class KarafHealthCheckEnricher extends AbstractHealthCheckEnricher {
     private static final int DEFAULT_HEALTH_CHECK_PORT = 8181;
 
     public KarafHealthCheckEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "f8-healthcheck-karaf");
+        super(buildContext, "jshift-healthcheck-karaf");
     }
 
     private enum Config implements Configs.Key {

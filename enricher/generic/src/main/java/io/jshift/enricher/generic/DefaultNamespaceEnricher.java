@@ -46,7 +46,7 @@ public class DefaultNamespaceEnricher extends BaseEnricher {
     }
 
     public DefaultNamespaceEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-namespace");
+        super(buildContext, "jshift-namespace");
 
         ResourceConfig xmlResourceConfig = getConfiguration().getResource().orElse(null);
         config = new ResourceConfig.Builder(xmlResourceConfig)

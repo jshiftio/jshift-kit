@@ -151,9 +151,9 @@ public class VertxHealthCheckEnricherTest {
 
     private Map<String, Object> createFakeConfig(String config) {
 
-        String content = "<configuration><enricher><config><f8-healthcheck-vertx>"
+        String content = "<configuration><enricher><config><jshift-healthcheck-vertx>"
                 + config
-                + "</f8-healthcheck-vertx></config></enricher></configuration>";
+                + "</jshift-healthcheck-vertx></config></enricher></configuration>";
         Xpp3Dom dom;
         try {
             dom = Xpp3DomBuilder.build(new StringReader(content));

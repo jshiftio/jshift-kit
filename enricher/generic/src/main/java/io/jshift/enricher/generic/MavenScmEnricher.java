@@ -49,7 +49,7 @@ import java.util.Map;
  * @author kameshs
  */
 public class MavenScmEnricher extends BaseEnricher {
-    static final String ENRICHER_NAME = "fmp-maven-scm";
+    static final String ENRICHER_NAME = "jshift-maven-scm";
 
     public MavenScmEnricher(MavenEnricherContext buildContext) {
         super(buildContext, ENRICHER_NAME);

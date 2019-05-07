@@ -47,7 +47,7 @@ import java.util.Map;
  * @author kameshs
  */
 public class MavenIssueManagementEnricher extends BaseEnricher {
-    static final String ENRICHER_NAME = "fmp-maven-issue-mgmt";
+    static final String ENRICHER_NAME = "jshift-maven-issue-mgmt";
 
     public MavenIssueManagementEnricher(MavenEnricherContext buildContext) {
         super(buildContext, ENRICHER_NAME);

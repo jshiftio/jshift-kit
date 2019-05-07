@@ -39,7 +39,7 @@ import java.util.Set;
 public class ExposeEnricher extends BaseEnricher {
 
     public ExposeEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-openshift-service-expose");
+        super(buildContext, "jshift-openshift-service-expose");
     }
 
     private Set<Integer> webPorts = new HashSet<>(Arrays.asList(80, 443, 8080, 9090));

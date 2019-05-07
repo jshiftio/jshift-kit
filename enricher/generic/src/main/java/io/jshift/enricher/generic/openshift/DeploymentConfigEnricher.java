@@ -40,7 +40,7 @@ import static io.jshift.maven.enricher.api.util.KubernetesResourceUtil.removeIte
 
 
 public class DeploymentConfigEnricher extends BaseEnricher {
-    static final String ENRICHER_NAME = "fmp-openshift-deploymentconfig";
+    static final String ENRICHER_NAME = "jshift-openshift-deploymentconfig";
     private Boolean enableAutomaticTrigger;
     private Long openshiftDeployTimeoutSeconds;
 
