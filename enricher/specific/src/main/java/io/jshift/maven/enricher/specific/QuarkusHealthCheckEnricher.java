@@ -29,7 +29,7 @@ import static io.jshift.kit.common.Configs.asInteger;
 public class QuarkusHealthCheckEnricher extends AbstractHealthCheckEnricher {
 
     public QuarkusHealthCheckEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "f8-healthcheck-quarkus");
+        super(buildContext, "jshift-healthcheck-quarkus");
     }
 
     // Available configuration keys

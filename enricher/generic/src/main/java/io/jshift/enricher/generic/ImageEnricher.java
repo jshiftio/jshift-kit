@@ -75,7 +75,7 @@ import static io.jshift.maven.enricher.api.util.KubernetesResourceUtil.extractCo
 public class ImageEnricher extends BaseEnricher {
 
     public ImageEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-image");
+        super(buildContext, "jshift-image");
     }
 
     // Available configuration keys

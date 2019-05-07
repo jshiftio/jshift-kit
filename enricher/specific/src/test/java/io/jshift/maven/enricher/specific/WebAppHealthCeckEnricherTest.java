@@ -97,9 +97,9 @@ public class WebAppHealthCeckEnricherTest {
 
     private Map<String, Object> createFakeConfig(String config) {
 
-        String content = "<configuration><enricher><config><f8-healthcheck-webapp>"
+        String content = "<configuration><enricher><config><jshift-healthcheck-webapp>"
             + config
-            + "</f8-healthcheck-webapp></config></enricher></configuration>";
+            + "</jshift-healthcheck-webapp></config></enricher></configuration>";
         Xpp3Dom dom;
         try {
             dom = Xpp3DomBuilder.build(new StringReader(content));

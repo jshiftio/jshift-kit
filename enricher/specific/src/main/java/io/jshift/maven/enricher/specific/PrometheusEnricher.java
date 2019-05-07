@@ -38,7 +38,7 @@ public class PrometheusEnricher extends BaseEnricher {
     static final String ANNOTATION_PROMETHEUS_PORT = "prometheus.io/port";
     static final String ANNOTATION_PROMETHEUS_SCRAPE = "prometheus.io/scrape";
 
-    static final String ENRICHER_NAME = "f8-prometheus";
+    static final String ENRICHER_NAME = "jshift-prometheus";
     static final String PROMETHEUS_PORT = "9779";
 
     private enum Config implements Configs.Key {

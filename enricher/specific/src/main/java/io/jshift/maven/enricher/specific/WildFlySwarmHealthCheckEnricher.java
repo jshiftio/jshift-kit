@@ -26,7 +26,7 @@ import io.jshift.maven.enricher.api.MavenEnricherContext;
 public class WildFlySwarmHealthCheckEnricher extends AbstractHealthCheckEnricher {
 
     public WildFlySwarmHealthCheckEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "f8-healthcheck-wildfly-swarm");
+        super(buildContext, "jshift-healthcheck-wildfly-swarm");
     }
 
     // Available configuration keys

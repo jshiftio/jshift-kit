@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class ServiceAccountEnricher extends BaseEnricher {
     public ServiceAccountEnricher(MavenEnricherContext enricherContext) {
-        super(enricherContext, "fmp-serviceaccount");
+        super(enricherContext, "jshift-serviceaccount");
     }
 
     @Override

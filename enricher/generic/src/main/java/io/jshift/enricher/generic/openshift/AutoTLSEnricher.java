@@ -42,7 +42,7 @@ import java.util.List;
  * OpenShift.
  */
 public class AutoTLSEnricher extends BaseEnricher {
-    static final String ENRICHER_NAME = "fmp-openshift-autotls";
+    static final String ENRICHER_NAME = "jshift-openshift-autotls";
     static final String AUTOTLS_ANNOTATION_KEY = "service.alpha.openshift.io/serving-cert-secret-name";
 
     private String secretName;

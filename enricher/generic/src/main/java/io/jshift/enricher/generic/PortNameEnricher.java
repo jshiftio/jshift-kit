@@ -48,7 +48,7 @@ public class PortNameEnricher extends BaseEnricher {
             }});
 
     public PortNameEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-portname");
+        super(buildContext, "jshift-portname");
     }
 
     @Override

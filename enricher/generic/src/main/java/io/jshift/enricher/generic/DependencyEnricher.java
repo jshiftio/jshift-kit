@@ -79,7 +79,7 @@ public class DependencyEnricher extends BaseEnricher {
     }
 
     public DependencyEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-dependency");
+        super(buildContext, "jshift-dependency");
 
         addArtifactsWithYaml(kubernetesDependencyArtifacts, DEPENDENCY_KUBERNETES_YAML);
         addArtifactsWithYaml(kubernetesTemplateDependencyArtifacts, DEPENDENCY_KUBERNETES_TEMPLATE_YAML);

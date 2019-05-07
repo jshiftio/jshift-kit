@@ -85,7 +85,7 @@ public class DefaultControllerEnricher extends BaseEnricher {
     }
 
     public DefaultControllerEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-controller");
+        super(buildContext, "jshift-controller");
 
         HandlerHub handlers = new HandlerHub(
             getContext().getGav(), getContext().getConfiguration().getProperties());

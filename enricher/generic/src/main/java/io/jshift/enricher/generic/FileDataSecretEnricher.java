@@ -36,7 +36,7 @@ public class FileDataSecretEnricher extends BaseEnricher {
     protected static final String PREFIX_ANNOTATION = "maven.jshift.io/secret/";
 
     public FileDataSecretEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-secret-file");
+        super(buildContext, "jshift-secret-file");
     }
 
     @Override

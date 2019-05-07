@@ -68,7 +68,7 @@ public class VertxHealthCheckEnricher extends AbstractHealthCheckEnricher {
     public static final String ERROR_MESSAGE = "Location of %s should return a String but found %s with value %s";
 
     public VertxHealthCheckEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "f8-healthcheck-vertx");
+        super(buildContext, "jshift-healthcheck-vertx");
     }
 
     @Override
@@ -339,7 +339,7 @@ public class VertxHealthCheckEnricher extends AbstractHealthCheckEnricher {
         }
 
 
-        String[] roots = new String[]{"enricher", "config", "f8-healthcheck-vertx"};
+        String[] roots = new String[]{"enricher", "config", "jshift-healthcheck-vertx"};
         List<String> absolute = new ArrayList<>();
         absolute.addAll(Arrays.asList(roots));
         absolute.addAll(Arrays.asList(path));

@@ -39,7 +39,7 @@ import static io.jshift.maven.enricher.api.util.GoTimeUtil.durationSeconds;
 public class DockerHealthCheckEnricher extends AbstractHealthCheckEnricher {
 
     public DockerHealthCheckEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "f8-healthcheck-docker");
+        super(buildContext, "jshift-healthcheck-docker");
     }
 
     @Override

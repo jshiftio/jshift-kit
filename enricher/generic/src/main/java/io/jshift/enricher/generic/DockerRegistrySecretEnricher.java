@@ -27,7 +27,7 @@ import java.util.Optional;
 
 public class DockerRegistrySecretEnricher extends SecretEnricher {
     final private static String ANNOTATION_KEY = "maven.jshift.io/dockerServerId";
-    final private static String ENRICHER_NAME = "fmp-docker-registry-secret";
+    final private static String ENRICHER_NAME = "jshift-docker-registry-secret";
 
 
     public DockerRegistrySecretEnricher(MavenEnricherContext buildContext) {

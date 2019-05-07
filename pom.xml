@@ -36,6 +36,7 @@
       <module>enricher/api</module>
       <module>enricher/generic</module>
       <module>enricher/specific</module>
+      <module>profile</module>
 
   </modules>
 

@@ -97,7 +97,7 @@ public class DefaultServiceEnricher extends BaseEnricher {
     }
 
     public DefaultServiceEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-service");
+        super(buildContext, "jshift-service");
     }
 
     @Override

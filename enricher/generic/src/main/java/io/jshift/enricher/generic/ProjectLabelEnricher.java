@@ -66,7 +66,7 @@ public class ProjectLabelEnricher extends BaseEnricher {
     }
 
     public ProjectLabelEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-project-label");
+        super(buildContext, "jshift-project-label");
     }
 
     @Override

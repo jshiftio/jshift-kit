@@ -36,7 +36,7 @@ public class DefaultMetadataEnricher extends BaseEnricher {
     private final ResourceConfig resourceConfig;
 
     public DefaultMetadataEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-metadata");
+        super(buildContext, "jshift-metadata");
 
         this.defaultEnricherConfig = buildContext.getConfiguration().getProcessorConfig().orElse(ProcessorConfig.EMPTY);
         this.resourceConfig = buildContext.getConfiguration().getResource().orElse(null);

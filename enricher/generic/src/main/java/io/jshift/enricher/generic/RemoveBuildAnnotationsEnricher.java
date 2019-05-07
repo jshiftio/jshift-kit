@@ -34,7 +34,7 @@ import static io.jshift.maven.enricher.api.util.Constants.RESOURCE_SOURCE_URL_AN
 public class RemoveBuildAnnotationsEnricher extends BaseEnricher {
 
     public RemoveBuildAnnotationsEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-remove-build-annotations");
+        super(buildContext, "jshift-remove-build-annotations");
     }
 
     @Override

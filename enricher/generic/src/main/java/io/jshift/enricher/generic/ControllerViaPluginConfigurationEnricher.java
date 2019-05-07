@@ -58,7 +58,7 @@ public class ControllerViaPluginConfigurationEnricher extends BaseEnricher {
     }
 
     public ControllerViaPluginConfigurationEnricher(MavenEnricherContext context) {
-        super(context, "fmp-controller-from-configuration");
+        super(context, "jshift-controller-from-configuration");
         HandlerHub handlers = new HandlerHub(
                 getContext().getGav(), getContext().getConfiguration().getProperties());
         deployHandler = handlers.getDeploymentHandler();

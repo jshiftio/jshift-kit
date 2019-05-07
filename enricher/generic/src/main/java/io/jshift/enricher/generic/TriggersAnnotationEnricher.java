@@ -70,7 +70,7 @@ public class TriggersAnnotationEnricher extends BaseEnricher {
 
 
     public TriggersAnnotationEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-triggers-annotation");
+        super(buildContext, "jshift-triggers-annotation");
     }
 
     @Override

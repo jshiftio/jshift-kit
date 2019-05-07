@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class PodAnnotationEnricher extends BaseEnricher {
     public PodAnnotationEnricher(MavenEnricherContext buildContext) {
-        super(buildContext, "fmp-pod-annotations");
+        super(buildContext, "jshift-pod-annotations");
     }
 
     @Override
