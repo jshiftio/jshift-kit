@@ -1,4 +1,4 @@
-package io.jshift.kit.config.image.build;
+package io.jshift.kit.config.resource;
 
 
 import java.util.Objects;
