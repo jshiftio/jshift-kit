@@ -37,6 +37,12 @@
     </dependency>
 
     <dependency>
+      <groupId>io.jshift</groupId>
+      <artifactId>jshift-kit-build-service-docker</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
     </dependency>

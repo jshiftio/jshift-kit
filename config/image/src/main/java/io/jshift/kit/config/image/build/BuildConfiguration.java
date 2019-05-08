@@ -10,6 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import io.jshift.kit.common.KitLogger;
+import io.jshift.kit.common.util.EnvUtil;
 import org.apache.commons.lang3.SerializationUtils;
 
 /**
@@ -17,6 +19,8 @@ import org.apache.commons.lang3.SerializationUtils;
  * @since 02.09.14
  */
 public class BuildConfiguration implements Serializable {
+    public static final String DEFAULT_FILTER = "${*}";
+    public static final String DEFAULT_CLEANUP = "try";
 
     /**
      * Directory used as the contexst directory, e.g. for a docker build.
@@ -42,6 +46,9 @@ public class BuildConfiguration implements Serializable {
      */
     private String filter;
 
+    @Deprecated
+    private String command;
+
     /**
      * Base Image
      */
@@ -57,6 +64,8 @@ public class BuildConfiguration implements Serializable {
     private String maintainer;
 
     private List<String> ports;
+
+    private Arguments shell;
 
     /**
      * Policy for pulling the base images
@@ -102,25 +111,59 @@ public class BuildConfiguration implements Serializable {
 
     private Map<String,String> buildOptions;
 
+    /**
+     * Directory holding an external Dockerfile which is used to build the
+     * image. This Dockerfile will be enriched by the addition build configuration
+     */
+    @Deprecated
+    private String dockerFileDir;
+
+    // Path to Dockerfile to use, initialized lazily ....
+    private File dockerFileFile, dockerArchiveFile;
+
     public BuildConfiguration() {}
 
     public boolean isDockerFileMode() {
         return dockerFile != null || contextDir != null;
     }
 
-    public String getDockerFile() {
-        return dockerFile;
+    public File getDockerFile() {
+        return dockerFileFile;
     }
 
-    public String getDockerArchive() {
-        return dockerArchive;
+    public File getDockerArchive() {
+        return dockerArchiveFile;
     }
 
-    public String getContextDir() {
-        return contextDir;
+    public File getContextDir() {
+        return contextDir != null ? new File(contextDir) : getDockerFile().getParentFile();
     }
 
     public String getFilter() {
+        return filter;
+    }
+
+    public String getDockerFileRaw() {
+        return dockerFile;
+    }
+
+    public String getContextDirRaw() {
+        return contextDir;
+    }
+
+    public Arguments getShell() {
+        return shell;
+    }
+
+    public String getDockerArchiveRaw() {
+        return dockerArchive;
+    }
+
+    public String getDockerFileDirRaw() {
+        return dockerFileDir;
+    }
+
+    public String getFilterRaw() {
         return filter;
     }
 
@@ -223,6 +266,42 @@ public class BuildConfiguration implements Serializable {
         return args;
     }
 
+    public boolean optimise() {
+        return optimise != null ? optimise : false;
+    }
+
+
+    @Deprecated
+    public String getCommand() {
+        return command;
+    }
+
+    public String getCleanup() {
+        return cleanup;
+    }
+
+    public boolean nocache() {
+        return nocache != null ? nocache : false;
+    }
+
+    public CleanupMode cleanupMode() {
+        return CleanupMode.parse(cleanup != null ? cleanup : DEFAULT_CLEANUP);
+    }
+
+
+    public File getAbsoluteContextDirPath(String sourceDirectory, String projectBaseDir) {
+        return EnvUtil.prepareAbsoluteSourceDirPath(sourceDirectory, projectBaseDir, getContextDir().getPath());
+    }
+
+    public File getAbsoluteDockerFilePath(String sourceDirectory, String projectBaseDir) {
+        return EnvUtil.prepareAbsoluteSourceDirPath(sourceDirectory, projectBaseDir, getDockerFile().getPath());
+    }
+
+    public File getAbsoluteDockerTarPath(String sourceDirectory, String projectBaseDir) {
+        return EnvUtil.prepareAbsoluteSourceDirPath(sourceDirectory, projectBaseDir, getDockerArchive().getPath());
+    }
+
+
     // ===========================================================================================
     public static class Builder {
 
@@ -253,6 +332,11 @@ public class BuildConfiguration implements Serializable {
 
         public Builder dockerArchive(String archive) {
             config.dockerArchive = archive;
+            return this;
+        }
+
+        public Builder dockerFileDir(String dir) {
+            config.dockerFileDir = dir;
             return this;
         }
 
@@ -389,9 +473,123 @@ public class BuildConfiguration implements Serializable {
             return this;
         }
 
+        public Builder shell(Arguments shell) {
+            if(shell != null) {
+                config.shell = shell;
+            }
+
+            return this;
+        }
+
         public BuildConfiguration build() {
             return config;
         }
+    }
+
+
+    public String initAndValidate(KitLogger log) throws IllegalArgumentException {
+        if (entryPoint != null) {
+            entryPoint.validate();
+        }
+        if (cmd != null) {
+            cmd.validate();
+        }
+        if (healthCheck != null) {
+            healthCheck.validate();
+        }
+
+        if (command != null) {
+            log.warn("<command> in the <build> configuration is deprecated and will be be removed soon");
+            log.warn("Please use <cmd> with nested <shell> or <exec> sections instead.");
+            log.warn("");
+            log.warn("More on this is explained in the user manual: ");
+            log.warn("https://github.com/fabric8io/docker-maven-plugin/blob/master/doc/manual.md#start-up-arguments");
+            log.warn("");
+            log.warn("Migration is trivial, see changelog to version 0.12.0 -->");
+            log.warn("https://github.com/fabric8io/docker-maven-plugin/blob/master/doc/changelog.md");
+            log.warn("");
+            log.warn("For now, the command is automatically translated for you to the shell form:");
+            log.warn("   <cmd>%s</cmd>", command);
+        }
+
+        initDockerFileFile(log);
+
+        if (healthCheck != null) {
+            // HEALTHCHECK support added later
+            return "1.24";
+        } else if (args != null) {
+            // ARG support came in later
+            return "1.21";
+        } else {
+            return null;
+        }
+    }
+
+    // Initialize the dockerfile location and the build mode
+    private void initDockerFileFile(KitLogger log) {
+        // can't have dockerFile/dockerFileDir and dockerArchive
+        if ((dockerFile != null || dockerFileDir != null) && dockerArchive != null) {
+            throw new IllegalArgumentException("Both <dockerFile> (<dockerFileDir>) and <dockerArchive> are set. " +
+                    "Only one of them can be specified.");
+        }
+        dockerFileFile = findDockerFileFile(log);
+
+        if (dockerArchive != null) {
+            dockerArchiveFile = new File(dockerArchive);
+        }
+    }
+
+    private File findDockerFileFile(KitLogger log) {
+        if(dockerFileDir != null && contextDir != null) {
+            log.warn("Both contextDir (%s) and deprecated dockerFileDir (%s) are configured. Using contextDir.", contextDir, dockerFileDir);
+        }
+
+        if (dockerFile != null) {
+            File dFile = new File(dockerFile);
+            if (dockerFileDir == null && contextDir == null) {
+                return dFile;
+            } else {
+                if(contextDir != null) {
+                    if (dFile.isAbsolute()) {
+                        return dFile;
+                    }
+                    return new File(contextDir, dockerFile);
+                }
+
+                if (dockerFileDir != null) {
+                    if (dFile.isAbsolute()) {
+                        throw new IllegalArgumentException("<dockerFile> can not be absolute path if <dockerFileDir> also set.");
+                    }
+                    log.warn("dockerFileDir parameter is deprecated, please migrate to contextDir");
+                    return new File(dockerFileDir, dockerFile);
+                }
+            }
+        }
+
+
+        if (contextDir != null) {
+            return new File(contextDir, "Dockerfile");
+        }
+
+        if (dockerFileDir != null) {
+            return new File(dockerFileDir, "Dockerfile");
+        }
+
+        // TODO: Remove the following deprecated handling section
+        if (dockerArchive == null) {
+            String deprecatedDockerFileDir =
+                    getAssemblyConfiguration() != null ?
+                            getAssemblyConfiguration().getDockerFileDir() :
+                            null;
+            if (deprecatedDockerFileDir != null) {
+                log.warn("<dockerFileDir> in the <assembly> section of a <build> configuration is deprecated");
+                log.warn("Please use <dockerFileDir> or <dockerFile> directly within the <build> configuration instead");
+                return new File(deprecatedDockerFileDir,"Dockerfile");
+            }
+        }
+
+        // No dockerfile mode
+        return null;
     }
 
     public String validate() throws IllegalArgumentException {

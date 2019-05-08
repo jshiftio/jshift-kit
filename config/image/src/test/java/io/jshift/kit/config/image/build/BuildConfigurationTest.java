@@ -96,12 +96,12 @@ public class BuildConfigurationTest {
     @Test
     public void dockerArchive() {
         BuildConfiguration config =
-            new BuildConfiguration.Builder().
-                dockerArchive("this").build();
-        config.validate();
+                new BuildConfiguration.Builder().
+                        dockerArchive("this").build();
+        config.initAndValidate(logger);
 
         assertFalse(config.isDockerFileMode());
-        assertEquals("this", config.getDockerArchive());
+        assertEquals(new File("this"), config.getDockerArchive());
     }
 
     @Test

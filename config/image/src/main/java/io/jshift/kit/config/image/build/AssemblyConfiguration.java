@@ -25,9 +25,19 @@ public class AssemblyConfiguration implements Serializable {
 
     private String descriptorRef;
 
+    // use 'exportTargetDir' instead
+    @Deprecated
+    private Boolean exportBasedir;
+
+    @Deprecated
+    private String dockerFileDir;
+
+    private Boolean ignorePermissions;
+
     /**
      * Whether the target directory should be
      * exported.
+     *
      */
     private Boolean exportTargetDir;
 
@@ -41,6 +51,20 @@ public class AssemblyConfiguration implements Serializable {
 
     public Boolean getExportTargetDir() {
         return exportTargetDir;
+    }
+
+    public Boolean exportTargetDir() {
+        if (exportTargetDir != null) {
+            return exportTargetDir;
+        } else if (exportBasedir != null) {
+            return exportBasedir;
+        } else {
+            return null;
+        }
+    }
+
+    public String getDockerFileDir() {
+        return dockerFileDir;
     }
 
     public String getTargetDir() {
@@ -71,12 +95,29 @@ public class AssemblyConfiguration implements Serializable {
         return tarLongFileMode;
     }
 
-     public PermissionMode getPermissions() {
-        return permissions;
+    public String getModeRaw() {
+        return mode != null ? mode.name() : null;
     }
 
     public String getName() {
         return name;
+    }
+
+    public Assembly getInline() {
+        return inline;
+    }
+
+    @Deprecated
+    public Boolean getIgnorePermissions() {
+        return ignorePermissions;
+    }
+
+    public PermissionMode getPermissions() {
+        return permissions != null ? permissions : PermissionMode.keep;
+    }
+
+    public String getPermissionsRaw() {
+        return permissions != null ? permissions.name() : null;
     }
 
     public static class Builder {
@@ -142,6 +183,22 @@ public class AssemblyConfiguration implements Serializable {
 
         public Builder tarLongFileMode(String tarLongFileMode) {
             config.tarLongFileMode = set(tarLongFileMode);
+            return this;
+        }
+
+        public Builder dockerFileDir(String dockerFileDir) {
+            config.dockerFileDir = set(dockerFileDir);
+            return this;
+        }
+
+        public Builder exportBasedir(Boolean export) {
+            config.exportBasedir = set(export);
+            return this;
+        }
+
+        @Deprecated
+        public Builder ignorePermissions(Boolean ignorePermissions) {
+            config.ignorePermissions = set(ignorePermissions);
             return this;
         }
 
