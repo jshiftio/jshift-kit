@@ -33,7 +33,7 @@ import io.fabric8.openshift.api.model.DeploymentConfigSpec;
 import io.jshift.kit.config.resource.PlatformMode;
 import io.jshift.maven.enricher.api.BaseEnricher;
 import io.jshift.maven.enricher.api.MavenEnricherContext;
-import io.jshift.maven.enricher.api.util.KubernetesHelper;
+import io.jshift.kit.common.util.KubernetesHelper;
 import io.jshift.maven.enricher.api.util.KubernetesResourceUtil;
 import org.apache.commons.lang3.StringUtils;
 

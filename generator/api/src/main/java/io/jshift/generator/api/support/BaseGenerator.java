@@ -30,7 +30,11 @@ import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.image.ImageName;
 import io.jshift.kit.config.image.build.BuildConfiguration;
 import io.jshift.kit.config.image.build.OpenShiftBuildStrategy;
-import io.jshift.kit.config.image.build.RuntimeMode;
+import io.jshift.kit.config.resource.RuntimeMode;
+import io.jshift.maven.generator.api.FromSelector;
+import io.jshift.maven.generator.api.Generator;
+import io.jshift.maven.generator.api.GeneratorConfig;
+import io.jshift.maven.generator.api.GeneratorContext;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.project.MavenProject;
 

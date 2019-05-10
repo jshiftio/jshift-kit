@@ -38,7 +38,7 @@ import io.jshift.kit.config.image.ImageName;
 import io.jshift.kit.config.resource.PlatformMode;
 import io.jshift.maven.enricher.api.BaseEnricher;
 import io.jshift.maven.enricher.api.MavenEnricherContext;
-import io.jshift.maven.enricher.api.util.ResourceUtil;
+import io.jshift.kit.common.util.ResourceUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSetSpec;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetSpecBuilder;
 import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.resource.ResourceConfig;
-import io.jshift.maven.enricher.api.util.KubernetesHelper;
+import io.jshift.kit.common.util.KubernetesHelper;
 
 import java.util.List;
 

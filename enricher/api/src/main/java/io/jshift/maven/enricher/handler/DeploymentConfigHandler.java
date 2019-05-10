@@ -25,7 +25,7 @@ import io.fabric8.openshift.api.model.DeploymentConfigSpec;
 import io.fabric8.openshift.api.model.DeploymentConfigSpecBuilder;
 import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.resource.ResourceConfig;
-import io.jshift.maven.enricher.api.util.KubernetesHelper;
+import io.jshift.kit.common.util.KubernetesHelper;
 
 import java.util.List;
 

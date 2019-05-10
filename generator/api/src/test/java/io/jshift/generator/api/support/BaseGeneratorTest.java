@@ -24,7 +24,7 @@ import java.util.Properties;
 import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.image.build.BuildConfiguration;
 import io.jshift.kit.config.image.build.OpenShiftBuildStrategy;
-import io.jshift.kit.config.image.build.RuntimeMode;
+import io.jshift.kit.config.resource.RuntimeMode;
 import io.jshift.kit.config.resource.ProcessorConfig;
 import io.jshift.generator.api.FromSelector;
 import io.jshift.generator.api.GeneratorContext;

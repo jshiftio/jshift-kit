@@ -35,7 +35,7 @@ import io.jshift.kit.config.resource.ResourceConfig;
 import io.jshift.kit.config.resource.ServiceConfig;
 import io.jshift.maven.enricher.api.BaseEnricher;
 import io.jshift.maven.enricher.api.MavenEnricherContext;
-import io.jshift.maven.enricher.api.util.KubernetesHelper;
+import io.jshift.kit.common.util.KubernetesHelper;
 import io.jshift.maven.enricher.handler.ServiceHandler;
 import org.apache.maven.shared.utils.StringUtils;
 

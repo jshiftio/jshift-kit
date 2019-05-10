@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.jshift.kit.config.resource.PlatformMode;
 import io.jshift.maven.enricher.api.BaseEnricher;
 import io.jshift.maven.enricher.api.MavenEnricherContext;
-import io.jshift.maven.enricher.api.util.KubernetesHelper;
+import io.jshift.kit.common.util.KubernetesHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;

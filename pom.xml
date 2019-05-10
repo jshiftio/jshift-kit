@@ -13,7 +13,7 @@
     <relativePath>parent/pom.xml</relativePath>
   </parent>
 
-  <name>Jshift Kit</name>
+  <name>Jshift Kit </name>
 
   <modules>
       <module>parent</module>
@@ -26,7 +26,6 @@
       <module>config/resource</module>
       <module>generator/api</module>
       <module>generator/java-exec</module>
-      <module>generator/spring-boot</module>
       <module>generator/wildfly-swarm</module>
       <module>generator/quarkus</module>
       <module>generator/thorntail-v2</module>
@@ -36,8 +35,10 @@
       <module>enricher/api</module>
       <module>enricher/generic</module>
       <module>enricher/specific</module>
+      <module>watcher/api</module>
+      <module>watcher/standard</module>
       <module>profile</module>
-
+      <module>jshift-kit-spring-boot</module>
   </modules>
 
 </project>

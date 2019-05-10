@@ -27,7 +27,7 @@ import io.jshift.maven.enricher.api.BaseEnricher;
 import io.jshift.maven.enricher.api.MavenEnricherContext;
 import io.jshift.maven.enricher.api.model.Dependency;
 import io.jshift.maven.enricher.api.model.KindAndName;
-import io.jshift.maven.enricher.api.util.KubernetesHelper;
+import io.jshift.kit.common.util.KubernetesHelper;
 import io.jshift.maven.enricher.api.util.KubernetesResourceUtil;
 
 import java.io.File;
