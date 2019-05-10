@@ -13,25 +13,25 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.jshift.maven.enricher.specific;
+package io.jshift.vertx.enricher;
 
-import java.util.Optional;
 import io.fabric8.kubernetes.api.model.HTTPHeader;
 import io.fabric8.kubernetes.api.model.Probe;
 import io.fabric8.kubernetes.api.model.ProbeBuilder;
 import io.fabric8.kubernetes.api.model.ProbeFluent;
 import io.jshift.maven.enricher.api.MavenEnricherContext;
 import io.jshift.maven.enricher.api.model.Configuration;
+import io.jshift.maven.enricher.specific.AbstractHealthCheckEnricher;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
-
-import javax.annotation.Nullable;
 
 
 /**

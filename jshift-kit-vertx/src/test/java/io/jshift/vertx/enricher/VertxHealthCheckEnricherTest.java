@@ -13,7 +13,7 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.jshift.maven.enricher.specific;
+package io.jshift.vertx.enricher;
 
 import java.io.StringReader;
 import java.util.Map;

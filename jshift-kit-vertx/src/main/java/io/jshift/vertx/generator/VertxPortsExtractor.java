@@ -13,14 +13,13 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.jshift.generator.vertx;
+package io.jshift.vertx.generator;
 
 import io.jshift.kit.common.PrefixedLogger;
 import io.jshift.generator.api.support.AbstractPortsExtractor;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-
 
 public class VertxPortsExtractor extends AbstractPortsExtractor {
 
