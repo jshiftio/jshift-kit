@@ -18,7 +18,6 @@ import io.jshift.kit.common.util.KubernetesHelper;
 import io.jshift.kit.common.util.ResourceUtil;
 import io.jshift.kit.config.image.ImageName;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +60,7 @@ public class ImageStreamService {
      * @param imageName name of the image for which the stream should be extracted
      * @param target file to store the image stream
      */
-    public void appendImageStreamResource(ImageName imageName, File target) throws MojoExecutionException {
+    public void appendImageStreamResource(ImageName imageName, File target) throws IOException {
         String tag = StringUtils.isBlank(imageName.getTag()) ? "latest" : imageName.getTag();
         try {
             ImageStream is = new ImageStreamBuilder()
@@ -83,12 +82,12 @@ public class ImageStreamService {
         } catch (KubernetesClientException e) {
             KubernetesHelper.handleKubernetesClientException(e, this.log);
         } catch (IOException e) {
-            throw new MojoExecutionException(String.format("Cannot write ImageStream descriptor for %s to %s : %s",
+            throw new IOException(String.format("Cannot write ImageStream descriptor for %s to %s : %s",
                                                            imageName.getFullName(), target.getAbsoluteFile(), e.getMessage()),e);
         }
     }
 
-    private void appendImageStreamToFile(ImageStream is, File target) throws MojoExecutionException, IOException {
+    private void appendImageStreamToFile(ImageStream is, File target) throws IOException {
 
         Map<String, ImageStream> imageStreams = readAlreadyExtractedImageStreams(target);
         // Override with given image stream
@@ -112,7 +111,7 @@ public class ImageStreamService {
         return imageStreams;
     }
 
-    private void createOrUpdateImageStreamTag(OpenShiftClient client, ImageName image, ImageStream is) throws MojoExecutionException {
+    private void createOrUpdateImageStreamTag(OpenShiftClient client, ImageName image, ImageStream is) {
         String namespace = client.getNamespace();
         String tagSha = findTagSha(client, image.getSimpleName(), client.getNamespace());
         String name = image.getSimpleName() + "@" + tagSha;
@@ -164,7 +163,7 @@ public class ImageStreamService {
         return tag;
     }
 
-    private String findTagSha(OpenShiftClient client, String imageStreamName, String namespace) throws MojoExecutionException {
+    private String findTagSha(OpenShiftClient client, String imageStreamName, String namespace) throws IllegalStateException {
         ImageStream currentImageStream = null;
 
         for (int i = 0; i < IMAGE_STREAM_TAG_RETRIES; i++) {
@@ -213,9 +212,9 @@ public class ImageStreamService {
 
         // No image found, even after several retries:
         if (currentImageStream == null) {
-            throw new MojoExecutionException("Could not find a current ImageStream with name " + imageStreamName + " in namespace " + namespace);
+            throw new IllegalStateException("Could not find a current ImageStream with name " + imageStreamName + " in namespace " + namespace);
         } else {
-            throw new MojoExecutionException("Could not find a tag in the ImageStream " + imageStreamName);
+            throw new IllegalStateException("Could not find a tag in the ImageStream " + imageStreamName);
         }
     }
 

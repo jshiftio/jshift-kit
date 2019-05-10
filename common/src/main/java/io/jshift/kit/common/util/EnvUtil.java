@@ -8,7 +8,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.execution.MavenSession;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.utils.io.FileUtils;
 
@@ -415,7 +414,7 @@ public class EnvUtil {
     }
 
     // create a timestamp file holding time in epoch seconds
-    public static void storeTimestamp(File tsFile, Date buildDate) throws MojoExecutionException {
+    public static void storeTimestamp(File tsFile, Date buildDate) throws IOException {
         try {
             if (tsFile.exists()) {
                 tsFile.delete();
@@ -423,12 +422,12 @@ public class EnvUtil {
             File dir = tsFile.getParentFile();
             if (!dir.exists()) {
                 if (!dir.mkdirs()) {
-                    throw new MojoExecutionException("Cannot create directory " + dir);
+                    throw new IOException("Cannot create directory " + dir);
                 }
             }
             FileUtils.fileWrite(tsFile, StandardCharsets.US_ASCII.name(), Long.toString(buildDate.getTime()));
         } catch (IOException e) {
-            throw new MojoExecutionException("Cannot create " + tsFile + " for storing time " + buildDate.getTime(), e);
+            throw new IOException("Cannot create " + tsFile + " for storing time " + buildDate.getTime(), e);
         }
     }
 

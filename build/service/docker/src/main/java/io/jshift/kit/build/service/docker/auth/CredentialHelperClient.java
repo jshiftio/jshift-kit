@@ -37,7 +37,7 @@ public class CredentialHelperClient {
     }
 
 
-    public AuthConfig getAuthConfig(String registryToLookup) throws MojoExecutionException {
+    public AuthConfig getAuthConfig(String registryToLookup) throws IOException {
         try {
             JsonObject creds = new GetCommand().getCredentialNode(registryToLookup);
             if (creds == null) {
@@ -45,7 +45,7 @@ public class CredentialHelperClient {
             }
             return toAuthConfig(creds);
         } catch (IOException e) {
-            throw new MojoExecutionException("Error getting the credentials for " + registryToLookup + " from the configured credential helper",e);
+            throw new IOException("Error getting the credentials for " + registryToLookup + " from the configured credential helper",e);
         }
     }
 

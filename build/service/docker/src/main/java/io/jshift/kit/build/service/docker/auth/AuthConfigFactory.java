@@ -113,7 +113,7 @@ public class AuthConfigFactory {
      * @throws MojoFailureException
      */
     public AuthConfig createAuthConfig(boolean isPush, boolean skipExtendedAuth, Map authConfig, Settings settings, String user, String registry)
-            throws MojoExecutionException {
+            throws Exception {
 
         AuthConfig ret = createStandardAuthConfig(isPush, authConfig, settings, user, registry);
         if (ret != null) {
@@ -123,7 +123,7 @@ public class AuthConfigFactory {
             try {
                 return extendedAuthentication(ret, registry);
             } catch (IOException e) {
-                throw new MojoExecutionException(e.getMessage(), e);
+                throw new IOException(e.getMessage(), e);
             }
         }
 
@@ -149,7 +149,7 @@ public class AuthConfigFactory {
      * @throws IOException
      * @throws MojoExecutionException
      */
-    private AuthConfig extendedAuthentication(AuthConfig standardAuthConfig, String registry) throws IOException, MojoExecutionException {
+    private AuthConfig extendedAuthentication(AuthConfig standardAuthConfig, String registry) throws IOException {
         EcrExtendedAuth ecr = new EcrExtendedAuth(log, registry);
         if (ecr.isAwsRegistry()) {
             return ecr.extendedAuth(standardAuthConfig);
@@ -189,7 +189,7 @@ public class AuthConfigFactory {
      * @throws MojoFailureException
      */
     private AuthConfig createStandardAuthConfig(boolean isPush, Map authConfigMap, Settings settings, String user, String registry)
-            throws MojoExecutionException {
+            throws Exception {
         AuthConfig ret;
 
         // Check first for specific configuration based on direction (pull or push), then for a default value
@@ -306,13 +306,13 @@ public class AuthConfigFactory {
         }
     }
 
-    private AuthConfig getAuthConfigFromSystemProperties(LookupMode lookupMode) throws MojoExecutionException {
+    private AuthConfig getAuthConfigFromSystemProperties(LookupMode lookupMode) throws Exception {
         Properties props = System.getProperties();
         String userKey = lookupMode.asSysProperty(AUTH_USERNAME);
         String passwordKey = lookupMode.asSysProperty(AUTH_PASSWORD);
         if (props.containsKey(userKey)) {
             if (!props.containsKey(passwordKey)) {
-                throw new MojoExecutionException("No " + passwordKey + " provided for username " + props.getProperty(userKey));
+                throw new IOException("No " + passwordKey + " provided for username " + props.getProperty(userKey));
             }
             return new AuthConfig(props.getProperty(userKey),
                                   decrypt(props.getProperty(passwordKey)),
@@ -346,7 +346,7 @@ public class AuthConfigFactory {
         }
     }
 
-    private AuthConfig getAuthConfigFromPluginConfiguration(LookupMode lookupMode, Map authConfig) throws MojoExecutionException {
+    private AuthConfig getAuthConfigFromPluginConfiguration(LookupMode lookupMode, Map authConfig) throws Exception {
         Map mapToCheck = getAuthConfigMapToCheck(lookupMode,authConfig);
 
         if (mapToCheck != null && mapToCheck.containsKey(AUTH_USERNAME)) {
@@ -361,7 +361,7 @@ public class AuthConfigFactory {
         }
     }
 
-    private AuthConfig getAuthConfigFromSettings(Settings settings, String user, String registry) throws MojoExecutionException {
+    private AuthConfig getAuthConfigFromSettings(Settings settings, String user, String registry) throws Exception {
         Server defaultServer = null;
         Server found;
         for (Server server : settings.getServers()) {
@@ -380,7 +380,7 @@ public class AuthConfigFactory {
         return defaultServer != null ? createAuthConfigFromServer(defaultServer) : null;
     }
 
-    private AuthConfig getAuthConfigFromDockerConfig(String registry) throws MojoExecutionException {
+    private AuthConfig getAuthConfigFromDockerConfig(String registry) throws IOException {
         JsonObject dockerConfig = DockerFileUtil.readDockerConfig();
         if (dockerConfig == null) {
             return null;
@@ -416,7 +416,7 @@ public class AuthConfigFactory {
         return new AuthConfig(auth,email);
     }
 
-    private AuthConfig extractAuthConfigFromCredentialsHelper(String registryToLookup, String credConfig) throws MojoExecutionException {
+    private AuthConfig extractAuthConfigFromCredentialsHelper(String registryToLookup, String credConfig) throws IOException {
         CredentialHelperClient credentialHelper = new CredentialHelperClient(log, credConfig);
         String version = credentialHelper.getVersion();
         log.debug("AuthConfig: credentials from credential helper/store %s%s",
@@ -532,20 +532,20 @@ public class AuthConfigFactory {
         return null;
     }
 
-    private String decrypt(String password) throws MojoExecutionException {
+    private String decrypt(String password) throws Exception {
         try {
             // Done by reflection since I have classloader issues otherwise
             Object secDispatcher = container.lookup(SecDispatcher.ROLE, "maven");
             Method method = secDispatcher.getClass().getMethod("decrypt",String.class);
             return (String) method.invoke(secDispatcher,password);
         } catch (ComponentLookupException e) {
-            throw new MojoExecutionException("Error looking security dispatcher",e);
+            throw new Exception("Error looking security dispatcher",e);
         } catch (ReflectiveOperationException e) {
-            throw new MojoExecutionException("Cannot decrypt password: " + e.getCause(),e);
+            throw new Exception("Cannot decrypt password: " + e.getCause(),e);
         }
     }
 
-    private AuthConfig createAuthConfigFromServer(Server server) throws MojoExecutionException {
+    private AuthConfig createAuthConfigFromServer(Server server) throws Exception {
         return new AuthConfig(
                 server.getUsername(),
                 decrypt(server.getPassword()),

@@ -31,7 +31,6 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetSpec;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.maven.docker.access.DockerAccessException;
 import io.fabric8.maven.docker.config.ImageConfiguration;
 import io.fabric8.maven.docker.service.BuildService;
@@ -47,7 +46,6 @@ import io.jshift.kit.config.access.ClusterAccess;
 import io.jshift.kit.config.resource.PlatformMode;
 import io.jshift.watcher.api.BaseWatcher;
 import io.jshift.watcher.api.WatcherContext;
-import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  *
@@ -82,7 +80,7 @@ public class DockerImageWatcher extends BaseWatcher {
         }
     }
 
-    protected void buildImage(ImageConfiguration imageConfig) throws DockerAccessException, MojoExecutionException {
+    protected void buildImage(ImageConfiguration imageConfig) throws DockerAccessException {
         String imageName = imageConfig.getName();
         // lets regenerate the label
         try {
@@ -98,18 +96,18 @@ public class DockerImageWatcher extends BaseWatcher {
 
     }
 
-    private String getImagePrefix(String imageName) throws MojoExecutionException {
+    private String getImagePrefix(String imageName) throws IllegalStateException {
         String imagePrefix = null;
         int idx = imageName.lastIndexOf(':');
         if (idx < 0) {
-            throw new MojoExecutionException("No ':' in the image name:  " + imageName);
+            throw new IllegalStateException("No ':' in the image name:  " + imageName);
         } else {
             imagePrefix = imageName.substring(0, idx + 1);
         }
         return imagePrefix;
     }
 
-    protected void restartContainer(WatchService.ImageWatcher watcher, Set<HasMetadata> resources) throws MojoExecutionException {
+    protected void restartContainer(WatchService.ImageWatcher watcher, Set<HasMetadata> resources) throws IllegalStateException {
         ImageConfiguration imageConfig = watcher.getImageConfiguration();
         String imageName = imageConfig.getName();
         try {
@@ -124,10 +122,10 @@ public class DockerImageWatcher extends BaseWatcher {
             }
         } catch (KubernetesClientException e) {
             KubernetesHelper.handleKubernetesClientException(e, this.log);
-        } catch (MojoExecutionException e) {
+        } catch (IllegalStateException e) {
             throw e;
         } catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
+            throw new IllegalStateException(e.getMessage(), e);
         }
     }
 

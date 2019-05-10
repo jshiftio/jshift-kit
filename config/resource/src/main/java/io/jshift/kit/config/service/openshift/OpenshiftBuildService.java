@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigSpec;
@@ -59,7 +58,6 @@ import io.jshift.kit.config.service.BuildService;
 import io.jshift.kit.config.service.JshiftServiceException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -156,7 +154,7 @@ public class OpenshiftBuildService implements BuildService {
                 dockerTar = dockerServiceHub.getArchiveService().createDockerBuildArchive(imageConfig, config.getDockerMavenContext());
             }
             return dockerTar;
-        } catch (MojoExecutionException e) {
+        } catch (IOException e) {
             throw new JshiftServiceException("Unable to create the build archive", e);
         }
     }
@@ -361,7 +359,7 @@ public class OpenshiftBuildService implements BuildService {
     }
 
     private Boolean checkOrCreatePullSecret(BuildServiceConfig config, OpenShiftClient client, KubernetesListBuilder builder, String pullSecretName, ImageConfiguration imageConfig)
-            throws MojoExecutionException, UnsupportedEncodingException {
+            throws Exception {
         io.jshift.kit.build.service.docker.BuildService.BuildContext dockerBuildContext = config.getDockerBuildContext();
         BuildConfiguration buildConfig = imageConfig.getBuildConfiguration();
 
@@ -517,7 +515,7 @@ public class OpenshiftBuildService implements BuildService {
         }
     }
 
-    private void waitForOpenShiftBuildToComplete(OpenShiftClient client, Build build) throws MojoExecutionException, InterruptedException {
+    private void waitForOpenShiftBuildToComplete(OpenShiftClient client, Build build) throws InterruptedException, IOException {
         final CountDownLatch latch = new CountDownLatch(1);
         final CountDownLatch logTerminateLatch = new CountDownLatch(1);
         final String buildName = KubernetesHelper.getName(build);
@@ -550,7 +548,7 @@ public class OpenshiftBuildService implements BuildService {
                 }
                 String status = KubernetesHelper.getBuildStatusPhase(build);
                 if (OpenshiftHelper.isFailed(status) || OpenshiftHelper.isCancelled(status)) {
-                    throw new MojoExecutionException("OpenShift Build " + buildName + " failed: " + KubernetesHelper.getBuildStatusReason(build));
+                    throw new IOException("OpenShift Build " + buildName + " failed: " + KubernetesHelper.getBuildStatusReason(build));
                 }
 
                 if (!OpenshiftHelper.isFinished(status)) {
@@ -678,7 +676,7 @@ public class OpenshiftBuildService implements BuildService {
         }
     }
 
-    private void addImageStreamToFile(File imageStreamFile, ImageName imageName, OpenShiftClient client) throws MojoExecutionException {
+    private void addImageStreamToFile(File imageStreamFile, ImageName imageName, OpenShiftClient client) throws IOException {
         ImageStreamService imageStreamHandler = new ImageStreamService(client, log);
         imageStreamHandler.appendImageStreamResource(imageName, imageStreamFile);
     }

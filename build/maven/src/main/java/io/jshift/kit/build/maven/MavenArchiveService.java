@@ -56,7 +56,7 @@ public class MavenArchiveService {
      * @throws IOException if during creation of the tar an error occurs.
      */
     public File createDockerBuildArchive(ImageConfiguration imageConfig, MavenBuildContext params)
-        throws MojoExecutionException {
+        throws IOException {
         return createDockerBuildArchive(imageConfig, params, null);
     }
 
@@ -71,7 +71,7 @@ public class MavenArchiveService {
      * @throws IOException if during creation of the tar an error occurs.
      */
     public File createDockerBuildArchive(ImageConfiguration imageConfig, MavenBuildContext context, ArchiverCustomizer customizer)
-        throws MojoExecutionException {
+        throws IOException {
         File ret = createArchive(imageConfig.getName(), imageConfig.getBuildConfiguration(), context, log, customizer);
         log.info("%s: Created docker source tar %s",imageConfig.getDescription(), ret);
         return ret;
@@ -107,19 +107,19 @@ public class MavenArchiveService {
      * @return created archive
      */
     public File createChangedFilesArchive(List<AssemblyFiles.Entry> entries, File assemblyDir,
-                                          String imageName, MavenBuildContext mojoParameters) throws MojoExecutionException {
+                                          String imageName, MavenBuildContext mojoParameters) throws IOException {
         return dockerAssemblyManager.createChangedFilesArchive(entries, assemblyDir, imageName, mojoParameters);
     }
 
     // =============================================
 
     public File createArchive(String imageName, BuildConfiguration buildConfig, MavenBuildContext ctx, KitLogger log)
-        throws MojoExecutionException {
+        throws IOException {
         return createArchive(imageName, buildConfig, ctx, log, null);
     }
 
     File createArchive(String imageName, BuildConfiguration buildConfig, MavenBuildContext ctx, KitLogger log, ArchiverCustomizer customizer)
-        throws MojoExecutionException {
+        throws IOException {
         return dockerAssemblyManager.createDockerTarArchive(imageName, ctx, buildConfig, log, customizer);
     }
 }

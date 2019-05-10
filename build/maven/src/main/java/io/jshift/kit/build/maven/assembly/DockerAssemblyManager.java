@@ -86,7 +86,7 @@ public class DockerAssemblyManager {
      * @throws MojoExecutionException
      */
     public File createDockerTarArchive(String imageName, MavenBuildContext params, BuildConfiguration buildConfig, KitLogger log)
-            throws MojoExecutionException {
+            throws IOException {
         return createDockerTarArchive(imageName, params, buildConfig, log, null);
     }
 
@@ -103,7 +103,7 @@ public class DockerAssemblyManager {
      * @throws MojoExecutionException
      */
     public File createDockerTarArchive(String imageName, final MavenBuildContext params, final BuildConfiguration buildConfig, KitLogger log, ArchiverCustomizer finalCustomizer)
-            throws MojoExecutionException {
+            throws IOException {
 
         final BuildDirs buildDirs = createBuildDirs(imageName, params);
         final AssemblyConfiguration assemblyConfig = buildConfig.getAssemblyConfiguration();
@@ -119,7 +119,7 @@ public class DockerAssemblyManager {
                 // Use specified docker directory which must include a Dockerfile.
                 final File dockerFile = buildConfig.getAbsoluteDockerFilePath(params.getSourceDirectory(), params.getProject().getBasedir().toString());
                 if (!dockerFile.exists()) {
-                    throw new MojoExecutionException("Configured Dockerfile \"" +
+                    throw new IOException("Configured Dockerfile \"" +
                                                      buildConfig.getDockerFile() + "\" (resolved to \"" + dockerFile + "\") doesn't exist");
                 }
 
@@ -180,7 +180,7 @@ public class DockerAssemblyManager {
             return createBuildTarBall(buildDirs, archiveCustomizers, assemblyConfig, buildConfig.getCompression());
 
         } catch (IOException e) {
-            throw new MojoExecutionException(String.format("Cannot create %s in %s", DOCKERFILE_NAME, buildDirs.getOutputDirectory()), e);
+            throw new IOException(String.format("Cannot create %s in %s", DOCKERFILE_NAME, buildDirs.getOutputDirectory()), e);
         }
     }
 
@@ -239,7 +239,7 @@ public class DockerAssemblyManager {
      * a rebuild of the image if needed ('docker:watch')
      */
     public AssemblyFiles getAssemblyFiles(String name, BuildConfiguration buildConfig, MavenBuildContext mojoParams, KitLogger log)
-            throws InvalidAssemblerConfigurationException, ArchiveCreationException, AssemblyFormattingException, MojoExecutionException {
+            throws InvalidAssemblerConfigurationException, ArchiveCreationException, AssemblyFormattingException, IOException {
 
         BuildDirs buildDirs = createBuildDirs(name, mojoParams);
 
@@ -280,7 +280,7 @@ public class DockerAssemblyManager {
 
     public File createChangedFilesArchive(List<AssemblyFiles.Entry> entries, File assemblyDirectory,
                                           String imageName, MavenBuildContext mojoParameters)
-            throws MojoExecutionException {
+            throws IOException {
         BuildDirs dirs = createBuildDirs(imageName, mojoParameters);
         try {
             File archive = new File(dirs.getTemporaryRootDirectory(), "changed-files.tar");
@@ -291,7 +291,7 @@ public class DockerAssemblyManager {
             }
             return createChangedFilesTarBall(archive, archiveDir);
         } catch (IOException exp) {
-            throw new MojoExecutionException("Error while creating " + dirs.getTemporaryRootDirectory() +
+            throw new IOException("Error while creating " + dirs.getTemporaryRootDirectory() +
                                              "/changed-files.tar: " + exp);
         }
     }
@@ -304,7 +304,7 @@ public class DockerAssemblyManager {
 
     // Create final tar-ball to be used for building the archive to send to the Docker daemon
     private File createBuildTarBall(BuildDirs buildDirs, List<ArchiverCustomizer> archiverCustomizers,
-                                    AssemblyConfiguration assemblyConfig, ArchiveCompression compression) throws MojoExecutionException {
+                                    AssemblyConfiguration assemblyConfig, ArchiveCompression compression) throws IOException {
         File archive = new File(buildDirs.getTemporaryRootDirectory(), "docker-build." + compression.getFileSuffix());
         try {
             TarArchiver archiver = createBuildArchiver(buildDirs.getOutputDirectory(), archive, assemblyConfig);
@@ -317,9 +317,9 @@ public class DockerAssemblyManager {
             archiver.createArchive();
             return archive;
         } catch (NoSuchArchiverException e) {
-            throw new MojoExecutionException("No archiver for type 'tar' found", e);
+            throw new IOException("No archiver for type 'tar' found", e);
         } catch (IOException e) {
-            throw new MojoExecutionException("Cannot create archive " + archive, e);
+            throw new IOException("Cannot create archive " + archive, e);
         }
     }
 
@@ -352,7 +352,7 @@ public class DockerAssemblyManager {
         }
     }
 
-    private File createChangedFilesTarBall(File archive, File archiveDir) throws MojoExecutionException {
+    private File createChangedFilesTarBall(File archive, File archiveDir) throws IOException {
         try {
             TarArchiver archiver = (TarArchiver) archiverManager.getArchiver("tar");
             archiver.setLongfile(TarLongFileMode.posix);
@@ -361,23 +361,23 @@ public class DockerAssemblyManager {
             archiver.createArchive();
             return archive;
         } catch (NoSuchArchiverException e) {
-            throw new MojoExecutionException("No archiver for type 'tar' found", e);
+            throw new IOException("No archiver for type 'tar' found", e);
         } catch (IOException e) {
-            throw new MojoExecutionException("Cannot create archive " + archive, e);
+            throw new IOException("Cannot create archive " + archive, e);
         } catch (RuntimeException e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    private File createArchiveDir(BuildDirs dirs) throws IOException, MojoExecutionException {
+    private File createArchiveDir(BuildDirs dirs) throws IOException{
         File archiveDir = new File(dirs.getTemporaryRootDirectory(), "changed-files");
         if (archiveDir.exists()) {
             // Remove old stuff to
             FileUtils.cleanDirectory(archiveDir);
         } else {
             if (!archiveDir.mkdir()) {
-                throw new MojoExecutionException("Cannot create " + archiveDir);
+                throw new IOException("Cannot create " + archiveDir);
             }
         }
         return archiveDir;
@@ -455,7 +455,7 @@ public class DockerAssemblyManager {
     }
 
     private void createAssemblyArchive(AssemblyConfiguration assemblyConfig, MavenBuildContext params, BuildDirs buildDirs)
-            throws MojoExecutionException {
+            throws IOException {
         // TODO: Need to convert MojoParams to MavenEnricherContext
         DockerAssemblyConfigurationSource source = new DockerAssemblyConfigurationSource(params, buildDirs, assemblyConfig);
         Assembly assembly = getAssemblyConfig(assemblyConfig, source);
@@ -474,10 +474,9 @@ public class DockerAssemblyManager {
                          "built the artifact before with 'mvn package' (should be available in the target/ dir). " +
                          "Please see the documentation (section \"Assembly\") for more information.";
             }
-            throw new MojoExecutionException(error, e);
+            throw new IOException(error, e);
         } catch (InvalidAssemblerConfigurationException e) {
-            throw new MojoExecutionException(assembly, "Assembly is incorrectly configured: " + assembly.getId(),
-                                            "Assembly: " + assembly.getId() + " is not configured correctly: "
+            throw new IOException("Assembly: " + assembly.getId() + " is not configured correctly: "
                                             + e.getMessage());
         } finally {
             setArtifactFile(params.getProject(), originalArtifactFile);
@@ -526,7 +525,7 @@ public class DockerAssemblyManager {
     }
 
     private Assembly getAssemblyConfig(AssemblyConfiguration assemblyConfig, DockerAssemblyConfigurationSource source)
-            throws MojoExecutionException {
+            throws IOException {
         Assembly assembly = assemblyConfig.getInline();
         if (assembly == null) {
             assembly = extractAssembly(source);
@@ -534,20 +533,20 @@ public class DockerAssemblyManager {
         return assembly;
     }
 
-    private Assembly extractAssembly(AssemblerConfigurationSource config) throws MojoExecutionException {
+    private Assembly extractAssembly(AssemblerConfigurationSource config) throws IOException {
         try {
             List<Assembly> assemblies = assemblyReader.readAssemblies(config);
             if (assemblies.size() != 1) {
-                throw new MojoExecutionException("Only one assembly can be used for creating a Docker base image (and not "
+                throw new IOException("Only one assembly can be used for creating a Docker base image (and not "
                         + assemblies.size() + ")");
             }
             return assemblies.get(0);
         }
         catch (AssemblyReadException e) {
-            throw new MojoExecutionException("Error reading assembly: " + e.getMessage(), e);
+            throw new IOException("Error reading assembly: " + e.getMessage(), e);
         }
         catch (InvalidAssemblerConfigurationException e) {
-            throw new MojoExecutionException(assemblyReader, e.getMessage(), "Docker assembly configuration is invalid: " + e.getMessage());
+            throw new IOException(e.getMessage() +  ". Docker assembly configuration is invalid: " + e.getMessage());
         }
     }
 
