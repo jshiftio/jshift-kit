@@ -50,7 +50,8 @@ public class DockerBuildService implements BuildService {
      */
     @Override
     public void buildImage(ImageConfiguration imageConfig, BuildContext buildContext, Map<String, String> buildArgs)
-        throws IOException, MojoExecutionException {
+        throws IOException {
+        try {
             // Call a pre-hook to the build
             autoPullBaseImageIfRequested(imageConfig, buildContext);
 
@@ -72,13 +73,16 @@ public class DockerBuildService implements BuildService {
 
             // Prepare options for building against a Docker daemon and do the build
             String newImageId = build(imageConfig,
-                                      getBuildArgsFromProperties(buildContext, buildArgs),
-                                      dockerArchive);
+                    getBuildArgsFromProperties(buildContext, buildArgs),
+                    dockerArchive);
 
             // Remove the image if requested
             if (oldImageId.isPresent() && !oldImageId.get().equals(newImageId)) {
                 removeOldImage(imageConfig, oldImageId.get());
             }
+        } catch (Exception exception) {
+            throw new IOException(exception);
+        }
     }
 
     public void tagImage(String imageName, ImageConfiguration imageConfig) throws DockerAccessException {

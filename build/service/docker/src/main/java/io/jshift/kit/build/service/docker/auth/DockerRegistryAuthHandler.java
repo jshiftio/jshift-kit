@@ -3,6 +3,7 @@ package io.jshift.kit.build.service.docker.auth;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.util.Optional;
 import java.util.function.Function;
@@ -13,7 +14,6 @@ import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuthHandler;
 import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.common.KitLogger;
-import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * @author roland
@@ -61,7 +61,7 @@ public class DockerRegistryAuthHandler implements RegistryAuthHandler {
             if (dockerConfig.has("auths")) {
                 return extractAuthConfigFromAuths(registryToLookup, dockerConfig.getAsJsonObject("auths"));
             }
-        } catch (MojoExecutionException exception) {
+        } catch (IOException exception) {
 
         }
 
@@ -87,7 +87,7 @@ public class DockerRegistryAuthHandler implements RegistryAuthHandler {
         return new AuthConfig.Builder().withCredentialsEncoded(auth).email(email).build();
     }
 
-    private AuthConfig extractAuthConfigFromCredentialsHelper(String registryToLookup, String credConfig) throws MojoExecutionException  {
+    private AuthConfig extractAuthConfigFromCredentialsHelper(String registryToLookup, String credConfig) throws IOException {
         CredentialHelperClient credentialHelper = new CredentialHelperClient(log, credConfig);
         log.debug("AuthConfig: credentials from credential helper/store %s version %s",
                   credentialHelper.getName(),

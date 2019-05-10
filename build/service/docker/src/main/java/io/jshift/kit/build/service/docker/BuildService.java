@@ -52,10 +52,10 @@ public class BuildService {
      * @param imageConfig the image configuration
      * @param buildContext the build context
      * @throws DockerAccessException
-     * @throws MojoExecutionException
+     * @throws IOException
      */
     public void buildImage(ImageConfiguration imageConfig, ImagePullManager imagePullManager, BuildContext buildContext)
-            throws DockerAccessException, MojoExecutionException {
+            throws Exception {
 
         if (imagePullManager != null) {
             autoPullBaseImage(imageConfig, imagePullManager, buildContext);
@@ -91,7 +91,7 @@ public class BuildService {
      * @throws MojoExecutionException
      */
     protected void buildImage(ImageConfiguration imageConfig, MavenBuildContext params, boolean noCache, Map<String, String> buildArgs)
-            throws DockerAccessException, MojoExecutionException {
+            throws DockerAccessException, IOException {
 
         String imageName = imageConfig.getName();
         ImageName.validate(imageName);
@@ -161,7 +161,7 @@ public class BuildService {
     }
 
     private String doBuildImage(String imageName, File dockerArchive, BuildOptions options)
-            throws DockerAccessException, MojoExecutionException {
+            throws DockerAccessException {
         docker.buildImage(imageName, dockerArchive, options);
         return queryService.getImageId(imageName);
     }
@@ -226,7 +226,7 @@ public class BuildService {
     }
 
     private void autoPullBaseImage(ImageConfiguration imageConfig, ImagePullManager imagePullManager, BuildContext buildContext)
-            throws DockerAccessException, MojoExecutionException {
+            throws Exception {
         BuildConfiguration buildConfig = imageConfig.getBuildConfiguration();
 
         if (buildConfig.getDockerArchive() != null) {

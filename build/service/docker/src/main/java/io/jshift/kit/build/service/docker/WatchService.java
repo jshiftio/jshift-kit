@@ -54,7 +54,7 @@ public class WatchService {
     }
 
     public synchronized void watch(WatchContext context, BuildService.BuildContext buildContext, List<ImageConfiguration> images) throws DockerAccessException,
-            MojoExecutionException {
+            IOException {
 
         // Important to be be a single threaded scheduler since watch jobs must run serialized
         ScheduledExecutorService executor = null;
@@ -117,7 +117,7 @@ public class WatchService {
     }
 
     private Runnable createCopyWatchTask(final ImageWatcher watcher,
-                                         final MavenBuildContext mojoParameters, final String containerBaseDir) throws MojoExecutionException {
+                                         final MavenBuildContext mojoParameters, final String containerBaseDir) throws IOException {
         final ImageConfiguration imageConfig = watcher.getImageConfiguration();
 
         final AssemblyFiles files = archiveService.getAssemblyFiles(imageConfig, mojoParameters);
@@ -133,7 +133,7 @@ public class WatchService {
                                 imageConfig.getName(), mojoParameters);
                         dockerAccess.copyArchive(watcher.getContainerId(), changedFilesArchive, containerBaseDir);
                         callPostExec(watcher);
-                    } catch (MojoExecutionException | IOException | ExecException e) {
+                    } catch (IOException | ExecException e) {
                         log.error("%s: Error when copying files to container %s: %s",
                                   imageConfig.getDescription(), watcher.getContainerId(), e.getMessage());
                     }
@@ -151,12 +151,12 @@ public class WatchService {
 
     private Runnable createBuildWatchTask(final ImageWatcher watcher,
                                           final MavenBuildContext mojoParameters, final boolean doRestart, final BuildService.BuildContext buildContext)
-            throws MojoExecutionException {
+            throws IOException {
         final ImageConfiguration imageConfig = watcher.getImageConfiguration();
         final AssemblyFiles files = archiveService.getAssemblyFiles(imageConfig, mojoParameters);
         if (files.isEmpty()) {
             log.error("No assembly files for %s. Are you sure you invoked together with the `package` goal?", imageConfig.getDescription());
-            throw new MojoExecutionException("No files to watch found for " + imageConfig);
+            throw new IOException("No files to watch found for " + imageConfig);
         }
 
         return new Runnable() {

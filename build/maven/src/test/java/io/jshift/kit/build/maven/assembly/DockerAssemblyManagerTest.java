@@ -77,7 +77,7 @@ public class DockerAssemblyManagerTest {
     public void assemblyFiles(@Injectable final MavenBuildContext mojoParams,
                               @Injectable final MavenProject project,
                               @Injectable final Assembly assembly) throws AssemblyFormattingException, ArchiveCreationException, InvalidAssemblerConfigurationException
-            , AssemblyReadException, IllegalAccessException, MojoExecutionException {
+            , AssemblyReadException, IllegalAccessException, IOException {
 
         ReflectionUtils.setVariableValueInObject(assemblyManager, "trackArchiver", trackArchiver);
 

@@ -1,5 +1,6 @@
 package io.jshift.kit.build.service.docker;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class RegistryService {
      * @throws MojoExecutionException
      */
     public void pushImages(Collection<ImageConfiguration> imageConfigs,
-                           int retries, RegistryConfig registryConfig, boolean skipTag) throws DockerAccessException, MojoExecutionException {
+                           int retries, RegistryConfig registryConfig, boolean skipTag) throws Exception {
         for (ImageConfiguration imageConfig : imageConfigs) {
             BuildConfiguration buildConfig = imageConfig.getBuildConfiguration();
             String name = imageConfig.getName();
@@ -80,7 +81,7 @@ public class RegistryService {
      * @throws MojoExecutionException
      */
     public void pullImageWithPolicy(String image, ImagePullManager pullManager, RegistryConfig registryConfig, boolean hasImage)
-        throws DockerAccessException, MojoExecutionException {
+        throws Exception {
 
         // Already pulled, so we don't need to take care
         if (pullManager.hasAlreadyPulled(image)) {
@@ -114,14 +115,14 @@ public class RegistryService {
 
 
     private boolean imageRequiresPull(boolean hasImage, ImagePullPolicy pullPolicy, String imageName)
-        throws MojoExecutionException {
+        throws IOException {
 
         // The logic here is like this (see also #96):
         // otherwise: don't pull
 
         if (pullPolicy == ImagePullPolicy.Never) {
             if (!hasImage) {
-                throw new MojoExecutionException(
+                throw new IOException(
                     String.format("No image '%s' found and pull policy 'Never' is set. Please chose another pull policy or pull the image yourself)", imageName));
             }
             return false;
@@ -137,7 +138,7 @@ public class RegistryService {
     }
 
     private AuthConfig createAuthConfig(boolean isPush, String user, String registry, RegistryConfig config)
-            throws MojoExecutionException {
+            throws Exception {
 
         return config.getAuthConfigFactory().createAuthConfig(
             isPush, config.isSkipExtendedAuth(), config.getAuthConfig(),

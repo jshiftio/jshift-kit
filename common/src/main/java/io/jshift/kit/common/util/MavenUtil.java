@@ -21,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Plugin;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
@@ -192,7 +191,7 @@ public class MavenUtil {
         return false;
     }
 
-    public static void createArchive(File sourceDir, File destinationFile, TarArchiver archiver) throws MojoExecutionException {
+    public static void createArchive(File sourceDir, File destinationFile, TarArchiver archiver) throws IOException {
         try {
             archiver.setCompression(TarArchiver.TarCompressionMethod.gzip);
             archiver.setLongfile(TarLongFileMode.posix);
@@ -200,18 +199,18 @@ public class MavenUtil {
             archiver.setDestFile(destinationFile);
             archiver.createArchive();
         } catch (IOException e) {
-            throw new MojoExecutionException("Failed to create archive " + destinationFile + ": " + e, e);
+            throw new IOException("Failed to create archive " + destinationFile + ": " + e, e);
         }
     }
 
 
-    public static void createArchive(File sourceDir, File destinationFile, ZipArchiver archiver) throws MojoExecutionException {
+    public static void createArchive(File sourceDir, File destinationFile, ZipArchiver archiver) throws IOException {
         try {
             archiver.addDirectory(sourceDir);
             archiver.setDestFile(destinationFile);
             archiver.createArchive();
         } catch (IOException e) {
-            throw new MojoExecutionException("Failed to create archive " + destinationFile + ": " + e, e);
+            throw new IOException("Failed to create archive " + destinationFile + ": " + e, e);
         }
     }
 
@@ -238,7 +237,7 @@ public class MavenUtil {
         return version;
     }
 
-    public static Optional<List<String>> getCompileClasspathElementsIfRequested(MavenProject project, boolean useProjectClasspath) throws MojoExecutionException {
+    public static Optional<List<String>> getCompileClasspathElementsIfRequested(MavenProject project, boolean useProjectClasspath) throws IOException {
         if (!useProjectClasspath) {
             return Optional.empty();
         }
@@ -246,7 +245,7 @@ public class MavenUtil {
         try {
             return Optional.of(project.getCompileClasspathElements());
         } catch (DependencyResolutionRequiredException e) {
-            throw new MojoExecutionException("Cannot extra compile class path elements", e);
+            throw new IOException("Cannot extract compile class path elements", e);
         }
     }
 }

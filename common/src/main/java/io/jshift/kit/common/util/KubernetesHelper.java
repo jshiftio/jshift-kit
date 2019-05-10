@@ -66,10 +66,8 @@ import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigSpec;
 import io.fabric8.openshift.api.model.Template;
 import io.jshift.kit.common.KitLogger;
-import io.jshift.kit.common.util.ResourceUtil;
 import io.jshift.kit.common.ResourceFileType;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * @author roland
@@ -431,7 +429,7 @@ public class KubernetesHelper {
         return new File(homeDir, ".kube/config");
     }
 
-    public static void handleKubernetesClientException(KubernetesClientException e, KitLogger logger) throws MojoExecutionException {
+    public static void handleKubernetesClientException(KubernetesClientException e, KitLogger logger) throws IllegalStateException {
         Throwable cause = e.getCause();
         if (cause instanceof UnknownHostException) {
             logger.error( "Could not connect to kubernetes cluster!");
@@ -439,10 +437,10 @@ public class KubernetesHelper {
             logger.info("For more help see: http://jshift.io/guide/getStarted/");
             logger.error( "Connection error: %s", cause);
 
-            String message = "Could not connect to kubernetes cluster. Have you started a cluster via `mvn jshift:cluster-start` or connected to a remote cluster via `kubectl`? Error: " + cause;
-            throw new MojoExecutionException(message, e);
+            String message = "Could not connect to kubernetes cluster. Have you started a cluster via `minikube start` or connected to a remote cluster via `kubectl`? Error: " + cause;
+            throw new IllegalStateException(message, e);
         } else {
-            throw new MojoExecutionException(e.getMessage(), e);
+            throw new IllegalStateException(e.getMessage(), e);
         }
     }
 
