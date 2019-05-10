@@ -14,7 +14,7 @@ import com.google.gson.JsonParser;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.PodTemplate;
-import io.jshift.kit.config.image.build.RuntimeMode;
+import io.jshift.kit.config.resource.RuntimeMode;
 import io.jshift.kit.config.resource.PlatformMode;
 import io.jshift.kit.config.resource.ProcessorConfig;
 import io.jshift.maven.enricher.api.MavenEnricherContext;

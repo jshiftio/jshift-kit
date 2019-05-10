@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import io.jshift.kit.config.image.build.OpenShiftBuildStrategy;
-import io.jshift.kit.config.image.build.RuntimeMode;
+import io.jshift.kit.config.resource.RuntimeMode;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 

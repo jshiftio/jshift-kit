@@ -26,7 +26,7 @@ import io.jshift.kit.config.resource.PlatformMode;
 import io.jshift.kit.config.resource.ProcessorConfig;
 import io.jshift.maven.enricher.api.MavenEnricherContext;
 import io.jshift.maven.enricher.api.model.Configuration;
-import io.jshift.maven.enricher.api.util.ResourceUtil;
+import io.jshift.kit.common.util.ResourceUtil;
 import mockit.Expectations;
 import mockit.Mocked;
 import org.junit.Test;

@@ -185,6 +185,18 @@
 
       <dependency>
         <groupId>io.jshift</groupId>
+        <artifactId>jshift-kit-build-service-docker</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.jshift</groupId>
+        <artifactId>jshift-kit-watcher-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.jshift</groupId>
         <artifactId>jshift-kit-generator-api</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -210,6 +222,12 @@
       <dependency>
         <groupId>io.jshift</groupId>
         <artifactId>jshift-maven-enricher-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.jshift</groupId>
+        <artifactId>jshift-maven-enricher-specific</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -363,7 +381,6 @@
         <artifactId>slf4j-api</artifactId>
         <version>1.7.25</version>
       </dependency>
-
 
       <!-- == maven ===================================== -->
 

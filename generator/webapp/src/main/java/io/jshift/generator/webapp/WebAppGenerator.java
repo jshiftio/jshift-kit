@@ -31,6 +31,7 @@ import io.jshift.kit.config.image.build.RuntimeMode;
 import io.jshift.generator.api.GeneratorContext;
 import io.jshift.generator.api.support.BaseGenerator;
 import io.jshift.generator.webapp.handler.CustomAppServerHandler;
+import io.jshift.kit.config.resource.RuntimeMode;
 
 import static io.jshift.kit.config.image.build.util.BuildLabelUtil.addSchemaLabels;
 

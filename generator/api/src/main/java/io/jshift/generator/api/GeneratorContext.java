@@ -18,7 +18,7 @@ package io.jshift.generator.api;
 import io.jshift.kit.common.KitLogger;
 import io.jshift.kit.common.service.ArtifactResolverService;
 import io.jshift.kit.config.image.build.OpenShiftBuildStrategy;
-import io.jshift.kit.config.image.build.RuntimeMode;
+import io.jshift.kit.config.resource.RuntimeMode;
 import io.jshift.kit.config.resource.ProcessorConfig;
 import org.apache.maven.project.MavenProject;
 

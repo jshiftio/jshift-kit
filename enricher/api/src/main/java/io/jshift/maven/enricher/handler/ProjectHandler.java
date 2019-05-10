@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectBuilder;
-import io.jshift.maven.enricher.api.util.KubernetesHelper;
+import io.jshift.kit.common.util.KubernetesHelper;
 
 public class ProjectHandler {
     public Project getProject(String namespace) {

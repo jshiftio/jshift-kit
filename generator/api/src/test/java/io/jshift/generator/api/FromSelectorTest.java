@@ -4,7 +4,7 @@ import java.util.Map;
 
 import io.jshift.kit.common.KitLogger;
 import io.jshift.kit.config.image.build.OpenShiftBuildStrategy;
-import io.jshift.kit.config.image.build.RuntimeMode;
+import io.jshift.kit.config.resource.RuntimeMode;
 import io.jshift.kit.config.resource.ProcessorConfig;
 import mockit.Expectations;
 import mockit.Mocked;
@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import static io.jshift.kit.config.image.build.OpenShiftBuildStrategy.s2i;
 import static io.jshift.kit.config.image.build.OpenShiftBuildStrategy.docker;
-import static io.jshift.kit.config.image.build.RuntimeMode.openshift;
+import static io.jshift.kit.config.resource.RuntimeMode.openshift;
 import static org.junit.Assert.assertEquals;
 
 /**

@@ -1,7 +1,7 @@
 package io.jshift.maven.enricher.api.model;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.jshift.maven.enricher.api.util.KubernetesHelper;
+import io.jshift.kit.common.util.KubernetesHelper;
 
 
 /**
