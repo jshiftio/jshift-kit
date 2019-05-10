@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.service.docker.access.hc.util.ClientBuilder;
 import io.jshift.kit.common.KitLogger;
@@ -22,7 +23,8 @@ import static org.junit.Assert.assertNull;
 
 public class DockerAccessWithHcClientTest {
 
-    private RegistryAuth registryAuth;
+
+    private AuthConfig authConfig;
 
     private DockerAccessWithHcClient client;
 
@@ -46,9 +48,9 @@ public class DockerAccessWithHcClientTest {
 
     @Before
     public void setup() throws IOException {
-        client = new DockerAccessWithHcClient("v1.20", "tcp://1.2.3.4:2375", null, 1, mockLogger) {
+        client = new DockerAccessWithHcClient("tcp://1.2.3.4:2375", null, 1, mockLogger) {
             @Override
-            protected ApacheHttpClientDelegate createHttpClient(ClientBuilder builder) throws IOException {
+            ApacheHttpClientDelegate createHttpClient(ClientBuilder builder) throws IOException {
                 return mockDelegate;
             }
         };
@@ -128,18 +130,18 @@ public class DockerAccessWithHcClientTest {
     }
 
     private void givenFilename(String filename) {
-    	this.filename = filename;
+        this.filename = filename;
     }
 
     private void givenCompression(ArchiveCompression compression) {
-    	this.compression = compression;
+        this.compression = compression;
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private void givenThePushWillFailAndEventuallySucceed(final int retries) throws IOException {
         new Expectations() {{
             int fail = retries;
-            mockDelegate.post(anyString, null, (Map<String, String>) any, (ResponseHandler) any, 200);
+            mockDelegate.post(anyString, null, (Map<String, String>) any, (ResponseHandler) any,  200);
             minTimes = fail; maxTimes = fail;
             result = new HttpResponseException(HTTP_INTERNAL_ERROR, "error");
             mockDelegate.post(anyString, null, (Map<String, String>) any, (ResponseHandler) any, 200);
@@ -150,7 +152,7 @@ public class DockerAccessWithHcClientTest {
     private void givenThePushWillFail(final int retries) throws IOException {
         new Expectations() {{
             int fail = retries + 1;
-            mockDelegate.post(anyString, null, (Map<String, String>) any, (ResponseHandler) any, 200);
+            mockDelegate.post(anyString, null, (Map<String, String>) any, (ResponseHandler) any,  200);
             minTimes = fail; maxTimes = fail;
             result = new HttpResponseException(HTTP_INTERNAL_ERROR, "error");
         }};
@@ -175,12 +177,12 @@ public class DockerAccessWithHcClientTest {
     }
 
     private void thenImageWasPushed() {
-       assertNull(thrownException);
+        assertNull(thrownException);
     }
 
     private void whenPushImage() {
         try {
-            client.pushImage(imageName, "", registry, pushRetries);
+            client.pushImage(imageName, authConfig, registry, pushRetries);
         } catch (Exception e) {
             thrownException = e;
         }
@@ -195,7 +197,7 @@ public class DockerAccessWithHcClientTest {
 
     private void whenSaveImage() {
         try {
-            client.saveImage(imageName, filename);
+            client.saveImage(imageName, filename, compression);
         } catch (Exception e) {
             thrownException = e;
         }
@@ -212,5 +214,6 @@ public class DockerAccessWithHcClientTest {
     private void thenImageWasNotSaved() {
         assertNotNull(thrownException);
     }
+
 
 }

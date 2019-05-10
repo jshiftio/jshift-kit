@@ -3,6 +3,7 @@ package io.jshift.kit.build.maven;
 import java.io.IOException;
 
 import io.jshift.kit.build.api.RegistryContext;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuthFactory;
@@ -26,7 +27,7 @@ public class MavenRegistryContext implements RegistryContext {
     }
 
     @Override
-    public RegistryAuth getAuthConfig(RegistryAuthConfig.Kind kind, String user, String registry) throws IOException {
+    public AuthConfig getAuthConfig(RegistryAuthConfig.Kind kind, String user, String registry) throws IOException {
         return registryAuthFactory.createAuthConfig(kind, user, registry);
     }
 

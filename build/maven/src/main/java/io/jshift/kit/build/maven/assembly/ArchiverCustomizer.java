@@ -15,9 +15,9 @@
  */
 package io.jshift.kit.build.maven.assembly;
 
-import java.io.IOException;
-
 import org.codehaus.plexus.archiver.tar.TarArchiver;
+
+import java.io.IOException;
 
 /**
  * Archiver used to adapt for customizations.

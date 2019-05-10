@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
-import io.jshift.kit.build.api.auth.RegistryAuth;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.common.KitLogger;
 import mockit.Expectations;
 import mockit.Mocked;
@@ -15,6 +15,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -45,8 +46,8 @@ public class EcrExtendedAuthTest {
     @Test
     public void testHeaders() throws ParseException {
         EcrExtendedAuth eea = new EcrExtendedAuth(logger, "123456789012.dkr.ecr.eu-west-1.amazonaws.com");
-        RegistryAuth localCredentials =
-            new RegistryAuth.Builder()
+        AuthConfig localCredentials =
+            new AuthConfig.Builder()
                 .username("username")
                 .password("password")
                 .build();
@@ -61,7 +62,7 @@ public class EcrExtendedAuthTest {
     public void testClientClosedAndCredentialsDecoded(@Mocked final CloseableHttpClient closeableHttpClient,
             @Mocked final CloseableHttpResponse closeableHttpResponse,
             @Mocked final StatusLine statusLine)
-        throws IOException {
+        throws IOException, MojoExecutionException {
 
         final HttpEntity entity = new StringEntity("{\"authorizationData\": [{"
                                                    + "\"authorizationToken\": \"QVdTOnBhc3N3b3Jk\","
@@ -78,12 +79,12 @@ public class EcrExtendedAuthTest {
             }
         };
 
-        RegistryAuth localCredentials =
-            new RegistryAuth.Builder()
+        AuthConfig localCredentials =
+            new AuthConfig.Builder()
                 .username("username")
                 .password("password")
                 .build();
-        RegistryAuth awsCredentials = eea.extendedAuth(localCredentials);
+        AuthConfig awsCredentials = eea.extendedAuth(localCredentials);
         assertEquals("AWS", awsCredentials.getUsername());
         assertEquals("password", awsCredentials.getPassword());
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import io.jshift.kit.config.image.ImageConfiguration;
+import org.apache.maven.plugin.MojoExecutionException;
 
 
 /**
@@ -12,5 +13,5 @@ import io.jshift.kit.config.image.ImageConfiguration;
  */
 public interface BuildService {
     void buildImage(ImageConfiguration imageConfig, BuildContext buildContext, Map<String, String> buildArgs)
-        throws IOException;
+        throws IOException, MojoExecutionException;
 }

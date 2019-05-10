@@ -1,0 +1,163 @@
+package io.jshift.kit.build.service.docker.access.log;
+
+import io.jshift.kit.build.service.docker.helper.Timestamp;
+import org.fusesource.jansi.Ansi;
+import org.joda.time.format.*;
+
+import static org.fusesource.jansi.Ansi.Color.*;
+import static org.fusesource.jansi.Ansi.ansi;
+
+/**
+ * @author roland
+ * @since 25/11/14
+ */
+public class LogOutputSpec {
+
+    public static final LogOutputSpec DEFAULT = new LogOutputSpec("", YELLOW, false , null, null, true, true);
+
+    private final boolean useColor;
+    private final boolean logStdout;
+    private final boolean fgBright;
+    private String prefix;
+    private Ansi.Color color;
+    private DateTimeFormatter timeFormatter;
+    private String file;
+
+    // Palette used for prefixing the log output
+    private final static Ansi.Color COLOR_PALETTE[] = {
+            YELLOW,CYAN,MAGENTA,GREEN,RED,BLUE
+    };
+    private static int globalColorIdx = 0;
+
+    private LogOutputSpec(String prefix, Ansi.Color color, boolean fgBright, DateTimeFormatter timeFormatter, String file, boolean useColor, boolean logStdout) {
+        this.prefix = prefix;
+        this.color = color;
+        this.fgBright = fgBright;
+        this.timeFormatter = timeFormatter;
+        this.file = file;
+        this.useColor = useColor;
+        this.logStdout = logStdout;
+    }
+
+    public boolean isUseColor() {
+        return useColor && (file == null || logStdout);
+    }
+
+    public boolean isLogStdout() {
+        return logStdout;
+    }
+
+    public String getPrompt(boolean withColor,Timestamp timestamp) {
+        return formatTimestamp(timestamp,withColor) + formatPrefix(prefix, withColor);
+    }
+
+    public String getFile(){
+        return file;
+    }
+
+    private String formatTimestamp(Timestamp timestamp,boolean withColor) {
+        if (timeFormatter == null) {
+            return "";
+        }
+        String date = timeFormatter.print(timestamp.getDate());
+        return (withColor ?
+                ansi().fgBright(BLACK).a(date).reset().toString() :
+                date) + " ";
+    }
+
+    private String formatPrefix(String prefix,boolean withColor) {
+        if (withColor) {
+            Ansi ansi = ansi();
+            if (fgBright) {
+                ansi.fgBright(color);
+            } else {
+                ansi.fg(color);
+            }
+            return ansi.a(prefix).reset().toString();
+        } else {
+            return prefix;
+        }
+    }
+
+    public static class Builder {
+        private String prefix;
+        private Ansi.Color color;
+        private DateTimeFormatter timeFormatter;
+        private String file;
+        private boolean useColor;
+        private boolean logStdout;
+        private boolean fgBright;
+
+        public Builder prefix(String prefix) {
+            this.prefix = prefix;
+            return this;
+        }
+
+        public Builder color(String color) {
+            return color(color, false);
+        }
+
+        public Builder color(String color, boolean fgBright) {
+            if (color == null) {
+                this.color = COLOR_PALETTE[globalColorIdx++ % COLOR_PALETTE.length];
+            } else {
+                try {
+                    this.color = Ansi.Color.valueOf(color.toUpperCase());
+                    this.fgBright = fgBright;
+                } catch (IllegalArgumentException exp) {
+                    throw new IllegalArgumentException(
+                            "Invalid color '" + color +
+                                    "'. Color must be one of YELLOW, CYAN, MAGENTA, GREEN, RED, BLUE or BLACK");
+                }
+            }
+            return this;
+        }
+
+        public Builder file(String file){
+            this.file = file;
+            return this;
+        }
+
+        public Builder timeFormatter(String formatOrConstant) {
+            if (formatOrConstant == null || formatOrConstant.equalsIgnoreCase("NONE")
+                    || formatOrConstant.equalsIgnoreCase("FALSE")) {
+                timeFormatter = null;
+            } else if (formatOrConstant.length() == 0 || formatOrConstant.equalsIgnoreCase("DEFAULT")) {
+                timeFormatter = DateTimeFormat.forPattern("HH:mm:ss.SSS");
+            } else if (formatOrConstant.equalsIgnoreCase("ISO8601")) {
+                timeFormatter = ISODateTimeFormat.dateTime();
+            } else if (formatOrConstant.equalsIgnoreCase("SHORT")) {
+                timeFormatter = DateTimeFormat.shortDateTime();
+            } else if (formatOrConstant.equalsIgnoreCase("MEDIUM")) {
+                timeFormatter = DateTimeFormat.mediumDateTime();
+            } else if (formatOrConstant.equalsIgnoreCase("LONG")) {
+                timeFormatter = DateTimeFormat.longDateTime();
+            } else {
+                try {
+                    timeFormatter = DateTimeFormat.forPattern(formatOrConstant);
+                } catch (IllegalArgumentException exp) {
+                    throw new IllegalArgumentException(
+                            "Cannot parse log date specification '" + formatOrConstant + "'." +
+                                    "Must be either DEFAULT, NONE, ISO8601, SHORT, MEDIUM, LONG or a " +
+                                    "format string parseable by DateTimeFormat. See " +
+                                    "http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html");
+                }
+            }
+            return this;
+        }
+
+        public Builder useColor(boolean useColor) {
+            this.useColor = useColor;
+            return this;
+        }
+
+        public Builder logStdout(boolean logStdout) {
+            this.logStdout = logStdout;
+            return this;
+        }
+
+        public LogOutputSpec build() {
+            return new LogOutputSpec(prefix, color, fgBright, timeFormatter, file, useColor, logStdout);
+        }
+    }
+}

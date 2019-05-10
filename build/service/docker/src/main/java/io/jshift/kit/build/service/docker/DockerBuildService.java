@@ -25,8 +25,7 @@ import io.jshift.kit.config.image.build.BuildConfiguration;
 import io.jshift.kit.config.image.build.CleanupMode;
 import io.jshift.kit.config.image.build.DockerFileBuilder;
 import io.jshift.kit.config.image.build.ImagePullPolicy;
-import io.jshift.kit.build.service.docker.access.BuildOptions;
-import io.jshift.kit.build.service.docker.access.DockerAccessException;
+import org.apache.maven.plugin.MojoExecutionException;
 
 
 public class DockerBuildService implements BuildService {
@@ -51,7 +50,7 @@ public class DockerBuildService implements BuildService {
      */
     @Override
     public void buildImage(ImageConfiguration imageConfig, BuildContext buildContext, Map<String, String> buildArgs)
-        throws IOException {
+        throws IOException, MojoExecutionException {
             // Call a pre-hook to the build
             autoPullBaseImageIfRequested(imageConfig, buildContext);
 
@@ -61,7 +60,7 @@ public class DockerBuildService implements BuildService {
 
             // Load an archive if present
             if (buildConfig.getDockerArchive() != null) {
-                loadImageFromArchive(imageName, buildContext, new File(buildConfig.getDockerArchive()));
+                loadImageFromArchive(imageName, buildContext, buildConfig.getDockerArchive());
                 return;
             }
 
@@ -98,7 +97,7 @@ public class DockerBuildService implements BuildService {
     }
 
 
-    private void autoPullBaseImageIfRequested(ImageConfiguration imageConfig, BuildContext buildContext) throws IOException {
+    private void autoPullBaseImageIfRequested(ImageConfiguration imageConfig, BuildContext buildContext) throws IOException, MojoExecutionException {
         BuildConfiguration buildConfig = imageConfig.getBuildConfiguration();
 
         if (buildConfig.getDockerArchive() != null) {

@@ -70,7 +70,11 @@ public class MavenBuildContext implements BuildContext {
 
     @Override
     public File createImageContentArchive(String imageName, BuildConfiguration buildConfig, KitLogger log) throws IOException {
-        return archiveService.createArchive(imageName, buildConfig, this, log);
+        try {
+            return archiveService.createArchive(imageName, buildConfig, this, log);
+        } catch (Exception e) {
+            throw new IOException(e.getMessage());
+        }
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuthHandler;
@@ -40,7 +41,7 @@ public class OpenShiftRegistryAuthHandler implements RegistryAuthHandler {
     }
 
     @Override
-    public RegistryAuth create(RegistryAuthConfig.Kind kind, String user, String registry, Function<String, String> decryptor) {
+    public AuthConfig create(RegistryAuthConfig.Kind kind, String user, String registry, Function<String, String> decryptor) {
         // Check for openshift authentication either from the plugin config or from system props
         Properties props = System.getProperties();
         String useOpenAuthMode = registryAuthConfig.extractFromProperties(props, kind, AUTH_USE_OPENSHIFT_AUTH);
@@ -66,7 +67,7 @@ public class OpenShiftRegistryAuthHandler implements RegistryAuthHandler {
         return null;
     }
 
-    private RegistryAuth validateMandatoryOpenShiftLogin(RegistryAuth openShiftRegistryAuth) {
+    private AuthConfig validateMandatoryOpenShiftLogin(AuthConfig openShiftRegistryAuth) {
         if (openShiftRegistryAuth != null) {
             return openShiftRegistryAuth;
         }
@@ -79,7 +80,7 @@ public class OpenShiftRegistryAuthHandler implements RegistryAuthHandler {
     }
 
     // Parse OpenShift config to get credentials, but return null if not found
-    private RegistryAuth parseOpenShiftConfig() {
+    private AuthConfig parseOpenShiftConfig() {
         Map kubeConfig = readKubeConfig();
         if (kubeConfig == null) {
             return null;
@@ -120,7 +121,7 @@ public class OpenShiftRegistryAuthHandler implements RegistryAuthHandler {
         return new File(homeDir);
     }
 
-    private RegistryAuth parseContext(Map kubeConfig, Map context) {
+    private AuthConfig parseContext(Map kubeConfig, Map context) {
         if (context == null) {
             return null;
         }
@@ -142,7 +143,7 @@ public class OpenShiftRegistryAuthHandler implements RegistryAuthHandler {
         return null;
     }
 
-    private RegistryAuth parseUser(String userName, Map user) {
+    private AuthConfig parseUser(String userName, Map user) {
         if (user == null) {
             return null;
         }
@@ -153,7 +154,7 @@ public class OpenShiftRegistryAuthHandler implements RegistryAuthHandler {
 
         // Strip off stuff after username
         Matcher matcher = Pattern.compile("^([^/]+).*$").matcher(userName);
-        return new RegistryAuth.Builder()
+        return new AuthConfig.Builder()
             .username(matcher.matches() ? matcher.group(1) : userName)
             .password(token)
             .build();

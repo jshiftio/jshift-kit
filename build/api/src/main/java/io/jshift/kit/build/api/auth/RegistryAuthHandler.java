@@ -11,11 +11,11 @@ public interface RegistryAuthHandler {
 
     String getId();
 
-    RegistryAuth create(RegistryAuthConfig.Kind kind, String user, String registry, Function<String, String> decryptor);
+    AuthConfig create(RegistryAuthConfig.Kind kind, String user, String registry, Function<String, String> decryptor);
 
     interface Extender {
         String getId();
-        RegistryAuth extend(RegistryAuth given, String registry) throws IOException;
+        AuthConfig extend(AuthConfig given, String registry) throws IOException;
     }
 }
 

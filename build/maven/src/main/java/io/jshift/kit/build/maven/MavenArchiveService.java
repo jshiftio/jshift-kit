@@ -25,6 +25,7 @@ import io.jshift.kit.build.maven.assembly.DockerAssemblyManager;
 import io.jshift.kit.common.KitLogger;
 import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.image.build.BuildConfiguration;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.assembly.InvalidAssemblerConfigurationException;
 import org.apache.maven.plugins.assembly.archive.ArchiveCreationException;
 import org.apache.maven.plugins.assembly.format.AssemblyFormattingException;
@@ -55,7 +56,7 @@ public class MavenArchiveService {
      * @throws IOException if during creation of the tar an error occurs.
      */
     public File createDockerBuildArchive(ImageConfiguration imageConfig, MavenBuildContext params)
-        throws IOException {
+        throws MojoExecutionException {
         return createDockerBuildArchive(imageConfig, params, null);
     }
 
@@ -70,7 +71,7 @@ public class MavenArchiveService {
      * @throws IOException if during creation of the tar an error occurs.
      */
     public File createDockerBuildArchive(ImageConfiguration imageConfig, MavenBuildContext context, ArchiverCustomizer customizer)
-        throws IOException {
+        throws MojoExecutionException {
         File ret = createArchive(imageConfig.getName(), imageConfig.getBuildConfiguration(), context, log, customizer);
         log.info("%s: Created docker source tar %s",imageConfig.getDescription(), ret);
         return ret;
@@ -88,7 +89,7 @@ public class MavenArchiveService {
      * @throws IOException
      */
     public AssemblyFiles getAssemblyFiles(ImageConfiguration imageConfig, MavenBuildContext context)
-        throws IOException {
+        throws IOException, MojoExecutionException {
 
         String name = imageConfig.getName();
         try {
@@ -106,19 +107,19 @@ public class MavenArchiveService {
      * @return created archive
      */
     public File createChangedFilesArchive(List<AssemblyFiles.Entry> entries, File assemblyDir,
-                                          String imageName, MavenBuildContext mojoParameters) throws IOException {
+                                          String imageName, MavenBuildContext mojoParameters) throws MojoExecutionException {
         return dockerAssemblyManager.createChangedFilesArchive(entries, assemblyDir, imageName, mojoParameters);
     }
 
     // =============================================
 
     public File createArchive(String imageName, BuildConfiguration buildConfig, MavenBuildContext ctx, KitLogger log)
-        throws IOException {
+        throws MojoExecutionException {
         return createArchive(imageName, buildConfig, ctx, log, null);
     }
 
     File createArchive(String imageName, BuildConfiguration buildConfig, MavenBuildContext ctx, KitLogger log, ArchiverCustomizer customizer)
-        throws IOException {
-        return dockerAssemblyManager.createDockerTarArchive(imageName, ctx, buildConfig, customizer, log);
+        throws MojoExecutionException {
+        return dockerAssemblyManager.createDockerTarArchive(imageName, ctx, buildConfig, log, customizer);
     }
 }
