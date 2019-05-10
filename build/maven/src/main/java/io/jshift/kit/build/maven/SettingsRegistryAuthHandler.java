@@ -2,6 +2,7 @@ package io.jshift.kit.build.maven;
 
 import java.util.function.Function;
 
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuthHandler;
@@ -34,7 +35,7 @@ public class SettingsRegistryAuthHandler implements RegistryAuthHandler {
     }
 
     @Override
-    public RegistryAuth create(RegistryAuthConfig.Kind kind, String user, String registry, Function<String, String> decryptor) {
+    public AuthConfig create(RegistryAuthConfig.Kind kind, String user, String registry, Function<String, String> decryptor) {
         // Now lets lookup the registry & user from ~/.m2/setting.xml
         Server defaultServer = null;
         Server found;
@@ -72,8 +73,8 @@ public class SettingsRegistryAuthHandler implements RegistryAuthHandler {
         return null;
     }
 
-    private RegistryAuth createAuthConfigFromServer(Server server, Function<String, String> decryptor) {
-        return new RegistryAuth.Builder()
+    private AuthConfig createAuthConfigFromServer(Server server, Function<String, String> decryptor) {
+        return new AuthConfig.Builder()
             .username(server.getUsername())
             .password(server.getPassword(), decryptor)
             .email(extractFromServerConfiguration(server.getConfiguration(), RegistryAuth.EMAIL))

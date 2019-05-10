@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import io.jshift.kit.build.api.auth.RegistryAuth;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.common.KitLogger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
@@ -20,6 +20,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * Exchange local stored credentials for temporary ecr credentials
@@ -36,6 +37,16 @@ public class EcrExtendedAuth {
     private final boolean isAwsRegistry;
     private final String accountId;
     private final String region;
+
+    /**
+     * Is given the registry an ecr registry?
+     *
+     * @param registry the registry name
+     * @return true, if the registry matches the ecr pattern
+     */
+    public static boolean isAwsRegistry(String registry) {
+        return (registry != null) && AWS_REGISTRY.matcher(registry).matches();
+    }
 
     /**
      * Initialize an extended authentication for ecr registry.
@@ -71,18 +82,19 @@ public class EcrExtendedAuth {
      * @param localCredentials IAM id/secret
      * @return ECR base64 encoded username:password
      * @throws IOException
+     * @throws MojoExecutionException
      */
-    public RegistryAuth extendedAuth(RegistryAuth localCredentials) throws IOException {
+    public AuthConfig extendedAuth(AuthConfig localCredentials) throws IOException, MojoExecutionException {
         JsonObject jo = getAuthorizationToken(localCredentials);
 
         JsonArray authorizationDatas = jo.getAsJsonArray("authorizationData");
         JsonObject authorizationData = authorizationDatas.get(0).getAsJsonObject();
         String authorizationToken = authorizationData.get("authorizationToken").getAsString();
 
-        return new RegistryAuth.Builder().withCredentialsEncoded(authorizationToken).email("none").build();
+        return new AuthConfig(authorizationToken, "none");
     }
 
-    private JsonObject getAuthorizationToken(RegistryAuth localCredentials) throws IOException {
+    private JsonObject getAuthorizationToken(AuthConfig localCredentials) throws IOException, MojoExecutionException {
         HttpPost request = createSignedRequest(localCredentials, new Date());
         return executeRequest(createClient(), request);
     }
@@ -91,13 +103,13 @@ public class EcrExtendedAuth {
         return HttpClients.custom().useSystemProperties().build();
     }
 
-    private JsonObject executeRequest(CloseableHttpClient client, HttpPost request) throws IOException {
+    private JsonObject executeRequest(CloseableHttpClient client, HttpPost request) throws IOException, MojoExecutionException {
         try {
             CloseableHttpResponse response = client.execute(request);
             int statusCode = response.getStatusLine().getStatusCode();
             logger.debug("Response status %d", statusCode);
             if (statusCode != HttpStatus.SC_OK) {
-                throw new SecurityException("AWS authentication failure");
+                throw new MojoExecutionException("AWS authentication failure");
             }
 
             HttpEntity entity = response.getEntity();
@@ -109,7 +121,7 @@ public class EcrExtendedAuth {
         }
     }
 
-    HttpPost createSignedRequest(RegistryAuth localCredentials, Date time) {
+    HttpPost createSignedRequest(AuthConfig localCredentials, Date time) {
         String host = "ecr." + region + ".amazonaws.com";
 
         logger.debug("Get ECR AuthorizationToken from %s", host);
@@ -118,7 +130,7 @@ public class EcrExtendedAuth {
         request.setHeader("host", host);
         request.setHeader("Content-Type", "application/x-amz-json-1.1");
         request.setHeader("X-Amz-Target", "AmazonEC2ContainerRegistry_V20150921.GetAuthorizationToken");
-        request.setEntity(new StringEntity("{\"registryIds\":[\"" + accountId + "\"]}", StandardCharsets.UTF_8));
+        request.setEntity(new StringEntity("{\"registryIds\":[\""+ accountId + "\"]}", StandardCharsets.UTF_8));
 
         AwsSigner4 signer = new AwsSigner4(region, "ecr");
         signer.sign(request, localCredentials, time);

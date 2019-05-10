@@ -3,13 +3,14 @@ package io.jshift.kit.build.service.docker.auth;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import com.google.gson.JsonObject;
-import io.jshift.kit.build.api.auth.RegistryAuth;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.common.ExternalCommand;
 import io.jshift.kit.common.JsonFactory;
 import io.jshift.kit.common.KitLogger;
+import io.jshift.kit.common.util.EnvUtil;
+import org.apache.maven.plugin.MojoExecutionException;
 
 public class CredentialHelperClient {
 
@@ -35,25 +36,26 @@ public class CredentialHelperClient {
         }
     }
 
-    public RegistryAuth getAuthConfig(String registryToLookup) {
+
+    public AuthConfig getAuthConfig(String registryToLookup) throws MojoExecutionException {
         try {
             JsonObject creds = new GetCommand().getCredentialNode(registryToLookup);
-            if (creds == null && !registryToLookup.startsWith("http")) {
-                creds = new GetCommand().getCredentialNode("https://" + registryToLookup);
+            if (creds == null) {
+                creds = new GetCommand().getCredentialNode(EnvUtil.ensureRegistryHttpUrl(registryToLookup));
             }
             return toAuthConfig(creds);
         } catch (IOException e) {
-            throw new RuntimeException("Error getting the credentials for " + registryToLookup + " from the configured credential helper", e);
+            throw new MojoExecutionException("Error getting the credentials for " + registryToLookup + " from the configured credential helper",e);
         }
     }
 
-    private RegistryAuth toAuthConfig(JsonObject credential){
+    private AuthConfig toAuthConfig(JsonObject credential){
         if (credential == null) {
             return null;
         }
         String password = credential.get(CredentialHelperClient.SECRET_KEY).getAsString();
         String userKey = credential.get(CredentialHelperClient.USERNAME_KEY).getAsString();
-        return new RegistryAuth.Builder().username(userKey).password(password).build();
+        return new AuthConfig(userKey,password, null,null);
     }
 
     // docker-credential-XXX version

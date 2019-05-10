@@ -7,6 +7,7 @@ import java.util.Base64;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.common.KitLogger;
@@ -61,7 +62,7 @@ public class SystemPropertyRegistryAuthHandlerTest {
         System.setProperty("docker.push.password", "secret");
         System.setProperty("docker.push.email", "roland@jolokia.org");
         try {
-            RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PUSH, null, null, s -> s);
+            AuthConfig config = handler.create(RegistryAuthConfig.Kind.PUSH, null, null, s -> s);
             verifyAuthConfig(config,"roland","secret","roland@jolokia.org");
         } finally {
             System.clearProperty("docker.push.username");
@@ -87,7 +88,7 @@ public class SystemPropertyRegistryAuthHandlerTest {
         }
     }
 
-    private void verifyAuthConfig(RegistryAuth config, String username, String password, String email) {
+    private void verifyAuthConfig(AuthConfig config, String username, String password, String email) {
         JsonObject params = new Gson().fromJson(new String(Base64.getDecoder().decode(config.toHeaderValue().getBytes())), JsonObject.class);
         assertEquals(username,params.get("username").getAsString());
         assertEquals(password,params.get("password").getAsString());

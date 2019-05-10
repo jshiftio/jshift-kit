@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.common.KitLogger;
@@ -57,7 +58,7 @@ public class OpenShiftRegistryAuthHandlerTest {
 
         executeWithTempHomeDir(homeDir -> {
             createOpenShiftConfig(homeDir,"openshift_simple_config.yaml");
-            RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", null, s -> s);
+            AuthConfig config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", null, s -> s);
             verifyAuthConfig(config,"admin","token123",null);
         });
     }
@@ -69,7 +70,7 @@ public class OpenShiftRegistryAuthHandlerTest {
             System.setProperty("docker.useOpenShiftAuth", "true");
             executeWithTempHomeDir(homeDir -> {
                 createOpenShiftConfig(homeDir, "openshift_simple_config.yaml");
-                RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", null, s->s);
+                AuthConfig config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", null, s->s);
                 verifyAuthConfig(config, "admin", "token123", null);
             });
         } finally {
@@ -83,7 +84,7 @@ public class OpenShiftRegistryAuthHandlerTest {
             System.setProperty("docker.useOpenShiftAuth", "false");
             executeWithTempHomeDir(homeDir -> {
                 createOpenShiftConfig(homeDir, "openshift_simple_config.yaml");
-                RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", null, s->s);
+                AuthConfig config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", null, s->s);
                 assertNull(config);
             });
         } finally {
@@ -126,7 +127,7 @@ public class OpenShiftRegistryAuthHandlerTest {
         }
     }
 
-    private void verifyAuthConfig(RegistryAuth config, String username, String password, String email) {
+    private void verifyAuthConfig(AuthConfig config, String username, String password, String email) {
         JsonObject params = new Gson().fromJson(new String(Base64.getDecoder().decode(config.toHeaderValue().getBytes())), JsonObject.class);
         assertEquals(username,params.get("username").getAsString());
         assertEquals(password,params.get("password").getAsString());

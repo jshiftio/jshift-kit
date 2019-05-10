@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.build.service.docker.auth.DockerRegistryAuthHandler;
@@ -62,7 +63,7 @@ public class DockerRegistryAuthHandlerTest {
     @Test
     public void testDockerLoginNoConfig() throws IOException {
         executeWithTempHomeDir(dir -> {
-            RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", null, s -> s);
+            AuthConfig config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", null, s -> s);
             assertNull(config);
         });
     }
@@ -71,7 +72,7 @@ public class DockerRegistryAuthHandlerTest {
     public void testDockerLoginFallsBackToAuthWhenCredentialHelperDoesNotMatchDomain() throws IOException {
         executeWithTempHomeDir(homeDir -> {
             writeDockerConfigJson(createDockerConfig(homeDir), null, singletonMap("registry1", "credHelper1-does-not-exist"));
-            RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", "localhost:5000", s -> s);
+            AuthConfig config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", "localhost:5000", s -> s);
             verifyAuthConfig(config,"roland","secret","roland@jolokia.org");
         });
     }
@@ -80,7 +81,7 @@ public class DockerRegistryAuthHandlerTest {
     public void testDockerLoginNoAuthConfigFoundWhenCredentialHelperDoesNotMatchDomainOrAuth() throws IOException {
         executeWithTempHomeDir(homeDir -> {
             writeDockerConfigJson(createDockerConfig(homeDir),null,singletonMap("registry1", "credHelper1-does-not-exist"));
-            RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", "does-not-exist-either:5000", s -> s);
+            AuthConfig config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", "does-not-exist-either:5000", s -> s);
             assertNull(config);
         });
     }
@@ -145,7 +146,7 @@ public class DockerRegistryAuthHandlerTest {
         throws IOException {
 
         writeDockerConfigJson(createDockerConfig(homeDir), "roland", "secret", "roland@jolokia.org", configRegistry);
-        RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", lookupRegistry, s -> s);
+        AuthConfig config = handler.create(RegistryAuthConfig.Kind.PUSH, "roland", lookupRegistry, s -> s);
         verifyAuthConfig(config,"roland","secret","roland@jolokia.org");
     }
 
@@ -195,7 +196,7 @@ public class DockerRegistryAuthHandlerTest {
         config.add("auths",auths);
     }
 
-    private void verifyAuthConfig(RegistryAuth config, String username, String password, String email) {
+    private void verifyAuthConfig(AuthConfig config, String username, String password, String email) {
         JsonObject params = new Gson().fromJson(new String(Base64.getDecoder().decode(config.toHeaderValue().getBytes())), JsonObject.class);
         assertEquals(username,params.get("username").getAsString());
         assertEquals(password,params.get("password").getAsString());

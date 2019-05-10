@@ -13,7 +13,7 @@ import java.util.List;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import io.jshift.kit.build.api.auth.RegistryAuth;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpRequest;
 import org.apache.http.NameValuePair;
@@ -51,7 +51,7 @@ class AwsSigner4 {
      * @param credentials The credentials to use when signing.
      * @param signingTime The invocation time to use;
      */
-    void sign(HttpRequest request, RegistryAuth credentials, Date signingTime) {
+    void sign(HttpRequest request, AuthConfig credentials, Date signingTime) {
         AwsSigner4Request sr = new AwsSigner4Request(region, service, request, signingTime);
         if(!request.containsHeader("X-Amz-Date")) {
             request.addHeader("X-Amz-Date", sr.getSigningDateTime());
@@ -94,11 +94,11 @@ class AwsSigner4 {
      * Task 3.
      * <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-create-string-to-sign.html">Calculate the Signature for AWS Signature Version 4</a>
      */
-    final byte[] task3(AwsSigner4Request sr, RegistryAuth credentials) {
+    final byte[] task3(AwsSigner4Request sr, AuthConfig credentials) {
         return hmacSha256(getSigningKey(sr, credentials), task2(sr));
     }
 
-    private static byte[] getSigningKey(AwsSigner4Request sr, RegistryAuth credentials) {
+    private static byte[] getSigningKey(AwsSigner4Request sr, AuthConfig credentials) {
         byte[] kSecret = ("AWS4" + credentials.getPassword()).getBytes(StandardCharsets.UTF_8);
         byte[] kDate = hmacSha256(kSecret, sr.getSigningDate());
         byte[] kRegion = hmacSha256(kDate, sr.getRegion());
@@ -110,7 +110,7 @@ class AwsSigner4 {
      * Task 4.
      * <a href="https://docs.aws.amazon.com/general/latest/gr/sigv4-add-signature-to-request.html">Add the Signing Information to the Request</a>
      */
-    String task4(AwsSigner4Request sr, RegistryAuth credentials) {
+    String task4(AwsSigner4Request sr, AuthConfig credentials) {
         StringBuilder sb = new StringBuilder("AWS4-HMAC-SHA256 Credential=")
                 .append(credentials.getUsername() ).append( '/' ).append( sr.getScope() )
                 .append(", SignedHeaders=").append(sr.getSignedHeaders())

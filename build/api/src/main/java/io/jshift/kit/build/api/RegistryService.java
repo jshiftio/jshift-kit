@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.image.build.ImagePullPolicy;
+import org.apache.maven.plugin.MojoExecutionException;
 
 
 /**
@@ -14,5 +15,5 @@ public interface RegistryService {
 
     void pushImage(ImageConfiguration imageConfig, int retries, boolean skipTag, RegistryContext registryContext) throws IOException;
 
-    void pullImage(String image, ImagePullPolicy policy, RegistryContext registryContext) throws IOException;
+    void pullImage(String image, ImagePullPolicy policy, RegistryContext registryContext) throws IOException, MojoExecutionException;
 }

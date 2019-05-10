@@ -3,6 +3,7 @@ package io.jshift.kit.build.service.docker.auth.ecr;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -53,8 +54,8 @@ public class AwsSigner4RequestTest {
 
         Date signingTime = AwsSigner4Request.TIME_FORMAT.parse("20150830T123600Z");
         AwsSigner4Request sr = new AwsSigner4Request("us-east-1", "service", request, signingTime);
-        RegistryAuth credentials =
-            new RegistryAuth.Builder()
+        AuthConfig credentials =
+            new AuthConfig.Builder()
                 .username("AKIDEXAMPLE")
                 .password("wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY")
                 .build();
@@ -75,8 +76,8 @@ public class AwsSigner4RequestTest {
         HttpUriRequest request = newGet("https://someService.us-east-1.amazonaws.com/");
         request.setHeader("host", request.getURI().getHost());
         String awsSecurityToken = "securityToken";
-        RegistryAuth credentials =
-            new RegistryAuth.Builder()
+        AuthConfig credentials =
+            new AuthConfig.Builder()
                 .username("awsAccessKeyId")
                 .password( "awsSecretAccessKey")
                 .auth(awsSecurityToken)

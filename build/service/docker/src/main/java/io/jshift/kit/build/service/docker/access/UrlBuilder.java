@@ -1,15 +1,15 @@
 package io.jshift.kit.build.service.docker.access;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import io.jshift.kit.config.image.ImageName;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import io.jshift.kit.config.image.ImageName;
 
 public final class UrlBuilder {
 
@@ -32,8 +32,29 @@ public final class UrlBuilder {
         return urlBuilder.build();
     }
 
+    public String copyArchive(String containerId, String targetPath) {
+        return u("containers/%s/archive",containerId)
+                .p("path",targetPath)
+                .build();
+    }
+
     public String inspectImage(String name) {
         return u("images/%s/json", name)
+                .build();
+    }
+
+    public String containerLogs(String containerId, boolean follow) {
+        return u("containers/%s/logs", containerId)
+                .p("stdout",true)
+                .p("stderr",true)
+                .p("timestamps", true)
+                .p("follow", follow)
+                .build();
+    }
+
+    public String createContainer(String name) {
+        return u("containers/create")
+                .p("name", name)
                 .build();
     }
 
@@ -52,6 +73,22 @@ public final class UrlBuilder {
             .build();
     }
 
+    public String inspectContainer(String containerId) {
+        return u("containers/%s/json", containerId)
+                .build();
+    }
+
+    public String inspectExecContainer(String containerId) {
+        return u("exec/%s/json", containerId)
+                .build();
+    }
+
+    public String listContainers(boolean all, String ... filter) {
+        Builder builder = u("containers/json").p("all", all);
+        addFilters(builder, filter);
+        return builder.build();
+    }
+
     public String loadImage() {
         return u("images/load")
             .build();
@@ -60,7 +97,7 @@ public final class UrlBuilder {
     public String pullImage(ImageName name, String registry) {
         return u("images/create")
                 .p("fromImage", name.getNameWithoutTag(registry))
-                .p("tag", name.getTag())
+                .p("tag", name.getDigest() != null ? name.getDigest() : name.getTag())
                 .build();
     }
 
@@ -72,12 +109,64 @@ public final class UrlBuilder {
                 .build();
     }
 
-    public String tagImage(ImageName source, ImageName target, boolean force) {
+    public String removeContainer(String containerId, boolean removeVolumes) {
+        return u("containers/%s", containerId)
+                .p("v", removeVolumes)
+                .build();
+    }
+
+    public String startContainer(String containerId) {
+        return u("containers/%s/start", containerId)
+                .build();
+    }
+
+    public String createExecContainer(String containerId) {
+        return u("containers/%s/exec", containerId)
+                .build();
+    }
+
+    public String startExecContainer(String containerId) {
+        return u("exec/%s/start", containerId)
+                .build();
+    }
+
+    public String stopContainer(String containerId, int killWait) {
+        Builder b = u("containers/%s/stop", containerId);
+        if (killWait > 0) {
+            b.p("t", killWait);
+        }
+        return b.build();
+    }
+
+    public String tagContainer(ImageName source, ImageName target, boolean force) {
         return u("images/%s/tag", source.getFullName())
                 .p("repo",target.getNameWithoutTag())
                 .p("tag",target.getTag())
                 .p("force",force)
                 .build();
+    }
+
+    public String listNetworks() {
+        return u("networks")
+                .build();
+    }
+
+    public String createNetwork() {
+        return u("networks/create")
+                .build();
+    }
+
+    public String removeNetwork(String id) {
+        return u("networks/%s", id)
+                .build();
+    }
+
+    public String createVolume() {
+       return u("volumes/create").build();
+    }
+
+    public String removeVolume(String name) {
+       return u("volumes/%s", name).build();
     }
 
     public String getBaseUrl() {
@@ -106,7 +195,7 @@ public final class UrlBuilder {
     }
 
     // Entry point for builder
-    private Builder u(String format, String... args) {
+    private Builder u(String format, String ... args) {
         return new Builder(createUrl(String.format(format, (Object[]) encodeArgs(args))));
     }
 
@@ -164,7 +253,7 @@ public final class UrlBuilder {
         }
 
         private Builder p(String key, int value) {
-            return p(key, Integer.toString(value));
+            return p(key,Integer.toString(value));
         }
 
         public String build() {

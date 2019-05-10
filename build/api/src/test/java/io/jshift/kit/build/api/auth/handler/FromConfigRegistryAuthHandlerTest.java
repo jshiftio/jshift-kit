@@ -5,6 +5,7 @@ import java.util.Base64;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.common.KitLogger;
@@ -32,7 +33,7 @@ public class FromConfigRegistryAuthHandlerTest {
     public void testFromPluginConfiguration() throws IOException {
         FromConfigRegistryAuthHandler handler = new FromConfigRegistryAuthHandler(setupAuthConfigFactoryWithConfigData(), log);
 
-        RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PUSH, null, null, s -> s);
+        AuthConfig config = handler.create(RegistryAuthConfig.Kind.PUSH, null, null, s -> s);
         verifyAuthConfig(config, "roland", "secret", "roland@jolokia.org");
     }
 
@@ -58,7 +59,7 @@ public class FromConfigRegistryAuthHandlerTest {
     public void testFromPluginConfigurationPull() throws IOException {
         FromConfigRegistryAuthHandler handler = new FromConfigRegistryAuthHandler(setupAuthConfigFactoryWithConfigDataForKind(RegistryAuthConfig.Kind.PULL), log);
 
-        RegistryAuth config = handler.create(RegistryAuthConfig.Kind.PULL, null, null, s -> s);
+        AuthConfig config = handler.create(RegistryAuthConfig.Kind.PULL, null, null, s -> s);
         verifyAuthConfig(config, "roland", "secret", "roland@jolokia.org");
     }
 
@@ -73,7 +74,7 @@ public class FromConfigRegistryAuthHandlerTest {
         handler.create(RegistryAuthConfig.Kind.PUSH, null, null, s -> s);
     }
 
-    private void verifyAuthConfig(RegistryAuth config, String username, String password, String email) {
+    private void verifyAuthConfig(AuthConfig config, String username, String password, String email) {
         JsonObject params = new Gson().fromJson(new String(Base64.getDecoder().decode(config.toHeaderValue().getBytes())), JsonObject.class);
         assertEquals(username,params.get("username").getAsString());
         assertEquals(password,params.get("password").getAsString());

@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.common.KitLogger;
@@ -78,7 +79,7 @@ public class SettingsRegistryAuthHandlerTest {
     public void testFromSettingsSimple() throws IOException {
         setupServers();
 
-        RegistryAuth config = registryAuthHandler.create(
+        AuthConfig config = registryAuthHandler.create(
             RegistryAuthConfig.Kind.PUSH, "roland", "test.org", s -> s);
         assertNotNull(config);
         verifyAuthConfig(config, "roland", "secret", "roland@jolokia.org");
@@ -88,7 +89,7 @@ public class SettingsRegistryAuthHandlerTest {
     public void testFromSettingsDefault() throws IOException {
         setupServers();
 
-        RegistryAuth config = registryAuthHandler.create(RegistryAuthConfig.Kind.PUSH, "fabric8io", "test.org", s -> s);
+        AuthConfig config = registryAuthHandler.create(RegistryAuthConfig.Kind.PUSH, "fabric8io", "test.org", s -> s);
         assertNotNull(config);
         verifyAuthConfig(config, "fabric8io", "secret2", "fabric8io@redhat.com");
     }
@@ -97,7 +98,7 @@ public class SettingsRegistryAuthHandlerTest {
     public void testFromSettingsDefault2() throws IOException {
         setupServers();
 
-        RegistryAuth config = registryAuthHandler.create(RegistryAuthConfig.Kind.PUSH, "tanja", null, s -> s);
+        AuthConfig config = registryAuthHandler.create(RegistryAuthConfig.Kind.PUSH, "tanja", null, s -> s);
         assertNotNull(config);
         verifyAuthConfig(config,"tanja","doublesecret","tanja@jolokia.org");
     }
@@ -145,7 +146,7 @@ public class SettingsRegistryAuthHandlerTest {
         };
     }
 
-    private void verifyAuthConfig(RegistryAuth config, String username, String password, String email) {
+    private void verifyAuthConfig(AuthConfig config, String username, String password, String email) {
         JsonObject params = new Gson().fromJson(new String(Base64.getDecoder().decode(config.toHeaderValue().getBytes())), JsonObject.class);
         assertEquals(username,params.get("username").getAsString());
         assertEquals(password,params.get("password").getAsString());

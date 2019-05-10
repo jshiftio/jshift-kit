@@ -27,9 +27,9 @@ public class RegistryAuthFactory {
 
     private RegistryAuthFactory() { }
 
-    public RegistryAuth createAuthConfig(RegistryAuthConfig.Kind kind, String user, String specificRegistry) throws IOException {
+    public AuthConfig createAuthConfig(RegistryAuthConfig.Kind kind, String user, String specificRegistry) throws IOException {
         String registry = specificRegistry != null ? specificRegistry : defaultRegistry;
-        Optional<RegistryAuth> ret = createRegistryAuthFromHandlers(kind, user, registry);
+        Optional<AuthConfig> ret = createRegistryAuthFromHandlers(kind, user, registry);
 
         if (ret.isPresent()) {
             if (registry == null || registryAuthConfig.skipExtendedAuthentication()) {
@@ -39,12 +39,12 @@ public class RegistryAuthFactory {
         }
 
         log.debug("RegistryAuthFactoryg: no credentials found");
-        return RegistryAuth.EMPTY_REGISTRY_AUTH;
+        return AuthConfig.EMPTY_AUTH_CONFIG;
     }
 
-    private Optional<RegistryAuth> createRegistryAuthFromHandlers(RegistryAuthConfig.Kind kind, String user, String registry) {
+    private Optional<AuthConfig> createRegistryAuthFromHandlers(RegistryAuthConfig.Kind kind, String user, String registry) {
         for (RegistryAuthHandler handler : registryAuthHandlers) {
-            RegistryAuth ret = handler.create(kind, user, registry, decryptor);
+            AuthConfig ret = handler.create(kind, user, registry, decryptor);
             if (ret != null) {
                 return Optional.of(ret);
             }
@@ -52,9 +52,9 @@ public class RegistryAuthFactory {
         return Optional.empty();
     }
 
-    private Optional<RegistryAuth> extendRegistryAuth(String registry, RegistryAuth ret) throws IOException {
+    private Optional<AuthConfig> extendRegistryAuth(String registry, AuthConfig ret) throws IOException {
         for (RegistryAuthHandler.Extender extended : extendedRegistryAuthHandlers) {
-            RegistryAuth extendedRet = extended.extend(ret, registry);
+            AuthConfig extendedRet = extended.extend(ret, registry);
             if (extendedRet != null) {
                 return Optional.of(extendedRet);
             }

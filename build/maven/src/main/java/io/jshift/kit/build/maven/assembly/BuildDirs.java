@@ -1,23 +1,10 @@
-package io.jshift.kit.build.maven.assembly;/*
- *
- * Copyright 2014 Roland Huss
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package io.jshift.kit.build.maven.assembly;
 
-import java.io.File;
 
 import io.jshift.kit.build.maven.MavenBuildContext;
+import io.jshift.kit.common.util.EnvUtil;
+
+import java.io.File;
 
 /**
  * Helper object grouping together all working and output
@@ -29,16 +16,16 @@ import io.jshift.kit.build.maven.MavenBuildContext;
 class BuildDirs {
 
     private final String buildTopDir;
-    private final MavenBuildContext context;
+    private final MavenBuildContext params;
 
     /**
      * Constructor building up the the output directories
      *
      * @param imageName image name for the image to build
-     * @param context mojo params holding base and global outptput dir
+     * @param params mojo params holding base and global outptput dir
      */
-    BuildDirs(String imageName, MavenBuildContext context) {
-        this.context = context;
+    BuildDirs(String imageName, MavenBuildContext params) {
+        this.params = params;
         // Replace tag separator with a slash to avoid problems
         // with OSs which gets confused by colons.
         this.buildTopDir = imageName != null ? imageName.replace(':', '/') : null;
@@ -57,7 +44,7 @@ class BuildDirs {
     }
 
     void createDirs() {
-        for (String workDir : new String[] {"build", "work", "tmp" }) {
+        for (String workDir : new String[] { "build", "work", "tmp" }) {
             File dir = getDir(workDir);
             if (!dir.exists()) {
                 if(!dir.mkdirs()) {
@@ -68,7 +55,7 @@ class BuildDirs {
     }
 
     private File getDir(String dir) {
-        return context.inOutputDir(new File(buildTopDir, dir).getPath());
+        return EnvUtil.prepareAbsoluteOutputDirPath(params.getOutputDirectory(),
+                params.getProject().getBasedir() != null ? params.getProject().getBasedir().toString() : null, buildTopDir, dir);
     }
-
 }

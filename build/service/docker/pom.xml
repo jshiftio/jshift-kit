@@ -38,6 +38,11 @@
 
     <dependency>
       <groupId>io.jshift</groupId>
+      <artifactId>jshift-kit-build-maven</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.jshift</groupId>
       <artifactId>jshift-kit-config-image</artifactId>
     </dependency>
 

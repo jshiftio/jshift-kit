@@ -9,10 +9,11 @@ import java.util.function.Function;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import io.jshift.kit.build.api.auth.RegistryAuth;
 import io.jshift.kit.build.api.auth.RegistryAuthConfig;
 import io.jshift.kit.build.api.auth.RegistryAuthHandler;
+import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.common.KitLogger;
+import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * @author roland
@@ -37,27 +38,31 @@ public class DockerRegistryAuthHandler implements RegistryAuthHandler {
     }
 
     @Override
-    public RegistryAuth create(RegistryAuthConfig.Kind kind, String user, String registry, Function<String, String> decryptor) {
+    public AuthConfig create(RegistryAuthConfig.Kind kind, String user, String registry, Function<String, String> decryptor) {
         return readDockerConfig().map(d -> extractAuthConfigFromDocker(d, registry)).orElse(null);
     }
 
-    private RegistryAuth extractAuthConfigFromDocker(JsonObject dockerConfig, String registry) {
+    private AuthConfig extractAuthConfigFromDocker(JsonObject dockerConfig, String registry) {
         String registryToLookup = registry != null ? registry : DOCKER_LOGIN_DEFAULT_REGISTRY;
 
-        if (dockerConfig.has("credHelpers") || dockerConfig.has("credsStore")) {
-            if (dockerConfig.has("credHelpers")) {
-                final JsonObject credHelpers = dockerConfig.getAsJsonObject("credHelpers");
-                if (credHelpers.has(registryToLookup)) {
-                    return extractAuthConfigFromCredentialsHelper(registryToLookup, credHelpers.get(registryToLookup).getAsString());
+        try {
+            if (dockerConfig.has("credHelpers") || dockerConfig.has("credsStore")) {
+                if (dockerConfig.has("credHelpers")) {
+                    final JsonObject credHelpers = dockerConfig.getAsJsonObject("credHelpers");
+                    if (credHelpers.has(registryToLookup)) {
+                        return extractAuthConfigFromCredentialsHelper(registryToLookup, credHelpers.get(registryToLookup).getAsString());
+                    }
+                }
+                if (dockerConfig.has("credsStore")) {
+                    return extractAuthConfigFromCredentialsHelper(registryToLookup, dockerConfig.get("credsStore").getAsString());
                 }
             }
-            if (dockerConfig.has("credsStore")) {
-                return extractAuthConfigFromCredentialsHelper(registryToLookup, dockerConfig.get("credsStore").getAsString());
-            }
-        }
 
-        if (dockerConfig.has("auths")) {
-            return extractAuthConfigFromAuths(registryToLookup, dockerConfig.getAsJsonObject("auths"));
+            if (dockerConfig.has("auths")) {
+                return extractAuthConfigFromAuths(registryToLookup, dockerConfig.getAsJsonObject("auths"));
+            }
+        } catch (MojoExecutionException exception) {
+
         }
 
         return null;
@@ -72,17 +77,17 @@ public class DockerRegistryAuthHandler implements RegistryAuthHandler {
         return reader.map(r -> gson.fromJson(r, JsonObject.class));
     }
 
-    private RegistryAuth extractAuthConfigFromAuths(String registryToLookup, JsonObject auths) {
+    private AuthConfig extractAuthConfigFromAuths(String registryToLookup, JsonObject auths) {
         JsonObject credentials = getCredentialsNode(auths, registryToLookup);
         if (credentials == null || !credentials.has("auth")) {
             return null;
         }
         String auth = credentials.get("auth").getAsString();
         String email = credentials.has("email") ? credentials.get("email").getAsString() : null;
-        return new RegistryAuth.Builder().withCredentialsEncoded(auth).email(email).build();
+        return new AuthConfig.Builder().withCredentialsEncoded(auth).email(email).build();
     }
 
-    private RegistryAuth extractAuthConfigFromCredentialsHelper(String registryToLookup, String credConfig) {
+    private AuthConfig extractAuthConfigFromCredentialsHelper(String registryToLookup, String credConfig) throws MojoExecutionException  {
         CredentialHelperClient credentialHelper = new CredentialHelperClient(log, credConfig);
         log.debug("AuthConfig: credentials from credential helper/store %s version %s",
                   credentialHelper.getName(),
