@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.jshift.kit.config.image.ImageConfiguration;
-import io.jshift.maven.generator.api.GeneratorContext;
+import io.jshift.generator.api.GeneratorContext;
 import mockit.Expectations;
 import mockit.Mocked;
 import org.apache.maven.model.Build;
