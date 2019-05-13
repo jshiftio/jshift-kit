@@ -27,7 +27,6 @@ import io.jshift.kit.config.image.build.Arguments;
 import io.jshift.kit.config.image.build.AssemblyConfiguration;
 import io.jshift.kit.config.image.build.BuildConfiguration;
 import io.jshift.kit.config.image.build.OpenShiftBuildStrategy;
-import io.jshift.kit.config.image.build.RuntimeMode;
 import io.jshift.generator.api.GeneratorContext;
 import io.jshift.generator.api.support.BaseGenerator;
 import io.jshift.generator.webapp.handler.CustomAppServerHandler;
