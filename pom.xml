@@ -31,7 +31,6 @@
       <module>generator/thorntail-v2</module>
       <module>generator/karaf</module>
       <module>generator/webapp</module>
-      <module>generator/vertx</module>
       <module>enricher/api</module>
       <module>enricher/generic</module>
       <module>enricher/specific</module>
@@ -39,6 +38,7 @@
       <module>watcher/standard</module>
       <module>profile</module>
       <module>jshift-kit-spring-boot</module>
+      <module>jshift-kit-vertx</module>
   </modules>
 
 </project>

@@ -13,7 +13,7 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.jshift.generator.vertx;
+package io.jshift.vertx.generator;
 
 public class Constants {
 
@@ -27,5 +27,4 @@ public class Constants {
     static final String VERTX_INFINIPAN = "vertx-infinispan";
 
     static final String CLUSTER_MANAGER_SPI = "META-INF/services/io.vertx.core.spi.cluster.ClusterManager";
-
 }

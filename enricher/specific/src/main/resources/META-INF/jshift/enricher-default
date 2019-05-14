@@ -12,7 +12,6 @@ io.jshift.maven.enricher.specific.WildFlySwarmHealthCheckEnricher
 io.jshift.maven.enricher.specific.QuarkusHealthCheckEnricher
 io.jshift.maven.enricher.specific.ThorntailV2HealthCheckEnricher
 io.jshift.maven.enricher.specific.KarafHealthCheckEnricher
-io.jshift.maven.enricher.specific.VertxHealthCheckEnricher
 io.jshift.maven.enricher.specific.WebAppHealthCheckEnricher
 io.jshift.maven.enricher.specific.DockerHealthCheckEnricher,510
 
