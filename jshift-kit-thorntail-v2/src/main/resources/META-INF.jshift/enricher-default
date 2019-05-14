@@ -1,0 +1,2 @@
+# Healthcheck Enrichers
+io.jshift.springboot.enricher.SpringBootHealthCheckEnricher
