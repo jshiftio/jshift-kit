@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class SpringBootHealthCheckEnricher extends AbstractHealthCheckEnricher {
 
-    public static final String ENRICHER_NAME = "f8-healthcheck-spring-boot";
+    public static final String ENRICHER_NAME = "jshift-healthcheck-spring-boot";
 
     protected static final String[] REQUIRED_CLASSES = {
             "org.springframework.boot.actuate.health.HealthIndicator",
