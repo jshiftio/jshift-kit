@@ -13,12 +13,13 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.jshift.maven.enricher.specific;
+package io.jshift.quarkus.enricher;
 
 import io.fabric8.kubernetes.api.model.Probe;
 import io.fabric8.kubernetes.api.model.ProbeBuilder;
 import io.jshift.kit.common.Configs;
 import io.jshift.maven.enricher.api.MavenEnricherContext;
+import io.jshift.maven.enricher.specific.AbstractHealthCheckEnricher;
 
 import static io.jshift.kit.common.Configs.asInteger;
 
