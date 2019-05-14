@@ -13,16 +13,16 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.jshift.generator.thorntail.v2;
+package io.jshift.thorntail.v2.generator;
+
+import io.jshift.generator.api.GeneratorContext;
+import io.jshift.generator.javaexec.JavaExecGenerator;
+import io.jshift.kit.common.util.MavenUtil;
+import io.jshift.kit.config.image.ImageConfiguration;
+import org.apache.maven.plugin.MojoExecutionException;
 
 import java.util.List;
 import java.util.Map;
-
-import io.jshift.kit.common.util.MavenUtil;
-import io.jshift.kit.config.image.ImageConfiguration;
-import io.jshift.generator.api.GeneratorContext;
-import io.jshift.generator.javaexec.JavaExecGenerator;
-import org.apache.maven.plugin.MojoExecutionException;
 
 public class ThorntailV2Generator extends JavaExecGenerator {
 

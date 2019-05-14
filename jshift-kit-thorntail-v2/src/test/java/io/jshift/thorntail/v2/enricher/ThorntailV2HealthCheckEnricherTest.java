@@ -13,17 +13,16 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.jshift.maven.enricher.specific;
-
-import java.net.URLClassLoader;
+package io.jshift.thorntail.v2.enricher;
 
 import io.jshift.maven.enricher.api.MavenEnricherContext;
 import io.jshift.maven.enricher.api.util.ProjectClassLoaders;
 import mockit.Expectations;
 import mockit.Mocked;
+import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.net.URLClassLoader;
 
 public class ThorntailV2HealthCheckEnricherTest {
 
@@ -43,7 +42,7 @@ public class ThorntailV2HealthCheckEnricherTest {
         setupExpectations();
         final ThorntailV2HealthCheckEnricher thorntailV2HealthCheckEnricher = new ThorntailV2HealthCheckEnricher(context);
         final int port = thorntailV2HealthCheckEnricher.getPort();
-        assertEquals(8082, port);
+        Assert.assertEquals(8082, port);
 
     }
 
