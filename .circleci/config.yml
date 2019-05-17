@@ -24,6 +24,8 @@ jobs:
         key: jshift-kit-sonar-{{ checksum "pom.xml" }}
     - run: |
         MAVEN_OPTS="-Xmx3000m" mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar \
+        -Dsonar.projectKey=jshiftio_jshift-kit \
+        -Dsonar.organization=jshiftio \
         -Dsonar.host.url=https://sonarcloud.io \
         -Dsonar.login=${SONARQUBE_TOKEN}
     - save_cache:
@@ -40,11 +42,14 @@ jobs:
     - run: |
         if [ -n "${CIRCLE_PR_NUMBER}" ]; then
           MAVEN_OPTS="-Xmx3000m" mvn -B clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar \
-             -Dsonar.github.pullRequest=${CIRCLE_PR_NUMBER} \
-             -Dsonar.github.repository=jshiftio/jshift-kit \
-             -Dsonar.github.oauth=${GITHUB_COMMENT_TOKEN} \
+             -Dsonar.projectKey=jshiftio_jshift-kit \
+             -Dsonar.organization=jshiftio \
+             -Dsonar.pullrequest.key=${CIRCLE_PR_NUMBER} \
+             -Dsonar.pullrequest.branch=${CIRCLE_BRANCH} \
+             -Dsonar.pullrequest.base=master \
              -Dsonar.host.url=https://sonarcloud.io \
              -Dsonar.login=${SONARQUBE_TOKEN}
+
         else
           echo "No Sonar PR analysis as this is not a pull request"
         fi
