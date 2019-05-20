@@ -13,7 +13,7 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.jshift.generator.quarkus;
+package io.jshift.quarkus.generator;
 
 import io.jshift.kit.common.Configs;
 import io.jshift.kit.common.util.FileUtil;

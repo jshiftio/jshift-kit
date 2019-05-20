@@ -27,7 +27,6 @@
       <module>generator/api</module>
       <module>generator/java-exec</module>
       <module>generator/wildfly-swarm</module>
-      <module>generator/quarkus</module>
       <module>generator/karaf</module>
       <module>generator/webapp</module>
       <module>enricher/api</module>
@@ -39,6 +38,7 @@
       <module>jshift-kit-spring-boot</module>
       <module>jshift-kit-thorntail-v2</module>
       <module>jshift-kit-vertx</module>
+      <module>jshift-kit-quarkus</module>
   </modules>
 
 </project>
