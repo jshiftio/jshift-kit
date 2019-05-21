@@ -1,10 +1,10 @@
 package io.jshift.kit.build.api.model;
 
 import com.google.gson.JsonObject;
+import io.jshift.kit.common.JsonFactory;
 
 import java.util.Map;
 
-import io.fabric8.maven.docker.util.JsonFactory;
 
 public class VolumeCreateConfig
 {

@@ -2,8 +2,8 @@ package io.jshift.kit.build.service.docker;
 
 import com.google.gson.JsonObject;
 
-import io.fabric8.maven.docker.util.AutoPullMode;
-import io.fabric8.maven.docker.util.JsonFactory;
+import io.jshift.kit.build.service.docker.helper.AutoPullMode;
+import io.jshift.kit.common.JsonFactory;
 import io.jshift.kit.config.image.build.ImagePullPolicy;
 
 /**

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.maven.docker.config.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.common.Named;
 import io.jshift.kit.config.resource.PlatformMode;
 

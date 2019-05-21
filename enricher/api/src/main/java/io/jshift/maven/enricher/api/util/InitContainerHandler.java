@@ -19,7 +19,6 @@ import java.util.List;
 
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
-import io.fabric8.maven.docker.util.Logger;
 import io.jshift.kit.common.KitLogger;
 
 /**

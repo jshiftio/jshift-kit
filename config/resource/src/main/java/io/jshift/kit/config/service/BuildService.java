@@ -16,10 +16,10 @@
 package io.jshift.kit.config.service;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.maven.docker.util.Task;
 import io.jshift.kit.build.maven.MavenBuildContext;
 import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.build.service.docker.ImagePullManager;
+import io.jshift.kit.build.service.docker.helper.Task;
 import io.jshift.kit.config.image.build.OpenShiftBuildStrategy;
 import io.jshift.kit.config.resource.BuildRecreateMode;
 

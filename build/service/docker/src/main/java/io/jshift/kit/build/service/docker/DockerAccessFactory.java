@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import io.fabric8.maven.docker.access.DockerAccess;
-import io.fabric8.maven.docker.access.DockerConnectionDetector;
-import io.fabric8.maven.docker.access.DockerMachine;
-import io.fabric8.maven.docker.access.hc.DockerAccessWithHcClient;
-import io.fabric8.maven.docker.config.DockerMachineConfiguration;
-import io.fabric8.maven.docker.util.EnvUtil;
-import io.fabric8.maven.docker.util.Logger;
-
+import io.jshift.kit.build.service.docker.access.DockerAccess;
+import io.jshift.kit.build.service.docker.access.DockerConnectionDetector;
+import io.jshift.kit.build.service.docker.access.DockerMachine;
+import io.jshift.kit.build.service.docker.access.hc.DockerAccessWithHcClient;
+import io.jshift.kit.build.service.docker.config.DockerMachineConfiguration;
+import io.jshift.kit.common.KitLogger;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.component.annotations.Component;
@@ -45,11 +43,11 @@ public class DockerAccessFactory {
 
     }
 
-    private DockerConnectionDetector createDockerConnectionDetector(DockerAccessContext dockerAccessContext, Logger log) {
+    private DockerConnectionDetector createDockerConnectionDetector(DockerAccessContext dockerAccessContext, KitLogger log) {
         return new DockerConnectionDetector(getDockerHostProviders(dockerAccessContext, log));
     }
 
-    private List<DockerConnectionDetector.DockerHostProvider> getDockerHostProviders(DockerAccessContext dockerAccessContext, Logger log) {
+    private List<DockerConnectionDetector.DockerHostProvider> getDockerHostProviders(DockerAccessContext dockerAccessContext, KitLogger log) {
         if (dockerAccessContext.getDockerHostProviders() != null) {
             return dockerAccessContext.getDockerHostProviders();
         }
@@ -64,7 +62,7 @@ public class DockerAccessFactory {
      *
      * @return list of providers or <code>null</code> if none are applicable
      */
-    private List<DockerConnectionDetector.DockerHostProvider> getDefaultDockerHostProviders(DockerAccessContext dockerAccessContext, Logger log) {
+    private List<DockerConnectionDetector.DockerHostProvider> getDefaultDockerHostProviders(DockerAccessContext dockerAccessContext, KitLogger log) {
 
         DockerMachineConfiguration config = dockerAccessContext.getMachine();
         if (dockerAccessContext.isSkipMachine()) {
@@ -123,7 +121,7 @@ public class DockerAccessFactory {
 
         private int maxConnections;
 
-        private Logger log;
+        private KitLogger log;
 
         public DockerAccessContext() {
         }
@@ -160,7 +158,7 @@ public class DockerAccessFactory {
             return maxConnections;
         }
 
-        public Logger getLog() {
+        public KitLogger getLog() {
             return log;
         }
 
@@ -216,7 +214,7 @@ public class DockerAccessFactory {
                 return this;
             }
 
-            public Builder log(Logger log) {
+            public Builder log(KitLogger log) {
                 context.log = log;
                 return this;
             }

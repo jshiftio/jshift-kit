@@ -45,13 +45,6 @@
       <artifactId>maven-core</artifactId>
     </dependency>
 
-    <!-- == docker-maven-plugin ========================= -->
-
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>docker-maven-plugin</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>io.jshift</groupId>
       <artifactId>jshift-kit-config-image</artifactId>

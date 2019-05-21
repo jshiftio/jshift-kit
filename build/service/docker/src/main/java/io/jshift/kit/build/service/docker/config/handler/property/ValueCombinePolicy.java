@@ -1,6 +1,5 @@
 package io.jshift.kit.build.service.docker.config.handler.property;
 
-import io.fabric8.maven.docker.config.handler.property.PropertyConfigHandler;
 import org.apache.commons.lang3.StringUtils;
 
 /**

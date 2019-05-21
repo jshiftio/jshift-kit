@@ -1,7 +1,6 @@
 package io.jshift.kit.build.service.docker.config;
 
-
-import io.fabric8.maven.docker.util.DeepCopy;
+import io.jshift.kit.build.service.docker.helper.DeepCopy;
 
 import java.io.Serializable;
 import java.lang.String;

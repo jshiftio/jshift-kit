@@ -43,11 +43,6 @@
     </dependency>
 
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>docker-maven-plugin</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>io.jshift</groupId>
       <artifactId>jshift-kit-common</artifactId>
     </dependency>
