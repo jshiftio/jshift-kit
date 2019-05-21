@@ -69,15 +69,15 @@ public enum ArchiveCompression {
         return outputStream;
     }
 
-    public static io.fabric8.maven.docker.config.ArchiveCompression fromFileName(String filename) {
+    public static ArchiveCompression fromFileName(String filename) {
         if (filename.endsWith(".tar.gz") || filename.endsWith(".tgz")) {
-            return io.fabric8.maven.docker.config.ArchiveCompression.gzip;
+            return ArchiveCompression.gzip;
         }
 
         if (filename.endsWith(".tar.bz") || filename.endsWith(".tar.bzip2") || filename.endsWith(".tar.bz2")) {
-            return io.fabric8.maven.docker.config.ArchiveCompression.bzip2;
+            return ArchiveCompression.bzip2;
         }
-        return io.fabric8.maven.docker.config.ArchiveCompression.none;
+        return ArchiveCompression.none;
     }
 
     private static class GZIPOutputStream extends java.util.zip.GZIPOutputStream {

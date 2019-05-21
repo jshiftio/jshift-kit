@@ -6,8 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import io.fabric8.maven.docker.util.DeepCopy;
-import io.fabric8.maven.docker.util.EnvUtil;
+import io.jshift.kit.build.service.docker.helper.DeepCopy;
+import io.jshift.kit.common.util.EnvUtil;
 import io.jshift.kit.config.image.build.Arguments;
 
 /**

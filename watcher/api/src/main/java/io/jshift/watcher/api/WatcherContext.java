@@ -16,9 +16,9 @@
 package io.jshift.watcher.api;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.maven.docker.service.BuildService;
-import io.fabric8.maven.docker.service.ServiceHub;
-import io.fabric8.maven.docker.service.WatchService;
+import io.jshift.kit.build.service.docker.BuildService;
+import io.jshift.kit.build.service.docker.ServiceHub;
+import io.jshift.kit.build.service.docker.WatchService;
 import io.jshift.kit.common.KitLogger;
 import io.jshift.kit.config.access.ClusterConfiguration;
 import io.jshift.kit.config.resource.RuntimeMode;

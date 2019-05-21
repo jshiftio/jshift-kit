@@ -25,7 +25,6 @@ import java.util.Set;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import io.fabric8.maven.docker.util.Logger;
 import io.jshift.kit.common.KitLogger;
 import io.jshift.kit.common.util.MavenUtil;
 import io.jshift.kit.config.image.ImageConfiguration;

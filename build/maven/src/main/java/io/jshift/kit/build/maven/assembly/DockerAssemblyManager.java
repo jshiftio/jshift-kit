@@ -50,7 +50,7 @@ import java.util.List;
  * @author roland
  * @since 08.05.14
  */
-@Component(role = io.fabric8.maven.docker.assembly.DockerAssemblyManager.class, instantiationStrategy = "per-lookup")
+@Component(role = DockerAssemblyManager.class, instantiationStrategy = "per-lookup")
 public class DockerAssemblyManager {
 
     public static final String DEFAULT_DATA_BASE_IMAGE = "busybox:latest";
