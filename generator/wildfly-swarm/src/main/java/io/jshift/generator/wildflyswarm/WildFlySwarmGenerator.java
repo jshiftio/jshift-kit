@@ -18,8 +18,8 @@ package io.jshift.generator.wildflyswarm;
 import java.util.List;
 import java.util.Map;
 
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.common.util.MavenUtil;
-import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.generator.api.GeneratorContext;
 import io.jshift.generator.javaexec.JavaExecGenerator;
 import org.apache.maven.plugin.MojoExecutionException;

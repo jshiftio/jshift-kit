@@ -15,10 +15,10 @@
  */
 package io.jshift.quarkus.generator;
 
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.common.Configs;
 import io.jshift.kit.common.util.FileUtil;
 import io.jshift.kit.common.util.MavenUtil;
-import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.image.build.Arguments;
 import io.jshift.kit.config.image.build.AssemblyConfiguration;
 import io.jshift.kit.config.image.build.BuildConfiguration;

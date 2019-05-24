@@ -16,7 +16,7 @@
 package io.jshift.springboot.generator;
 
 import io.jshift.generator.api.GeneratorContext;
-import io.jshift.kit.config.image.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import mockit.Expectations;
 import mockit.Mocked;
 import org.apache.maven.model.Build;

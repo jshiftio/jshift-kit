@@ -17,8 +17,8 @@ package io.jshift.thorntail.v2.generator;
 
 import io.jshift.generator.api.GeneratorContext;
 import io.jshift.generator.javaexec.JavaExecGenerator;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.common.util.MavenUtil;
-import io.jshift.kit.config.image.ImageConfiguration;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.util.List;

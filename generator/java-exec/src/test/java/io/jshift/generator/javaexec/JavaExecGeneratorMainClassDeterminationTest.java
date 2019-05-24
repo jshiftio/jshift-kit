@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.jar.Attributes;
 
 import com.fasterxml.jackson.databind.util.ClassUtil;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.common.KitLogger;
-import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.image.build.AssemblyConfiguration;
 import io.jshift.kit.config.image.build.OpenShiftBuildStrategy;
 import io.jshift.kit.config.resource.ProcessorConfig;

@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import io.jshift.generator.javaexec.JavaExecGenerator;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.common.util.MavenUtil;
-import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.generator.api.GeneratorContext;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;

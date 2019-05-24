@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.JsonObject;
 import io.jshift.kit.common.ResourceFileType;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Utility for resource file handling
@@ -84,6 +85,15 @@ public class ResourceUtil {
             }
         }
     }
+
+    public static File getFinalResourceDir(File resourceDir, String environment) {
+        if (resourceDir != null && StringUtils.isNotEmpty(environment)) {
+            return new File(resourceDir, environment);
+        }
+
+        return resourceDir;
+    }
+
 
 }
 
