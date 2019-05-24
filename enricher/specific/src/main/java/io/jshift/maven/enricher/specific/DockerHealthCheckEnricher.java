@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.ExecAction;
 import io.fabric8.kubernetes.api.model.Probe;
 import io.fabric8.kubernetes.api.model.ProbeBuilder;
-import io.jshift.kit.config.image.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.config.image.build.HealthCheckConfiguration;
 import io.jshift.kit.config.image.build.HealthCheckMode;
 import io.jshift.maven.enricher.api.MavenEnricherContext;

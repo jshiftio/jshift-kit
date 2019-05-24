@@ -1,6 +1,23 @@
 version: 2
 
 jobs:
+  test:
+    machine: true
+    steps:
+    - checkout
+    - restore_cache:
+        key: jshift-kit-{{ checksum "pom.xml" }}
+    - run:
+        command: |
+          # Run maven build
+          mvn test -Pjacoco
+          # Run codeocov analysis
+          bash <(curl -s https://codecov.io/bash)
+    - save_cache:
+        key: jshift-kit-{{ checksum "pom.xml" }}
+        paths:
+        - ~/.m2
+
   build:
     machine: true
     steps:
@@ -63,6 +80,7 @@ workflows:
   all:
     jobs:
     - build
+    - test
     - sonar-pr
     - sonar:
         filters:

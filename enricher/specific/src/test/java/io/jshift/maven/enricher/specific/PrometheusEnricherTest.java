@@ -22,8 +22,8 @@ import java.util.TreeMap;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.common.Configs;
-import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.image.build.BuildConfiguration;
 import io.jshift.kit.config.resource.PlatformMode;
 import io.jshift.kit.config.resource.ProcessorConfig;

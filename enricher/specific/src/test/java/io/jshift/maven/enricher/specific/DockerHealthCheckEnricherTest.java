@@ -24,7 +24,7 @@ import com.jayway.jsonpath.matchers.JsonPathMatchers;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.jshift.kit.config.image.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.config.image.build.Arguments;
 import io.jshift.kit.config.image.build.BuildConfiguration;
 import io.jshift.kit.config.image.build.HealthCheckConfiguration;

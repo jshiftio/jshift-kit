@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.apps.DaemonSet;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetSpec;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetSpecBuilder;
-import io.jshift.kit.config.image.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.config.resource.ResourceConfig;
 import io.jshift.kit.common.util.KubernetesHelper;
 

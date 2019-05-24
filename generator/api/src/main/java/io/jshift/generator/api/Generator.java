@@ -17,7 +17,7 @@ package io.jshift.generator.api;
 
 import java.util.List;
 
-import io.jshift.kit.config.image.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.common.Named;
 import org.apache.maven.plugin.MojoExecutionException;
 

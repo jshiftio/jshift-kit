@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.ContainerPortBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.PodTemplateBuilder;
-import io.jshift.kit.config.image.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.config.resource.PlatformMode;
 import io.jshift.kit.config.resource.ProcessorConfig;
 import io.jshift.maven.enricher.api.MavenEnricherContext;

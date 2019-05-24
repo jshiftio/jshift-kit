@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.batch.JobBuilder;
 import io.fabric8.kubernetes.api.model.batch.JobSpec;
 import io.fabric8.kubernetes.api.model.batch.JobSpecBuilder;
-import io.jshift.kit.config.image.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.config.resource.ResourceConfig;
 import io.jshift.kit.common.util.KubernetesHelper;
 

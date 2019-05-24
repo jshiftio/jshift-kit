@@ -25,9 +25,9 @@ import java.util.Set;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.common.KitLogger;
 import io.jshift.kit.common.util.MavenUtil;
-import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.resource.GroupArtifactVersion;
 import io.jshift.kit.config.resource.ProcessorConfig;
 import io.jshift.kit.config.resource.ResourceConfig;

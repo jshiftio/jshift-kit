@@ -1,6 +1,6 @@
 package io.jshift.maven.enricher.api.model;
 
-import io.jshift.kit.config.image.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.config.resource.ProcessorConfig;
 import io.jshift.kit.config.resource.ResourceConfig;
 

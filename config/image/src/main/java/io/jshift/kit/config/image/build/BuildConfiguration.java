@@ -235,7 +235,7 @@ public class BuildConfiguration implements Serializable {
     }
 
     public Boolean getSkip() {
-        return skip;
+        return skip != null ? skip : false;
     }
 
     public ArchiveCompression getCompression() {

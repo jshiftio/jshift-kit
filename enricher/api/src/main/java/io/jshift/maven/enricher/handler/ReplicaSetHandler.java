@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetSpec;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetSpecBuilder;
-import io.jshift.kit.config.image.ImageConfiguration;
+import io.jshift.kit.build.service.docker.ImageConfiguration;
 import io.jshift.kit.config.resource.ResourceConfig;
 import io.jshift.kit.common.util.KubernetesHelper;
 
