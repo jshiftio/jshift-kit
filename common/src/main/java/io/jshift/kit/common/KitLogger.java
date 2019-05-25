@@ -56,11 +56,6 @@ public interface KitLogger {
     boolean isDebugEnabled();
 
     /**
-     * Whether debugging is enabled.
-     */
-    boolean isInfoEnabled();
-
-    /**
      * Whether verbose is enabled
      */
     default boolean isVerboseEnabled() {
@@ -117,9 +112,5 @@ public interface KitLogger {
             return true;
         }
 
-        @Override
-        public boolean isInfoEnabled() {
-            return true;
-        }
     }
 }

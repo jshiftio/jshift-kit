@@ -1,22 +1,16 @@
-package io.jshift.kit.common;
+package io.jshift.kit.build.service.docker.helper;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.lang3.StringUtils;
+import io.jshift.kit.common.KitLogger;
+import org.apache.maven.plugin.logging.Log;
+import org.codehaus.plexus.util.StringUtils;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 
-import static org.fusesource.jansi.Ansi.Color.BLACK;
-import static org.fusesource.jansi.Ansi.Color.BLUE;
-import static org.fusesource.jansi.Ansi.Color.CYAN;
-import static org.fusesource.jansi.Ansi.Color.DEFAULT;
-import static org.fusesource.jansi.Ansi.Color.GREEN;
-import static org.fusesource.jansi.Ansi.Color.MAGENTA;
-import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.fusesource.jansi.Ansi.Color.WHITE;
-import static org.fusesource.jansi.Ansi.Color.YELLOW;
+import static org.fusesource.jansi.Ansi.Color.*;
 import static org.fusesource.jansi.Ansi.ansi;
 
 /**
@@ -25,15 +19,16 @@ import static org.fusesource.jansi.Ansi.ansi;
  * @author roland
  * @since 31.03.14
  */
-public class AnsiLoggerFacade implements KitLogger {
+public class AnsiLogger implements KitLogger {
 
     // prefix used for console output
     public static final String DEFAULT_LOG_PREFIX = "DOCKER> ";
     private static final int NON_ANSI_UPDATE_PERIOD = 80;
 
-    private final KitLogger log;
+    private final Log log;
     private final String prefix;
     private final boolean batchMode;
+
     private boolean verbose;
 
     // ANSI escapes for various colors (or empty strings if no coloring is used)
@@ -54,31 +49,31 @@ public class AnsiLoggerFacade implements KitLogger {
     // Whether to use ANSI codes
     private boolean useAnsi;
 
-    public AnsiLoggerFacade(KitLogger log, boolean useColor, boolean verbose) {
+    public AnsiLogger(Log log, boolean useColor, boolean verbose) {
         this(log, useColor, verbose, false);
     }
 
-    public AnsiLoggerFacade(KitLogger log, boolean useColor, boolean verbose, boolean batchMode) {
+    public AnsiLogger(Log log, boolean useColor, boolean verbose, boolean batchMode) {
         this(log, useColor, verbose, batchMode, DEFAULT_LOG_PREFIX);
     }
 
-    public AnsiLoggerFacade(KitLogger log, boolean useColor, boolean verbose, boolean batchMode, String prefix) {
+    public AnsiLogger(Log log, boolean useColor, boolean verbose, boolean batchMode, String prefix) {
         this.log = log;
-        this.prefix = prefix;
         this.verbose = verbose;
+        this.prefix = prefix;
         this.batchMode = batchMode;
         initializeColor(useColor);
     }
 
     /** {@inheritDoc} */
-    public void debug(String message, Object... params) {
+    public void debug(String message, Object ... params) {
         if (isDebugEnabled()) {
             log.debug(prefix + format(message, params));
         }
     }
 
     /** {@inheritDoc} */
-    public void info(String message, Object... params) {
+    public void info(String message, Object ... params) {
         log.info(colored(message, COLOR_INFO, true, params));
     }
 
@@ -90,13 +85,17 @@ public class AnsiLoggerFacade implements KitLogger {
     }
 
     /** {@inheritDoc} */
-    public void warn(String format, Object... params) {
+    public void warn(String format, Object ... params) {
         log.warn(colored(format, COLOR_WARNING, true, params));
     }
 
     /** {@inheritDoc} */
-    public void error(String message, Object... params) {
+    public void error(String message, Object ... params) {
         log.error(colored(message, COLOR_ERROR, true, params));
+    }
+
+    public String errorMessage(String message) {
+        return colored(message, COLOR_ERROR, false);
     }
 
     /**
@@ -115,10 +114,10 @@ public class AnsiLoggerFacade implements KitLogger {
      */
     public void progressStart() {
         // A progress indicator is always written out to standard out if a tty is enabled.
-        if (!batchMode) {
+        if (!batchMode && log.isInfoEnabled()) {
             imageLines.remove();
             updateCount.remove();
-            imageLines.set(new HashMap<>());
+            imageLines.set(new HashMap<String, Integer>());
             updateCount.set(new AtomicInteger());
         }
     }
@@ -127,7 +126,7 @@ public class AnsiLoggerFacade implements KitLogger {
      * Update the progress
      */
     public void progressUpdate(String layerId, String status, String progressMessage) {
-        if (!batchMode && StringUtils.isNotEmpty(layerId)) {
+        if (!batchMode && log.isInfoEnabled() && StringUtils.isNotEmpty(layerId)) {
             if (useAnsi) {
                 updateAnsiProgress(layerId, status, progressMessage);
             } else {
@@ -158,10 +157,10 @@ public class AnsiLoggerFacade implements KitLogger {
         // Downloading
         String progress = progressMessage != null ? progressMessage : "";
         String msg =
-            ansi()
-                .fg(COLOR_PROGRESS_ID).a(imageId).reset().a(": ")
-                .fg(COLOR_PROGRESS_STATUS).a(StringUtils.rightPad(status,11) + " ")
-                .fg(COLOR_PROGRESS_BAR).a(progress).toString();
+                ansi()
+                        .fg(COLOR_PROGRESS_ID).a(imageId).reset().a(": ")
+                        .fg(COLOR_PROGRESS_STATUS).a(StringUtils.rightPad(status,11) + " ")
+                        .fg(COLOR_PROGRESS_BAR).a(progress).toString();
         println(msg);
 
         if (diff > 0) {
@@ -185,7 +184,7 @@ public class AnsiLoggerFacade implements KitLogger {
      * Finis progress meter. Must be always called if {@link #progressStart()} has been used.
      */
     public void progressFinished() {
-        if (!batchMode) {
+        if (!batchMode && log.isInfoEnabled()) {
             imageLines.remove();
             print(ansi().reset().toString());
             if (!useAnsi) {
@@ -223,7 +222,7 @@ public class AnsiLoggerFacade implements KitLogger {
         System.out.print(txt);
     }
 
-    private String colored(String message, Ansi.Color color, boolean addPrefix, Object... params) {
+    private String colored(String message, Ansi.Color color, boolean addPrefix, Object ... params) {
         Ansi ansi = ansi().fg(color);
         String msgToPrint = addPrefix ? prefix + message : message;
         return ansi.a(format(evaluateEmphasis(msgToPrint, color), params)).reset().toString();
@@ -245,7 +244,7 @@ public class AnsiLoggerFacade implements KitLogger {
     // Emphasize parts encloses in "[[*]]" tags
     private String evaluateEmphasis(String message, Ansi.Color msgColor) {
         // Split with delimiters [[.]]. See also http://stackoverflow.com/a/2206545/207604
-        String prepared = message.replaceAll("\\[\\[(.)]]", "[[]]$1[[]]");
+        String prepared = message.replaceAll("\\[\\[(.)]]","[[]]$1[[]]");
         String[] parts = prepared.split("\\[\\[]]");
         if (parts.length == 1) {
             return message;
@@ -282,9 +281,9 @@ public class AnsiLoggerFacade implements KitLogger {
         Ansi.Color color = COLOR_MAP.get(id.toUpperCase());
         if (color != null) {
             return id.toLowerCase().equals(id) ?
-                // lower case letter means bright color ...
-                ansi().fgBright(color).toString() :
-                ansi().fg(color).toString();
+                    // lower case letter means bright color ...
+                    ansi().fgBright(color).toString() :
+                    ansi().fg(color).toString();
         } else {
             return "";
         }

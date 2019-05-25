@@ -65,11 +65,6 @@ public class PrefixedLogger implements KitLogger {
         log.progressFinished();
     }
 
-    @Override
-    public boolean isInfoEnabled() {
-        return log.isInfoEnabled();
-    }
-
     private String p(String message) {
         return prefix + ": " + message;
     }
