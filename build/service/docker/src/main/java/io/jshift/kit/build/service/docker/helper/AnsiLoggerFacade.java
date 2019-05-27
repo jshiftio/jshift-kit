@@ -1,9 +1,10 @@
-package io.jshift.kit.common;
+package io.jshift.kit.build.service.docker.helper;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import io.jshift.kit.common.KitLogger;
 import org.apache.commons.lang3.StringUtils;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
