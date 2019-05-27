@@ -1,4 +1,4 @@
-package io.jshift.kit.common;
+package io.jshift.kit.build.service.docker.helper;
 /*
  *
  * Copyright 2016 Roland Huss
@@ -16,6 +16,7 @@ package io.jshift.kit.common;
  * limitations under the License.
  */
 
+import io.jshift.kit.common.KitLogger;
 import org.fusesource.jansi.Ansi;
 import org.junit.Test;
 

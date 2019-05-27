@@ -10,7 +10,7 @@ jobs:
     - run:
         command: |
           # Run maven build
-          mvn test -Pjacoco
+          mvn test -B -Pjacoco
           # Run codeocov analysis
           bash <(curl -s https://codecov.io/bash)
     - save_cache:
