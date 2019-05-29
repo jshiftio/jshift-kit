@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.ServicePortBuilder;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.jshift.kit.common.Configs;
 import io.jshift.kit.common.util.MavenUtil;
+import io.jshift.kit.common.util.SpringBootUtil;
 import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.image.build.BuildConfiguration;
 import io.jshift.kit.config.resource.PlatformMode;
@@ -37,6 +38,7 @@ import io.jshift.maven.enricher.api.BaseEnricher;
 import io.jshift.maven.enricher.api.MavenEnricherContext;
 import io.jshift.kit.common.util.KubernetesHelper;
 import io.jshift.maven.enricher.handler.ServiceHandler;
+import java.util.Properties;
 import org.apache.maven.shared.utils.StringUtils;
 
 import java.io.IOException;
@@ -142,6 +144,28 @@ public class DefaultServiceEnricher extends BaseEnricher {
         }
     }
 
+    private String getAppName() {
+        try {
+            if (getContext().getProjectClassLoaders().isClassInCompileClasspath(true)) {
+                Properties
+                    properties = SpringBootUtil.getSpringBootApplicationProperties(getContext().getProjectClassLoaders().getCompileClassLoader());
+                return properties.getProperty("spring.application.name");
+            }
+        } catch (Exception ex) {
+            log.error("Error while reading the spring-boot configuration", ex);
+        }
+        return null;
+    }
+
+    private String getServiceName() {
+        String appName = getAppName();
+        if (appName != null) {
+            return appName;
+        } else {
+            return getConfig(Config.name, MavenUtil.createDefaultResourceName(getContext().getGav().getSanitizedArtifactId()));
+        }
+    }
+
     private Service getDefaultService() {
 
         // No image config, no service
@@ -149,7 +173,7 @@ public class DefaultServiceEnricher extends BaseEnricher {
             return null;
         }
 
-        String serviceName = getConfig(Config.name, MavenUtil.createDefaultResourceName(getContext().getGav().getSanitizedArtifactId()));
+        String serviceName = getServiceName();
 
         // Create service only for all images which are supposed to live in a single pod
         List<ServicePort> ports = extractPorts(getImages().get());
