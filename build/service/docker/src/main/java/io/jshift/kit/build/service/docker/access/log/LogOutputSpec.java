@@ -2,19 +2,24 @@ package io.jshift.kit.build.service.docker.access.log;
 
 import io.jshift.kit.build.service.docker.helper.Timestamp;
 import org.fusesource.jansi.Ansi;
-import org.joda.time.format.*;
 
-import static org.fusesource.jansi.Ansi.Color.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
+import static org.fusesource.jansi.Ansi.Color.BLACK;
+import static org.fusesource.jansi.Ansi.Color.BLUE;
+import static org.fusesource.jansi.Ansi.Color.CYAN;
+import static org.fusesource.jansi.Ansi.Color.GREEN;
+import static org.fusesource.jansi.Ansi.Color.MAGENTA;
+import static org.fusesource.jansi.Ansi.Color.RED;
+import static org.fusesource.jansi.Ansi.Color.YELLOW;
 import static org.fusesource.jansi.Ansi.ansi;
 
-/**
- * @author roland
- * @since 25/11/14
- */
 public class LogOutputSpec {
 
     public static final LogOutputSpec DEFAULT = new LogOutputSpec("", YELLOW, false , null, null, true, true);
-
+    private final static String DEFAULT_TIMESTAMP_PATTERN = "HH:mm:ss.SSS";
     private final boolean useColor;
     private final boolean logStdout;
     private final boolean fgBright;
@@ -40,7 +45,7 @@ public class LogOutputSpec {
     }
 
     public boolean isUseColor() {
-        return useColor && (file == null || logStdout);
+        return useColor && (getFile() == null || isLogStdout());
     }
 
     public boolean isLogStdout() {
@@ -59,13 +64,16 @@ public class LogOutputSpec {
         if (timeFormatter == null) {
             return "";
         }
-        String date = timeFormatter.print(timestamp.getDate());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DEFAULT_TIMESTAMP_PATTERN);
+        LocalDateTime localDateTime = LocalDateTime.from(formatter.parse(timestamp.toString()));
+
         return (withColor ?
-                ansi().fgBright(BLACK).a(date).reset().toString() :
-                date) + " ";
+                ansi().fgBright(BLACK).a(localDateTime).reset().toString() :
+                localDateTime) + " ";
     }
 
-    private String formatPrefix(String prefix,boolean withColor) {
+    private String formatPrefix(String prefix, boolean withColor) {
         if (withColor) {
             Ansi ansi = ansi();
             if (fgBright) {
@@ -123,24 +131,26 @@ public class LogOutputSpec {
                     || formatOrConstant.equalsIgnoreCase("FALSE")) {
                 timeFormatter = null;
             } else if (formatOrConstant.length() == 0 || formatOrConstant.equalsIgnoreCase("DEFAULT")) {
-                timeFormatter = DateTimeFormat.forPattern("HH:mm:ss.SSS");
+                timeFormatter = DateTimeFormatter.ofPattern(DEFAULT_TIMESTAMP_PATTERN);
             } else if (formatOrConstant.equalsIgnoreCase("ISO8601")) {
-                timeFormatter = ISODateTimeFormat.dateTime();
+                timeFormatter = DateTimeFormatter.ISO_DATE_TIME;
             } else if (formatOrConstant.equalsIgnoreCase("SHORT")) {
-                timeFormatter = DateTimeFormat.shortDateTime();
+                timeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
             } else if (formatOrConstant.equalsIgnoreCase("MEDIUM")) {
-                timeFormatter = DateTimeFormat.mediumDateTime();
+                timeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
             } else if (formatOrConstant.equalsIgnoreCase("LONG")) {
-                timeFormatter = DateTimeFormat.longDateTime();
+                timeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG);
+            } else if (formatOrConstant.equalsIgnoreCase("FULL")) {
+                timeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL);
             } else {
                 try {
-                    timeFormatter = DateTimeFormat.forPattern(formatOrConstant);
+                    timeFormatter = DateTimeFormatter.ofPattern(formatOrConstant);
                 } catch (IllegalArgumentException exp) {
                     throw new IllegalArgumentException(
                             "Cannot parse log date specification '" + formatOrConstant + "'." +
-                                    "Must be either DEFAULT, NONE, ISO8601, SHORT, MEDIUM, LONG or a " +
+                                    "Must be either DEFAULT, NONE, ISO8601, SHORT, MEDIUM, LONG, FULL or a " +
                                     "format string parseable by DateTimeFormat. See " +
-                                    "http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html");
+                                    "https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html");
                 }
             }
             return this;
