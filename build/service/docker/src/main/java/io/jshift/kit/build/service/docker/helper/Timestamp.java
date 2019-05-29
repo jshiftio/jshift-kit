@@ -14,21 +14,19 @@ package io.jshift.kit.build.service.docker.helper;/*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.*;
-
 /**
- * Timestamp holding a {@link DateTime} and nano seconds and which can be compared.
+ * Timestamp holding a {@link LocalDateTime} and nano seconds and which can be compared.
  *
- * @author roland
- * @since 25/11/14
  */
 public class Timestamp implements Comparable<Timestamp> {
 
-    private DateTime date;
+    private LocalDateTime date;
     private int rest;
 
     private static Pattern TS_PATTERN = Pattern.compile("^(.*?)(?:\\.(\\d{3})(\\d*))?(Z|[+\\-][\\d:]+)?$",Pattern.CASE_INSENSITIVE);
@@ -38,7 +36,7 @@ public class Timestamp implements Comparable<Timestamp> {
      *
      */
     public Timestamp() {
-        date = new DateTime();
+        date = LocalDateTime.now();
     }
 
     /**
@@ -56,11 +54,10 @@ public class Timestamp implements Comparable<Timestamp> {
         String millis = matcher.group(2);
         String rest = matcher.group(3);
         this.rest = rest != null ? Integer.parseInt(rest) : 0;
-        DateTimeFormatter parser = ISODateTimeFormat.dateTime();
-        date = parser.parseDateTime(matcher.group(1) + (millis != null ? "." + millis : ".000") + matcher.group(4));
+        date = LocalDateTime.parse(matcher.group(1) + (millis != null ? "." + millis : ".000") + matcher.group(4), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
-    public DateTime getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
