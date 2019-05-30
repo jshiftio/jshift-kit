@@ -88,7 +88,7 @@ public class AssemblyConfiguration implements Serializable {
     }
 
     public AssemblyMode getMode() {
-        return mode;
+        return mode != null ? mode : AssemblyMode.dir;
     }
 
     public String getTarLongFileMode() {

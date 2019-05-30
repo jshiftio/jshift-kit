@@ -519,7 +519,7 @@ public class DockerAssemblyManager {
 
     private void setArtifactFile(MavenProject project, File artifactFile) {
         Artifact artifact = project.getArtifact();
-        if (artifact != null) {
+        if (artifact != null && artifactFile != null) {
             artifact.setFile(artifactFile);
         }
     }
