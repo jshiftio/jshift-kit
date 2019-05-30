@@ -2,4 +2,4 @@
 # (which is the profile "default" by default)
 # You can find the default profiles in "profiles-default.yml"
 
-io.jshift.maven.generator.quarkus.QuarkusGenerator
+io.jshift.thorntail.v2.generator.ThorntailV2Generator
