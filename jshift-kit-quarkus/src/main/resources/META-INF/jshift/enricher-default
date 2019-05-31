@@ -1,2 +1,2 @@
 # Healthcheck Enricher
-io.jshift.quarkus.generator.QuarkusHealthCheckEnricher
+io.jshift.quarkus.enricher.QuarkusHealthCheckEnricher
