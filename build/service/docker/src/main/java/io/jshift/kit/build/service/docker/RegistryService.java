@@ -5,14 +5,12 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
-
 import io.jshift.kit.build.api.auth.AuthConfig;
 import io.jshift.kit.build.service.docker.access.DockerAccess;
 import io.jshift.kit.build.service.docker.access.DockerAccessException;
 import io.jshift.kit.build.service.docker.auth.AuthConfigFactory;
 import io.jshift.kit.common.KitLogger;
 import io.jshift.kit.common.util.EnvUtil;
-import io.jshift.kit.config.image.ImageConfiguration;
 import io.jshift.kit.config.image.ImageName;
 import io.jshift.kit.config.image.build.BuildConfiguration;
 import io.jshift.kit.config.image.build.ImagePullPolicy;
