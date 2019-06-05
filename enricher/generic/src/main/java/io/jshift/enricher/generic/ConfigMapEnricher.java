@@ -89,13 +89,16 @@ public class ConfigMapEnricher extends BaseEnricher {
     }
 
     private void addConfigMapFromXmlConfigurations(KubernetesListBuilder builder) {
-        ConfigMap configMap = getConfigMapFromXmlConfiguration();
+        io.jshift.kit.config.resource.ConfigMap configMap = getConfigMapFromXmlConfiguration();
         final Map<String, String> configMapFromConfiguration;
         try {
             configMapFromConfiguration = createConfigMapFromConfiguration(configMap);
-            if(!configMapFromConfiguration.isEmpty() && !checkIfItemExists(builder, "xmlconfig")) {
+            String configMapName = (configMap == null || configMap.getName() == null || configMap.getName().trim().isEmpty()) ? "xmlconfig" : configMap.getName().trim();
+            log.debug("configMapName :: ".concat(configMapName));
+
+            if(!configMapFromConfiguration.isEmpty() && !checkIfItemExists(builder, configMapName)) {
                 ConfigMapBuilder element = new ConfigMapBuilder();
-                element.withNewMetadata().withName("xmlconfig").endMetadata();
+                element.withNewMetadata().withName(configMapName).endMetadata();
                 element.addToData(configMapFromConfiguration);
 
                 builder.addToConfigMapItems(element.build());
@@ -106,7 +109,7 @@ public class ConfigMapEnricher extends BaseEnricher {
     }
 
     private boolean checkIfItemExists(KubernetesListBuilder builder, String name) {
-        return builder.buildItems().stream().anyMatch(item -> item.getMetadata().getName().equals(name));
+        return builder.buildItems().stream().filter(item -> item.getKind().equals("ConfigMap")).anyMatch(item -> item.getMetadata().getName().equals(name));
     }
 
     private ConfigMap getConfigMapFromXmlConfiguration() {
@@ -117,7 +120,7 @@ public class ConfigMapEnricher extends BaseEnricher {
         return null;
     }
 
-    private Map<String, String> createConfigMapFromConfiguration(ConfigMap configMap) throws IOException {
+    private Map<String, String> createConfigMapFromConfiguration(io.jshift.kit.config.resource.ConfigMap configMap) throws IOException {
         final Map<String, String> configMapData = new HashMap<>();
 
         if (configMap != null) {
