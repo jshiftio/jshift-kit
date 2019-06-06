@@ -65,6 +65,7 @@ public class VertxHealthCheckEnricher extends AbstractHealthCheckEnricher {
             return input == null ? null : input.trim();
         }
     };
+    public static final String[] jshiftPlugins = {"io.jshift:kubernetes-maven-plugin", "io.jshift:openshift-maven-plugin"};
     public static final String ERROR_MESSAGE = "Location of %s should return a String but found %s with value %s";
 
     public VertxHealthCheckEnricher(MavenEnricherContext buildContext) {
@@ -359,8 +360,6 @@ public class VertxHealthCheckEnricher extends AbstractHealthCheckEnricher {
     }
 
     private Optional<Map<String, Object>> getMavenPluginConfiguration() {
-        final String[] jshiftPlugins = {"io.jshift:kubernetes-maven-plugin", "io.jshift:openshift-maven-plugin"};
-
         for(String pluginId : jshiftPlugins) {
             Optional<Map<String, Object>> configuration = getContext().getConfiguration().getPluginConfiguration("maven", pluginId);
             if(configuration != null) {
