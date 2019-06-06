@@ -332,7 +332,7 @@ public class VertxHealthCheckEnricher extends AbstractHealthCheckEnricher {
     }
 
     private Optional<Object> getElement(String... path) {
-        final Optional<Map<String, Object>> configuration = getContext().getConfiguration().getPluginConfiguration("maven", "io.jshift:jshift-maven-plugin");
+        final Optional<Map<String, Object>> configuration = getMavenPluginConfiguration();
 
         if (!configuration.isPresent()) {
             return Optional.empty();
@@ -356,6 +356,18 @@ public class VertxHealthCheckEnricher extends AbstractHealthCheckEnricher {
 
         }
         return Optional.of(root);
+    }
+
+    private Optional<Map<String, Object>> getMavenPluginConfiguration() {
+        final String[] jshiftPlugins = {"io.jshift:kubernetes-maven-plugin", "io.jshift:openshift-maven-plugin"};
+
+        for(String pluginId : jshiftPlugins) {
+            Optional<Map<String, Object>> configuration = getContext().getConfiguration().getPluginConfiguration("maven", pluginId);
+            if(configuration != null) {
+                return configuration;
+            }
+        }
+        return null;
     }
 
 }
