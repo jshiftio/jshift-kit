@@ -48,7 +48,7 @@ import java.util.Properties;
  * @author roland
  * @since 08/04/16
  */
-class ContainerHandler {
+public class ContainerHandler {
 
     private final ProbeHandler probeHandler;
     private final Properties configurationProperties;
