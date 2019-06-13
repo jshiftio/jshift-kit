@@ -363,7 +363,7 @@ public class VertxHealthCheckEnricher extends AbstractHealthCheckEnricher {
     private Optional<Map<String, Object>> getMavenPluginConfiguration() {
         for(String pluginId : jshiftPlugins) {
             Optional<Map<String, Object>> configuration = getContext().getConfiguration().getPluginConfiguration("maven", pluginId);
-            if(configuration != null) {
+            if(configuration != null && configuration.isPresent()) {
                 return configuration;
             }
         }
