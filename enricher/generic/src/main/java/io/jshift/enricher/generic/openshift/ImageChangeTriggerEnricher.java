@@ -35,7 +35,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ImageChangeTriggerEnricher extends BaseEnricher {
-    static final String ENRICHER_NAME = "fmp-openshift-imageChangeTrigger";
+    static final String ENRICHER_NAME = "jshift-openshift-imageChangeTrigger";
     private Boolean enableAutomaticTrigger;
     private Boolean enableImageChangeTrigger;
     private Boolean trimImageInContainerSpecFlag;
