@@ -42,8 +42,7 @@ public class ImageChangeTriggerEnricher extends BaseEnricher {
 
 
     private enum Config implements Configs.Key {
-        containers {{ d = ""; }},
-        enrichAll {{ d = "false"; }};
+        containers {{ d = ""; }};
 
         public String def() { return d; } protected String d;
     }
@@ -61,53 +60,57 @@ public class ImageChangeTriggerEnricher extends BaseEnricher {
             return;
 
         builder.accept(new TypedVisitor<DeploymentConfigSpecBuilder>() {
-                @Override
-                public void visit(DeploymentConfigSpecBuilder builder) {
-                    Map<String, String> containerToImageMap = new HashMap<>();
-                    PodTemplateSpec template = builder.buildTemplate();
-                    if (template != null) {
-                        PodSpec podSpec = template.getSpec();
-                        Objects.requireNonNull(podSpec, "No PodSpec for PodTemplate:" + template);
-                        List<Container> containers = podSpec.getContainers();
-                        containerToImageMap = containers.stream().collect(Collectors.toMap(Container::getName, Container::getImage));
-                    }
-                    // add a new image change trigger for the build stream
-                    if (containerToImageMap.size() != 0) {
-                        if(enableImageChangeTrigger && isOpenShiftMode()) {
-                            for (Map.Entry<String, String> entry : containerToImageMap.entrySet()) {
-                                String containerName = entry.getKey();
-
-                                if(!isImageChangeTriggerNeeded(containerName))
-                                    continue;
-
-                                ImageName image = new ImageName(entry.getValue());
-                                String tag = image.getTag() != null ? image.getTag() : "latest";
-                                builder.addNewTrigger()
-                                        .withType("ImageChange")
-                                        .withNewImageChangeParams()
-                                        .withAutomatic(enableAutomaticTrigger)
-                                        .withNewFrom()
-                                        .withKind("ImageStreamTag")
-                                        .withName(image.getSimpleName() + ":" + tag)
-                                        .withNamespace(image.getUser())
-                                        .endFrom()
-                                        .withContainerNames(containerName)
-                                        .endImageChangeParams()
-                                        .endTrigger();
-                            }
+            @Override
+            public void visit(DeploymentConfigSpecBuilder builder) {
+                Map<String, String> containerToImageMap = new HashMap<>();
+                PodTemplateSpec template = builder.buildTemplate();
+                if (template != null) {
+                    PodSpec podSpec = template.getSpec();
+                    Objects.requireNonNull(podSpec, "No PodSpec for PodTemplate:" + template);
+                    List<Container> containers = podSpec.getContainers();
+                    for(Container container : containers) {
+                        if(container.getName() != null && container.getImage() != null) {
+                            containerToImageMap.put(container.getName(), container.getImage());
                         }
+                    }
+                }
+                // add a new image change trigger for the build stream
+                if (containerToImageMap.size() != 0) {
+                    if(enableImageChangeTrigger && isOpenShiftMode()) {
+                        for (Map.Entry<String, String> entry : containerToImageMap.entrySet()) {
+                            String containerName = entry.getKey();
 
+                            if(!isImageChangeTriggerNeeded(containerName))
+                                continue;
+
+                            ImageName image = new ImageName(entry.getValue());
+                            String tag = image.getTag() != null ? image.getTag() : "latest";
+                            builder.addNewTrigger()
+                                    .withType("ImageChange")
+                                    .withNewImageChangeParams()
+                                    .withAutomatic(enableAutomaticTrigger)
+                                    .withNewFrom()
+                                    .withKind("ImageStreamTag")
+                                    .withName(image.getSimpleName() + ":" + tag)
+                                    .withNamespace(image.getUser())
+                                    .endFrom()
+                                    .withContainerNames(containerName)
+                                    .endImageChangeParams()
+                                    .endTrigger();
+                        }
                         if(trimImageInContainerSpecFlag) {
                             builder.editTemplate().editSpec().withContainers(trimImagesInContainers(template)).endSpec().endTemplate();
                         }
                     }
+
                 }
-            });
+            }
+        });
     }
 
     private Boolean isImageChangeTriggerNeeded(String containerName) {
         String containersFromConfig = Configs.asString(getConfig(Config.containers));
-        Boolean enrichAll = Configs.asBoolean(getConfig(Config.enrichAll));
+        Boolean enrichAll = enrichAllWithImageChangeTrigger((MavenEnricherContext)enricherContext, false);
 
         if(enrichAll) {
             return true;
@@ -118,7 +121,7 @@ public class ImageChangeTriggerEnricher extends BaseEnricher {
                 Arrays.asList(containersFromConfig.split(",")).contains(containerName))) {
             return false;
         }
-        
+
         return true;
     }
 

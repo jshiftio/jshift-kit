@@ -159,6 +159,22 @@ public class BaseEnricher implements Enricher {
         }
     }
 
+    protected Boolean enrichAllWithImageChangeTrigger(MavenEnricherContext enricherContext, Boolean defaultValue) {
+        if(enricherContext.getProperty("jshift.openshift.enrichAllWithImageChangeTrigger") != null) {
+            return Boolean.parseBoolean(enricherContext.getProperty("jshift.openshift.enrichAllWithImageChangeTrigger").toString());
+        } else {
+            return defaultValue;
+        }
+    }
+
+    protected Boolean getSidecarFlag(Boolean defaultValue) {
+        if (getContext().getProperty("jshift.sidecar") != null) {
+            return Boolean.parseBoolean(getContext().getProperty("jshift.sidecar").toString());
+        } else {
+            return defaultValue;
+        }
+    }
+
     /**
      * This method overrides the ImagePullPolicy value by the value provided in
      * XML config.
