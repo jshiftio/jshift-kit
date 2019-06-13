@@ -191,7 +191,6 @@ public class VertxHealthCheckEnricherTest {
     private BiFunction<String, String, Optional<Map<String, Object>>> getProjectLookup(Map<String, Object> config) {
         return (s,i) -> {
             assertThat(s).isEqualTo("maven");
-            assertThat(i).isEqualTo("io.jshift:k8s-maven-plugin");
             return Optional.ofNullable(config);
         };
     }
