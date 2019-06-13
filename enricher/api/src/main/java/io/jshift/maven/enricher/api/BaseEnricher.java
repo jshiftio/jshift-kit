@@ -160,16 +160,16 @@ public class BaseEnricher implements Enricher {
     }
 
     protected Boolean enrichAllWithImageChangeTrigger(MavenEnricherContext enricherContext, Boolean defaultValue) {
-        if(enricherContext.getProperty("fabric8.openshift.enrichAllWithImageChangeTrigger") != null) {
-            return Boolean.parseBoolean(enricherContext.getProperty("fabric8.openshift.enrichAllWithImageChangeTrigger").toString());
+        if(enricherContext.getProperty("jshift.openshift.enrichAllWithImageChangeTrigger") != null) {
+            return Boolean.parseBoolean(enricherContext.getProperty("jshift.openshift.enrichAllWithImageChangeTrigger").toString());
         } else {
             return defaultValue;
         }
     }
 
     protected Boolean getSidecarFlag(Boolean defaultValue) {
-        if (getContext().getProperty("fabric8.sidecar") != null) {
-            return Boolean.parseBoolean(getContext().getProperty("fabric8.sidecar").toString());
+        if (getContext().getProperty("jshift.sidecar") != null) {
+            return Boolean.parseBoolean(getContext().getProperty("jshift.sidecar").toString());
         } else {
             return defaultValue;
         }
