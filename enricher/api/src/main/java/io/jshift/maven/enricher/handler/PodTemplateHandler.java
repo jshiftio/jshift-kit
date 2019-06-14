@@ -38,7 +38,7 @@ public class PodTemplateHandler {
 
     private final ContainerHandler containerHandler;
 
-    PodTemplateHandler(ContainerHandler containerHandler) {
+    public PodTemplateHandler(ContainerHandler containerHandler) {
         this.containerHandler = containerHandler;
     }
 
