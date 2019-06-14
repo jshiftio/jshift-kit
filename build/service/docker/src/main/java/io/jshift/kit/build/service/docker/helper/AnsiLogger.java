@@ -307,7 +307,7 @@ public class AnsiLogger implements KitLogger {
             this.verboseModes = Arrays.asList(LogVerboseCategory.values());
             return;
         }
-        if (verbose.equals("") || verbose.equalsIgnoreCase("true")) {
+        if (verbose.isEmpty() || verbose.equalsIgnoreCase("true")) {
             this.isVerbose = true;
             this.verboseModes = Collections.singletonList(LogVerboseCategory.BUILD);
             return;

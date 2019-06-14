@@ -60,7 +60,7 @@ public class DockerMachine implements DockerConnectionDetector.DockerHostProvide
             Status status = new StatusCommand().getStatus();
             switch (status) {
                 case DoesNotExist:
-                    if (machine.getAutoCreate().equals(Boolean.TRUE)) {
+                    if (Boolean.TRUE.equals(machine.getAutoCreate())) {
                         new CreateCommand().execute();
                     } else {
                         throw new IllegalStateException(machine.getName() + " does not exist and docker.machine.autoCreate is false");
@@ -70,7 +70,7 @@ public class DockerMachine implements DockerConnectionDetector.DockerHostProvide
                     break;
                 case Stopped:
                     new StartCommand().execute();
-                    if (machine.getRegenerateCertsAfterStart().equals(Boolean.TRUE)) {
+                    if (Boolean.TRUE.equals(machine.getRegenerateCertsAfterStart())) {
                         new RegenerateCertsCommand().execute();
                     }
                     break;

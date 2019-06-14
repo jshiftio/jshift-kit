@@ -65,7 +65,7 @@ public class VertxHealthCheckEnricher extends AbstractHealthCheckEnricher {
             return input == null ? null : input.trim();
         }
     };
-    protected static final String[] jshiftPlugins = {"io.jshift:kubernetes-maven-plugin", "io.jshift:openshift-maven-plugin"};
+    protected static final String[] jshiftPlugins = {"io.jshift:k8s-maven-plugin", "io.jshift:oc-maven-plugin"};
 
     public static final String ERROR_MESSAGE = "Location of %s should return a String but found %s with value %s";
 
