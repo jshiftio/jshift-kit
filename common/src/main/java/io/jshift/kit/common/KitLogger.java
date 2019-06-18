@@ -113,4 +113,18 @@ public interface KitLogger {
         }
 
     }
+
+    enum LogVerboseCategory {
+        BUILD("build"), API("api");
+
+        private String category;
+
+        LogVerboseCategory(String category) {
+            this.category = category;
+        }
+
+        public String getValue() {
+            return category;
+        }
+    };
 }
