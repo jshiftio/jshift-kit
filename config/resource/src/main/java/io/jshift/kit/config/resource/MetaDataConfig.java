@@ -48,6 +48,11 @@ public class MetaDataConfig {
     /**
      * Labels or annotations for deployment or deployment configs
      */
+    private Properties ingress;
+
+    /**
+     * Labels or annotations for deployment or deployment configs
+     */
     private Properties deployment;
 
     public Properties getPod() {
@@ -68,5 +73,9 @@ public class MetaDataConfig {
 
     public Properties getDeployment() {
         return deployment;
+    }
+
+    public Properties getIngress() {
+        return ingress;
     }
 }

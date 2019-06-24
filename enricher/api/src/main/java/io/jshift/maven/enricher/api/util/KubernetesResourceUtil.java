@@ -263,7 +263,7 @@ public class KubernetesResourceUtil {
         addKind(fragment, kind, file.getName());
 
         String apiVersion = apiVersions.getCoreVersion();
-        if (Objects.equals(kind, "Ingress")) {
+        if (Objects.equals(kind, "Ingress") && platformMode == PlatformMode.kubernetes) {
             apiVersion = apiVersions.getExtensionsVersion();
         } else if (Objects.equals(kind, "StatefulSet") || Objects.equals(kind, "Deployment")) {
             apiVersion = apiVersions.getAppsVersion();
