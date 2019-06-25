@@ -16,6 +16,7 @@
 
 package io.jshift.kit.config.resource;
 
+import io.fabric8.kubernetes.api.model.extensions.IngressRule;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -93,6 +94,8 @@ public class ResourceConfig {
     @Parameter
     private List<ServiceAccountConfig> serviceAccounts;
 
+    private List<IngressRule> ingressRules;
+
     public Optional<Map<String, String>> getEnv() {
         return Optional.ofNullable(env);
     }
@@ -169,6 +172,8 @@ public class ResourceConfig {
 
     public List<String> getCrdContexts() { return customResourceDefinitions; }
 
+    public List<IngressRule> getIngressRules() { return ingressRules; }
+
     // =============================================================================================
 
     public static class Builder {
@@ -196,6 +201,7 @@ public class ResourceConfig {
                 this.config.metrics = config.getMetrics();
                 this.config.namespace = config.getNamespace();
                 this.config.remotes = config.remotes;
+                this.config.ingressRules = config.getIngressRules();
             }
         }
 
@@ -256,6 +262,11 @@ public class ResourceConfig {
 
         public Builder withNamespace(String s) {
             config.namespace = s;
+            return this;
+        }
+
+        public Builder withIngressRules(List<IngressRule> ingressRules) {
+            config.ingressRules = ingressRules;
             return this;
         }
 

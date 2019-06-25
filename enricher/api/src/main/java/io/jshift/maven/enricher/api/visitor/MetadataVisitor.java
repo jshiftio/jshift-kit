@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.batch.JobBuilder;
+import io.fabric8.kubernetes.api.model.extensions.IngressBuilder;
 import io.jshift.kit.config.resource.MetaDataConfig;
 import io.jshift.kit.config.resource.ProcessorConfig;
 import io.jshift.kit.config.resource.ResourceConfig;
@@ -107,6 +108,8 @@ public abstract class MetadataVisitor<T> extends TypedVisitor<T> {
             ret = propertiesToMap(config.getReplicaSet());
         } else if (kind == Kind.POD_SPEC) {
             ret = propertiesToMap(config.getPod());
+        } else if (kind == Kind.INGRESS) {
+            ret = propertiesToMap(config.getIngress());
         } else {
             ret = new HashMap<>();
         }
@@ -337,6 +340,22 @@ public abstract class MetadataVisitor<T> extends TypedVisitor<T> {
 
         @Override
         protected ObjectMeta getOrCreateMetadata(BuildBuilder item) {
+            return item.hasMetadata() ? item.buildMetadata() : item.withNewMetadata().endMetadata().buildMetadata();
+        }
+    }
+
+    public static class IngressBuilderVisitor extends MetadataVisitor<IngressBuilder> {
+        public IngressBuilderVisitor(ResourceConfig resourceConfig) {
+            super(resourceConfig);
+        }
+
+        @Override
+        protected Kind getKind() {
+            return Kind.BUILD;
+        }
+
+        @Override
+        protected ObjectMeta getOrCreateMetadata(IngressBuilder item) {
             return item.hasMetadata() ? item.buildMetadata() : item.withNewMetadata().endMetadata().buildMetadata();
         }
     }

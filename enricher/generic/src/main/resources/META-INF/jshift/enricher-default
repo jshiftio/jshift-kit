@@ -98,3 +98,6 @@ io.jshift.enricher.generic.FileDataSecretEnricher
 
 # ImageChange trigger enrichers for openshift
 io.jshift.enricher.generic.openshift.ImageChangeTriggerEnricher
+
+# Add an ingress on demand when on Kubernetes
+io.jshift.enricher.generic.IngressEnricher
