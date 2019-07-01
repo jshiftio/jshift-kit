@@ -24,6 +24,9 @@ public class ThorntailUtil {
     /**
      * Returns the thorntail configuration (supports `project-defaults.yml`)
      * or an empty properties object if not found
+     *
+     * @param compileClassLoader URLClassLoader for resource access
+     * @return thorntail configuration properties
      */
     public static Properties getThorntailProperties(URLClassLoader compileClassLoader) {
         URL ymlResource = compileClassLoader.findResource("project-defaults.yml");

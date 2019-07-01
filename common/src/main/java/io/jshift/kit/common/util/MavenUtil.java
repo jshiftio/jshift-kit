@@ -113,13 +113,23 @@ public class MavenUtil {
 
     /**
      * Returns true if the maven project has a dependency with the given groupId and artifactId (if not null)
+     *
+     * @param project MavenProject object for project
+     * @param groupId group id of project
+     * @param artifactId artifact id of project
+     * @return boolean value indicating whether dependency is there or not
      */
     public static boolean hasDependency(MavenProject project, String groupId, String artifactId) {
         return getDependencyVersion(project, groupId, artifactId) != null;
     }
 
     /**
-     * Returns the version associated to the dependency dependency with the given groupId and artifactId (if present)
+     * Returns the version associated to the dependency with the given groupId and artifactId (if present)
+     *
+     * @param project MavenProject object for project
+     * @param groupId group id
+     * @param artifactId artifact id
+     * @return version associated to dependency
      */
     public static String getDependencyVersion(MavenProject project, String groupId, String artifactId) {
         Set<Artifact> artifacts = project.getArtifacts();
@@ -154,6 +164,11 @@ public class MavenUtil {
 
     /**
      * Returns the plugin with the given groupId (if present) and artifactId.
+     *
+     * @param project MavenProject of project
+     * @param groupId group id
+     * @param artifactId artifact id
+     * @return return Plugin object for the specific plugin
      */
     public static Plugin getPlugin(MavenProject project, String groupId, String artifactId) {
         if (artifactId == null) {
@@ -176,6 +191,10 @@ public class MavenUtil {
 
     /**
      * Returns true if any of the given resources could be found on the given class loader
+     *
+     * @param project project object
+     * @param paths array of strings as path
+     * @return boolean value indicating whether that project has resource or not
      */
     public static boolean hasResource(MavenProject project, String... paths) {
         URLClassLoader compileClassLoader = getCompileClassLoader(project);
@@ -216,6 +235,11 @@ public class MavenUtil {
 
     /**
      * Returns the version from the list of pre-configured versions of common groupId/artifact pairs
+     *
+     * @param groupId group id
+     * @param artifactId artifact id
+     * @return version according to that pair
+     * @throws IOException IOException in case file is not found
      */
     public static String getVersion(String groupId, String artifactId) throws IOException {
         String path = "META-INF/maven/" + groupId + "/" + artifactId + "/pom.properties";

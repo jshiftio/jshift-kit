@@ -153,7 +153,7 @@ public class EnvUtil {
      * Remove empty members of a list.
      *
      * @param input A list of String
-     * @return A list of Non-Empty (length>0) String
+     * @return A list of Non-Empty (length ;&gt; 0) String
      */
     @Nonnull
     public static List<String> removeEmptyEntries(@Nullable List<String> input) {
@@ -166,7 +166,7 @@ public class EnvUtil {
     }
 
     /**
-     * Split each element of an Iterable<String> at commas.
+     * Split each element of an Iterable;&lt;String;&gt; at commas.
      *
      * @param input Iterable over strings.
      * @return An Iterable over string which breaks down each input element at comma boundaries
@@ -216,7 +216,7 @@ public class EnvUtil {
      * System properties always takes precedence.
      *
      * @param project Project to extract Properties from
-     * @return
+     * @return Properties merged
      */
     public static Properties getPropertiesWithSystemOverrides(MavenProject project) {
         Properties properties = new Properties(project.getProperties());
@@ -228,7 +228,7 @@ public class EnvUtil {
      * Extract part of given properties as a map. The given prefix is used to find the properties,
      * the rest of the property name is used as key for the map.
      * <p>
-     * NOTE: If key is "._combine" ({@link #PROPERTY_COMBINE_POLICY_SUFFIX)} it is ignored! This is reserved for combine policy tweaking.
+     * NOTE: If key is "._combine" ({@link #PROPERTY_COMBINE_POLICY_SUFFIX}) it is ignored! This is reserved for combine policy tweaking.
      *
      * @param prefix     prefix which specifies the part which should be extracted as map
      * @param properties properties to extract from
@@ -257,7 +257,7 @@ public class EnvUtil {
      * given properties from which the list should be extracted, the rest is used as a numeric index. If the rest
      * is not numeric, the order is not determined (all those props are appended to the end of the list)
      * <p>
-     * NOTE: If suffix/index is "._combine" ({@link #PROPERTY_COMBINE_POLICY_SUFFIX)} it is ignored!
+     * NOTE: If suffix/index is "._combine" ({@link #PROPERTY_COMBINE_POLICY_SUFFIX}) it is ignored!
      * This is reserved for combine policy tweaking.
      *
      * @param prefix     for selecting the properties from which the list should be extracted

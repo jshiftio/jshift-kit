@@ -102,6 +102,7 @@ public class RunService {
      * @return the exec container id
      *
      * @throws DockerAccessException if access to the docker backend fails
+     * @throws ExecException if any problem faced during exec
      */
     public String execInContainer(String containerId, String command, ImageConfiguration imageConfiguration)
         throws DockerAccessException, ExecException {
@@ -124,7 +125,7 @@ public class RunService {
      * @param imageConfig image configuration holding the run information and the image name
      * @param portMapping container port mapping
      * @param gavLabel label to tag the started container with
-     *
+     * @param baseDir base directory
      * @param properties properties to fill in with dynamically assigned ports
      * @param defaultContainerNamePattern pattern to use for naming containers. Can be null in which case a default pattern is used
      * @param buildTimestamp date which should be used as the timestamp when calculating container names
@@ -163,6 +164,8 @@ public class RunService {
      * @param imageConfig image configuration for this container
      * @param keepContainer whether to keep container or to remove them after stoppings
      * @param removeVolumes whether to remove volumes after stopping
+     * @throws DockerAccessException docker access exception
+     * @throws ExecException exec exception
      */
     public void stopContainer(String containerId,
                               ImageConfiguration imageConfig,
@@ -181,7 +184,8 @@ public class RunService {
      * @param keepContainer whether to keep container or to remove them after stoppings
      * @param removeVolumes whether to remove volumes after stopping
      *
-     * @throws DockerAccessException
+     * @throws DockerAccessException docker access exception
+     * @throws ExecException exec exception
      */
     public void stopPreviouslyStartedContainer(String containerId,
                                                boolean keepContainer,
@@ -195,9 +199,13 @@ public class RunService {
 
     /**
      * Stop all registered container
+     *
      * @param keepContainer whether to keep container or to remove them after stopping
      * @param removeVolumes whether to remove volumes after stopping
+     * @param removeCustomNetworks whether to remove custom networks
+     * @param gavLabel group artifact version label
      * @throws DockerAccessException if during stopping of a container sth fails
+     * @throws ExecException if any problem during exec
      */
     public void stopStartedContainers(boolean keepContainer,
                                       boolean removeVolumes,
@@ -231,6 +239,8 @@ public class RunService {
 
     /**
      * Get the proper order for images to start
+     *
+     * @param queryService query service
      * @param images list of images for which the order should be created
      * @return list of images in the right startup order
      */
@@ -255,6 +265,10 @@ public class RunService {
 
     /**
      * Add a shutdown hook in order to stop all registered containers
+     *
+     * @param keepContainer whether to keep container or not
+     * @param removeVolumes whether to remove volumes or not
+     * @param removeCustomNetworks whether to remove custom networks or not
      */
     public void addShutdownHookForStoppingContainers(final boolean keepContainer, final boolean removeVolumes, final boolean removeCustomNetworks) {
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -551,7 +565,7 @@ public class RunService {
      * @param binds volume binds present in ImageConfiguration
      * @param volumes VolumeConfigs present
      * @return List of volumes created
-     * @throws DockerAccessException
+     * @throws DockerAccessException docker access exception
      */
     public List<String> createVolumesAsPerVolumeBinds(ServiceHub hub, List<String> binds, List<VolumeConfiguration> volumes)
             throws DockerAccessException {

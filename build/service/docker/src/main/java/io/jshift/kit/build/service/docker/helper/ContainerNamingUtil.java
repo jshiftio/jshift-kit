@@ -60,6 +60,7 @@ public class ContainerNamingUtil {
     /**
      * Keep only the entry with the higest index if an indexed naming scheme for container has been chosen.
      * @param image the image from which to the the container pattern
+     * @param defaultContainerNamePattern the default container name pattern
      * @param buildTimestamp the timestamp for the build
      * @param containers the list of existing containers
      * @return a list with potentially lower indexed entries removed

@@ -110,7 +110,7 @@ public class AuthConfigFactory {
      * @param registry registry to use, might be null in which case a default registry is checked,
      * @return the authentication configuration or <code>null</code> if none could be found
      *
-     * @throws MojoFailureException
+     * @throws MojoFailureException mojo failure exception
      */
     public AuthConfig createAuthConfig(boolean isPush, boolean skipExtendedAuth, Map authConfig, Settings settings, String user, String registry)
             throws Exception {

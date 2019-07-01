@@ -79,7 +79,7 @@ public class ImageConfigResolver implements Initializable {
      *
      * @param unresolvedConfig the configuration to resolve
      * @param project project used for resolving
-     * @param session
+     * @param session maven session
      * @return list of resolved image configurations
      * @throws IllegalArgumentException if no type is given when an external reference configuration is provided
      * or when the type is not known (i.e. no handler is registered for this type).

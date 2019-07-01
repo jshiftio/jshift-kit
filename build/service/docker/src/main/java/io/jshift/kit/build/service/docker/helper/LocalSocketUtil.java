@@ -33,6 +33,8 @@ public class LocalSocketUtil {
     /**
      * Check whether we can connect to a local Unix socket
      *
+     * @param path file provided
+     * @return whether we can connect or not
      */
     public static boolean canConnectUnixSocket(File path) {
         try (UnixSocketChannel channel = UnixSocketChannel.open()) {

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Standard properties from Spring Boot <code><application.properties/code> files
+ * Standard properties from Spring Boot <code>application.properties</code> files
  */
 public class SpringBootConfigurationHelper {
 

@@ -56,6 +56,7 @@ public class Arguments implements Serializable {
      * Read <a href="http://blog.sonatype.com/2011/03/configuring-plugin-goals-in-maven-3/#.VeR3JbQ56Rv">more</a> on
      * this and other useful techniques.
      *
+     * @param shell shell provided as string
      */
     public void set(String shell) {
         setShell(shell);
@@ -75,6 +76,8 @@ public class Arguments implements Serializable {
 
     /**
      * @see Arguments#execInlined
+     *
+     * @param arg argument as string
      */
     @SuppressWarnings("unused")
     public void setArg(String arg) {

@@ -86,7 +86,7 @@ public class MavenArchiveService {
      *                    config must not be null.
      * @param context needed for tracking the assembly
      * @return mapping of assembly files
-     * @throws IOException
+     * @throws IOException IOException in case of any input/output error
      */
     public AssemblyFiles getAssemblyFiles(ImageConfiguration imageConfig, MavenBuildContext context)
         throws IOException, MojoExecutionException {
@@ -103,7 +103,7 @@ public class MavenArchiveService {
      * Create an tar archive from a set of assembly files. Only files which changed since the last call are included.
      * @param entries changed files. List must not be empty or null
      * @param imageName image's name
-     * @param mojoParameters
+     * @param mojoParameters maven build context
      * @return created archive
      */
     public File createChangedFilesArchive(List<AssemblyFiles.Entry> entries, File assemblyDir,

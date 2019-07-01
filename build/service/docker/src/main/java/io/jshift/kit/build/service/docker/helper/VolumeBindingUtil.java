@@ -18,6 +18,7 @@ import static io.jshift.kit.build.service.docker.helper.DockerPathUtil.resolveAb
  * docker compose file can specify a relative path when configuring a volume binding.  Methods in this class will
  * examine volume binding strings in a {@link RunVolumeConfiguration} and resolve any relative paths in the host portion
  * of volume bindings.  Examples of relative bindings include:
+ * </p>
  * <dl>
  *     <dd>A host path relative to the current working directory</dd>
  *     <dt>./relative/path:/absolute/container/path</dt>
@@ -34,16 +35,15 @@ import static io.jshift.kit.build.service.docker.helper.DockerPathUtil.resolveAb
  *     <dd>A host path relative to the current user's home directory</dd>
  *     <dt>~/relative/path:/absolute/container/path</dt>
  * </dl>
- * </p>
  * <p>
  * Understand that the following is <em>not</em> considered a relative binding path, and is instead interpreted as a
  * <em>named volume</em>:
+ * </p>
  * <dl>
- *     <dd>{@code rel} is interpreted as a <em>named volume</em>.  Use {@code ./rel} or {@code rel/} to have it
+ *     <dd>{@code rel} is interpreted as a <em>named volume</em>.  Use {@code ./rel} or {@code rel} to have it
  *         interpreted as a relative path.</dd>
  *     <dt>rel:/absolute/container/path</dt>
  * </dl>
- * </p>
  * <p>
  * Volume bindings that specify an absolute path for the host portion are preserved and returned unmodified.
  * </p>

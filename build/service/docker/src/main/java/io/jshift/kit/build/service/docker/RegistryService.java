@@ -37,8 +37,7 @@ public class RegistryService {
      * @param retries how often to retry
      * @param registryConfig a global registry configuration
      * @param skipTag flag to skip pushing tagged images
-     * @throws DockerAccessException
-     * @throws MojoExecutionException
+     * @throws Exception exception
      */
     public void pushImages(Collection<ImageConfiguration> imageConfigs,
                            int retries, RegistryConfig registryConfig, boolean skipTag) throws Exception {
@@ -73,10 +72,12 @@ public class RegistryService {
     /**
      * Check an image, and, if <code>autoPull</code> is set to true, fetch it. Otherwise if the image
      * is not existent, throw an error
-     * @param registryConfig registry configuration
      *
-     * @throws DockerAccessException
-     * @throws MojoExecutionException
+     * @param image image
+     * @param pullManager image pull manager
+     * @param registryConfig registry configuration
+     * @param hasImage boolean variable indicating it has image or not
+     * @throws Exception exception
      */
     public void pullImageWithPolicy(String image, ImagePullManager pullManager, RegistryConfig registryConfig, boolean hasImage)
         throws Exception {

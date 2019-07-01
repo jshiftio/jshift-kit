@@ -24,7 +24,7 @@ import static io.jshift.kit.common.util.EnvUtil.extractFromPropertiesAsMap;
  * For {@link PropertyMode#Fallback} we use the config value if it is non-null, else the property value.
  *
  * For Override and Fallback mode, merging may take place as dictated by the {@link ValueCombinePolicy}
- * defined in the {@link ConfigKey}, or as overriden by the property &lt;prefix.someproperty&gt<b>._combine</b>
+ * defined in the {@link ConfigKey}, or as overriden by the property &lt;prefix.someproperty&gt;<b>._combine</b>
  * ({@link EnvUtil#PROPERTY_COMBINE_POLICY_SUFFIX}).
  *
  * If {@link ValueCombinePolicy#Replace} is used, only the prioritized value (first non-null) is used.
@@ -55,7 +55,7 @@ public class ValueProvider {
      * The PropertyMode controls which source(s) to consult, and in which order.
      *
      * @param prefix Only look at properties with this prefix.
-     * @param properties
+     * @param properties properties
      * @param propertyMode Which source to prioritize
      */
     public ValueProvider(String prefix, Properties properties, PropertyMode propertyMode) {

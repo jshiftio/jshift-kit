@@ -94,8 +94,8 @@ public class ResourceValidator {
      * all violated constraints
      *
      * @return number of resources processed
-     * @throws ConstraintViolationException
-     * @throws IOException
+     * @throws ConstraintViolationException  ConstraintViolationException
+     * @throws IOException IOException
      */
     public int validate() throws ConstraintViolationException, IOException {
         for(File resource: resources) {

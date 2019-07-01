@@ -27,6 +27,10 @@ public class DeepCopy {
     /**
      * Returns a copy of the object, or null if the object cannot
      * be serialized.
+     *
+     * @param orig object provided
+     * @param <T> type of object
+     * @return returns copy of the object or null
      */
     public static <T> T copy(T orig) {
         if (orig == null) {

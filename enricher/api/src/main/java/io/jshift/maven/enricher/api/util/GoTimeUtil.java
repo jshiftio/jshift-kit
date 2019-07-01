@@ -30,6 +30,9 @@ public class GoTimeUtil {
 
     /**
      * Parses a duration string anr returns its value in seconds.
+     *
+     * @param duration duration in string
+     * @return returns integer value
      */
     public static Integer durationSeconds(String duration) {
         BigDecimal ns = durationNs(duration);
@@ -46,6 +49,9 @@ public class GoTimeUtil {
 
     /**
      * Parses a duration string anr returns its value in nanoseconds.
+     *
+     * @param durationP duration as a string value
+     * @return BigDecimal value of time
      */
     public static BigDecimal durationNs(String durationP) {
         if (durationP == null) {

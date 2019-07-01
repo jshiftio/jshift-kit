@@ -29,7 +29,7 @@ public class IoUtil {
      * @param log logger used to track progress
      * @param downloadUrl url to download
      * @param target target file where to store the downloaded data
-     * @throws IOException
+     * @throws IOException IO Exception
      */
     public static void download(KitLogger log, URL downloadUrl, File target) throws IOException {
         log.progressStart();
@@ -80,7 +80,13 @@ public class IoUtil {
     }
 
     /**
+     *
      * Find a free (on localhost) random port in the specified range after the given number of attempts.
+     *
+     * @param min minimum value for port
+     * @param max maximum value for port
+     * @param attempts number of attempts
+     * @return random port as integer
      */
     public static int getFreeRandomPort(int min, int max, int attempts) {
         Random random = new Random();
@@ -98,6 +104,9 @@ public class IoUtil {
 
     /**
      * Returns an identifier from the given string that can be used as file name.
+     *
+     * @param name file name
+     * @return sanitized file name
      */
     public static String sanitizeFileName(String name) {
         if (name != null) {

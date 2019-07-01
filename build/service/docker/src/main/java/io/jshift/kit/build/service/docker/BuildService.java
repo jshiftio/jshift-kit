@@ -50,9 +50,9 @@ public class BuildService {
      * Pull the base image if needed and run the build.
      *
      * @param imageConfig the image configuration
+     * @param imagePullManager the image pull manager
      * @param buildContext the build context
-     * @throws DockerAccessException
-     * @throws IOException
+     * @throws Exception in case of any problems
      */
     public void buildImage(ImageConfiguration imageConfig, ImagePullManager imagePullManager, BuildContext buildContext)
             throws Exception {
@@ -86,9 +86,9 @@ public class BuildService {
      * @param imageConfig the image configuration
      * @param params mojo params for the project
      * @param noCache if not null, dictate the caching behaviour. Otherwise its taken from the build configuration
-     * @param buildArgs
-     * @throws DockerAccessException
-     * @throws MojoExecutionException
+     * @param buildArgs maven build context
+     * @throws DockerAccessException docker access exception
+     * @throws IOException in case of any I/O exception
      */
     protected void buildImage(ImageConfiguration imageConfig, MavenBuildContext params, boolean noCache, Map<String, String> buildArgs)
             throws DockerAccessException, IOException {

@@ -78,6 +78,11 @@ public class KubernetesHelper {
 
     /**
      * Validates that the given value is valid according to the kubernetes ID parsing rules, throwing an exception if not.
+     *
+     * @param currentValue current value
+     * @param description description
+     * @return valid value according to kubernetes ID parsing rules
+     * @throws IllegalArgumentException exception if arguement is invalid
      */
     public static String validateKubernetesId(String currentValue, String description) throws IllegalArgumentException {
         if (StringUtils.isBlank(currentValue)) {
@@ -96,6 +101,10 @@ public class KubernetesHelper {
 
     /**
      * Loads the Kubernetes JSON and converts it to a list of entities
+     *
+     * @param entity Kubernetes generic resource object
+     * @return list of objects of type HasMetadata
+     * @throws IOException IOException if anything wrong happens
      */
     @SuppressWarnings("unchecked")
     public static List<HasMetadata> toItemList(Object entity) throws IOException {
@@ -152,6 +161,9 @@ public class KubernetesHelper {
 
     /**
      * Returns the resource version for the entity or null if it does not have one
+     *
+     * @param entity entity as HasMetadata object
+     * @return resource version as string value
      */
     public static String getResourceVersion(HasMetadata entity) {
         if (entity != null) {
@@ -175,6 +187,9 @@ public class KubernetesHelper {
 
     /**
      * Returns the labels of the given metadata object or an empty map if the metadata or labels are null
+     *
+     * @param metadata metadata object ObjectMeta
+     * @return labels in form of a hashmap
      */
     @SuppressWarnings("unchecked")
     public static Map<String, String> getLabels(ObjectMeta metadata) {
@@ -228,6 +243,9 @@ public class KubernetesHelper {
 
     /**
      * Returns the kind of the entity
+     *
+     * @param entity entity as HasMetadata
+     * @return kind of resource
      */
     public static String getKind(HasMetadata entity) {
         if (entity != null) {
@@ -245,6 +263,9 @@ public class KubernetesHelper {
 
     /**
      * Creates an IntOrString from the given string which could be a number or a name
+     *
+     * @param intVal integer as value
+     * @return wrapped object as IntOrString
      */
     public static IntOrString createIntOrString(int intVal) {
         IntOrString answer = new IntOrString();
@@ -255,6 +276,9 @@ public class KubernetesHelper {
 
     /**
      * Creates an IntOrString from the given string which could be a number or a name
+     *
+     * @param nameOrNumber String containing name or number
+     * @return IntOrString object
      */
     public static IntOrString createIntOrString(String nameOrNumber) {
         if (StringUtils.isBlank(nameOrNumber)) {
@@ -282,6 +306,9 @@ public class KubernetesHelper {
 
     /**
      * Returns true if the pod is running
+     *
+     * @param pod Pod object
+     * @return boolean value indicating it's status
      */
     public static boolean isPodRunning(Pod pod) {
         return isInPodPhase(pod, "run");
@@ -293,6 +320,9 @@ public class KubernetesHelper {
 
     /**
      * Returns true if the pod is running and ready
+     *
+     * @param pod Pod object
+     * @return boolean value indicating it's status
      */
     public static boolean isPodReady(Pod pod) {
         if (!isPodRunning(pod)) {

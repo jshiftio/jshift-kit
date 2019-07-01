@@ -32,7 +32,7 @@ public interface ClientBuilder {
      * Create a pooled client
      *
      * @return an HTTP client
-     * @throws IOException
+     * @throws IOException IO Exception
      */
     CloseableHttpClient buildPooledClient() throws IOException;
 
@@ -41,7 +41,7 @@ public interface ClientBuilder {
      * in long running threads
      *
      * @return an HTTP client
-     * @throws IOException
+     * @throws IOException IO Exception
      */
     CloseableHttpClient buildBasicClient() throws IOException;
 

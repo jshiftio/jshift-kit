@@ -408,8 +408,8 @@ public class DockerFileBuilder {
 
     /**
      * Adds the RUN Commands within the build image section
-     * @param runCmds
-     * @return
+     * @param runCmds run commands
+     * @return DockerFileBuilder docker file builder
      */
     public DockerFileBuilder run(List<String> runCmds) {
         if (runCmds != null) {

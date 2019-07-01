@@ -43,7 +43,8 @@ public class DockerConnectionDetector {
          * Get value of the docker host as detected by this provider. Return null if it couldn't be detected.
          *
          * @return the docker host parameter or null
-         * @param certPath
+         * @param certPath certificate path
+         * @throws IOException in case of any I/O exception
          */
         ConnectionParameter getConnectionParameter(String certPath) throws IOException;
 
@@ -73,6 +74,7 @@ public class DockerConnectionDetector {
      *   <li>Default to /var/run/docker.sock</li>
      * </ol>
      * @param dockerHost The dockerHost configuration setting
+     * @param certPath The certificate path
      * @return The docker host url
      * @throws IOException when URL handling fails
      */

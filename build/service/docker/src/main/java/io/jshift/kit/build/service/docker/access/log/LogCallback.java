@@ -19,7 +19,7 @@ public interface LogCallback {
      * @param type 1 for log on standard output, 2 for standard error
      * @param timestamp timestampp on the server side when this entry happened
      * @param txt log output
-     * @throws CancellationException if thrown will stop the logging.
+     * @throws DoneException if thrown will stop the logging.
      */
     void log(int type, Timestamp timestamp, String txt) throws DoneException;
 
@@ -32,6 +32,8 @@ public interface LogCallback {
     /**
      * To be called by a client to start the callback and allocate the underlying output stream.
      * In case of a shared stream it might be that the stream is reused
+     *
+     * @throws IOException in case of any I/O error
      */
     void open() throws IOException;
 

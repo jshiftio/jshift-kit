@@ -38,6 +38,8 @@ public enum Kind {
 
     /**
      * Returns true if the kind is a controller
+     *
+     * @return boolean value whether it's controller or not
      */
     public boolean isController() {
         return isPodController() ||

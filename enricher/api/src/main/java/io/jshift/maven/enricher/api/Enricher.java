@@ -35,13 +35,14 @@ public interface Enricher extends Named {
      * associated with the artefact to build. This is determined that the resource is named like the artifact
      * to build.
      *
+     * @param platformMode platform mode for generated resource descriptors
      * @param builder the build to examine and add to
      */
     void create(PlatformMode platformMode, KubernetesListBuilder builder);
 
     /**
      * Final customization of the overall resource descriptor. Fine tuning happens here.
-     *
+     * @param platformMode platform mode for generated resource descriptors
      * @param builder list to customer used to customize
      */
     void enrich(PlatformMode platformMode, KubernetesListBuilder builder);

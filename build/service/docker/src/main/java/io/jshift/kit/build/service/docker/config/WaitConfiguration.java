@@ -22,7 +22,7 @@ public class WaitConfiguration implements Serializable {
     private Integer time;
 
     /**
-     * @deprecated Use &lt;http&gt;&lturl&gt;&lt;/url&gt;&lt;/http&gt; instead
+     * @deprecated Use &lt;http&gt;&lt;url&gt;&lt;/url&gt;&lt;/http&gt; instead
      */
     private String url;
 
