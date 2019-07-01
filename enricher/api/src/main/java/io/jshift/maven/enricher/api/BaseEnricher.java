@@ -108,6 +108,8 @@ public class BaseEnricher implements Enricher {
 
     /**
      * Returns true if we are in OpenShift S2I binary building mode
+     *
+     * @return boolean value indicating whether Openshift or not.
      */
     protected boolean isOpenShiftMode() {
         Properties properties = getContext().getConfiguration().getProperties();
@@ -179,9 +181,9 @@ public class BaseEnricher implements Enricher {
      * This method overrides the ImagePullPolicy value by the value provided in
      * XML config.
      *
-     * @param resourceConfig
-     * @param defaultValue
-     * @return
+     * @param resourceConfig resource config from plugin configuration
+     * @param defaultValue default value
+     * @return string as image pull policy
      */
     protected String getImagePullPolicy(ResourceConfig resourceConfig, String defaultValue) {
         if(resourceConfig != null) {
@@ -195,9 +197,9 @@ public class BaseEnricher implements Enricher {
      * overrides the default option; and resource fragments are always given
      * topmost priority.
      *
-     * @param builder
-     * @param xmlResourceConfig
-     * @param defaultValue
+     * @param builder kubernetes list builder containing objects
+     * @param xmlResourceConfig xml resource config from plugin configuration
+     * @param defaultValue default value
      * @return resolved replica count
      */
     protected int getReplicaCount(KubernetesListBuilder builder, ResourceConfig xmlResourceConfig, int defaultValue) {

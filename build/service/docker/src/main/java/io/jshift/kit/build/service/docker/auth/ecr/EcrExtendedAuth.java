@@ -51,6 +51,7 @@ public class EcrExtendedAuth {
     /**
      * Initialize an extended authentication for ecr registry.
      *
+     * @param logger Kit Logger
      * @param registry The registry, we may or may not be an ecr registry.
      */
     public EcrExtendedAuth(KitLogger logger, String registry) {
@@ -81,8 +82,7 @@ public class EcrExtendedAuth {
      *
      * @param localCredentials IAM id/secret
      * @return ECR base64 encoded username:password
-     * @throws IOException
-     * @throws MojoExecutionException
+     * @throws IOException IO Exception
      */
     public AuthConfig extendedAuth(AuthConfig localCredentials) throws IOException {
         JsonObject jo = getAuthorizationToken(localCredentials);

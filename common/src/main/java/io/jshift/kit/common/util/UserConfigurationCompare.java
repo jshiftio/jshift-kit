@@ -41,13 +41,14 @@ public class UserConfigurationCompare {
 
     protected static final Set<String> ignoredProperties = new HashSet<>(Collections.singletonList("status"));
 
-
     /**
      * This method detects if the user has changed the configuration of an entity.
-     * <p/>
+     *
      * It compares the <b>user</b> configuration of 2 object trees ignoring any
      * runtime status or timestamp information.
      *
+     * @param entity1 first Object
+     * @param entity2 second Object
      * @return true if the configurations are equal.
      */
     public static boolean configEqual(Object entity1, Object entity2) {
@@ -115,8 +116,13 @@ public class UserConfigurationCompare {
 
     /**
      * Compares 2 instances of the given Kubernetes DTO class to see if the user has changed their configuration.
-     * <p/>
+     *
      * This method will ignore properties {@link #ignoredProperties} such as status or timestamp properties
+     *
+     * @param entity1 first entity
+     * @param entity2 second entity
+     * @param clazz class name
+     * @return returns boolean value indicating equality or not.
      */
     protected static boolean configEqualKubernetesDTO(@NotNull Object entity1, @NotNull Object entity2, @NotNull Class<?> clazz) {
         // lets iterate through the objects making sure we've not

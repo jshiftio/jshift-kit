@@ -52,11 +52,15 @@ public interface KitLogger {
 
     /**
      * Whether debugging is enabled.
+     *
+     * @return boolean value indicating debug is enabled or not.
      */
     boolean isDebugEnabled();
 
     /**
      * Whether verbose is enabled
+     *
+     * @return boolean value indicating verbose is enabled or not.
      */
     default boolean isVerboseEnabled() {
         return false;

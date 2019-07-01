@@ -68,12 +68,12 @@ import static java.net.HttpURLConnection.HTTP_OK;
 /**
  * Implementation using <a href="http://hc.apache.org/">Apache HttpComponents</a>
  * for remotely accessing the docker host.
- * <p/>
+ * <p>
  * The design goal here is to provide only the functionality required for this plugin in order to
  * make it as robust as possible against docker API changes (which happen quite frequently). That's
  * also the reason, why no framework like JAX-RS or docker-java is used so that the dependencies are
  * kept low.
- * <p/>
+ * </p>
  * Of course, it's a bit more manual work, but it's worth the effort
  * (as long as the Docker API functionality required is not too much).
  *
@@ -105,7 +105,7 @@ public class DockerAccessWithHcClient implements DockerAccess {
      *                 directory
      * @param maxConnections maximum parallel connections allowed to docker daemon (if a pool is used)
      * @param log      a log handler for printing out logging information
-     * @paran usePool  whether to use a connection bool or not
+     * @throws IOException in case of I/O exception
      */
     public DockerAccessWithHcClient(String baseUrl,
                                     String certPath,

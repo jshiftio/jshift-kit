@@ -8,7 +8,7 @@ package io.jshift.kit.common;
 public interface Named {
     /**
      * Get name of this object
-     * @return
+     * @return String denoting name
      */
     public String getName();
 }

@@ -56,6 +56,7 @@ public class DockerFileUtil {
      * @param dockerFile file from where to extract the base image
      * @param interpolator interpolator for replacing properties
      * @return LinkedList of base images name or empty collection if none is found.
+     * @throws IOException in case of any I/O exception
      */
     public static List<String> extractBaseImages(File dockerFile, FixedStringSearchInterpolator interpolator) throws IOException {
         List<String[]> fromLines = extractLines(dockerFile, "FROM", interpolator);
@@ -75,6 +76,7 @@ public class DockerFileUtil {
      * @param keyword keyword to extract the lines for
      * @param interpolator interpolator for replacing properties
      * @return list of matched lines or an empty list
+     * @throws IOException IO Exception
      */
     public static List<String[]> extractLines(File dockerFile, String keyword, FixedStringSearchInterpolator interpolator) throws IOException {
         List<String[]> ret = new ArrayList<>();
@@ -97,7 +99,7 @@ public class DockerFileUtil {
      * @param dockerFile docker file to interpolate
      * @param interpolator interpolator for replacing properties
      * @return The interpolated contents of the file.
-     * @throws IOException
+     * @throws IOException in case of any I/O error
      */
     public static String interpolate(File dockerFile, FixedStringSearchInterpolator interpolator) throws IOException {
         StringBuilder ret = new StringBuilder();

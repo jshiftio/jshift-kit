@@ -114,11 +114,12 @@ public class KubernetesResourceUtil {
      * Read all Kubernetes resource fragments from a directory and create a {@link KubernetesListBuilder} which
      * can be adapted later.
      *
+     * @param platformMode platform whether it's Kubernetes/Openshift
      * @param apiVersions the api versions to use
      * @param defaultName the default name to use when none is given
      * @param resourceFiles files to add.
      * @return the list builder
-     * @throws IOException
+     * @throws IOException IOException in case file is not found
      */
     public static KubernetesListBuilder readResourceFragmentsFrom(PlatformMode platformMode, ResourceVersioning apiVersions,
                                                                   String defaultName,
@@ -145,10 +146,12 @@ public class KubernetesResourceUtil {
      *     <li>apiVersion - API version (given as parameter to this method)</li>
      * </ul>
      *
-     *
+     * @param platformMode Platform whether it's Kubernetes/Openshift
      * @param apiVersions the API versions to add if not given.
      * @param file file to read, whose name must match {@link #FILENAME_PATTERN}.  @return map holding the fragment
      * @param appName resource name specifying resources belonging to this application
+     * @return HasMetadata object for resource
+     * @throws IOException IOException in case file loading is failed
      */
     public static HasMetadata getResource(PlatformMode platformMode, ResourceVersioning apiVersions,
                                           File file, String appName) throws IOException {
@@ -615,15 +618,15 @@ public class KubernetesResourceUtil {
      * object similar to the following:
      *
      * <code>
-     \    * if( values.get${FIELD}() == null ) {
+     * if( values.get${FIELD}() == null ) {
      *   values.(with|set){FIELD}(defaultValues.get${FIELD});
      * }
      * </code>
      *
      * Only fields that which use primitives, boxed primitives, or String object are copied.
      *
-     * @param targetValues
-     * @param defaultValues
+     * @param targetValues Object of target values
+     * @param defaultValues Object of default values
      */
     public static void mergeSimpleFields(Object targetValues, Object defaultValues) {
         Class<?> tc = targetValues.getClass();
@@ -889,6 +892,10 @@ public class KubernetesResourceUtil {
      *
      * If switchOnLocalCustomisation is false then the overrides from item2 are merged into item1
      *
+     * @param item1 item one
+     * @param item2 item two
+     * @param log KitLogger
+     * @param switchOnLocalCustomisation boolean value for local customization
      * @return the newly merged resources
      */
     public static HasMetadata mergeResources(HasMetadata item1, HasMetadata item2, KitLogger log, boolean switchOnLocalCustomisation) {

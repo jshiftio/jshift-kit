@@ -62,7 +62,6 @@ public class RunImageConfiguration implements Serializable {
     private String workingDir;
 
     // Size of /dev/shm in bytes
-    /** @parameter */
     private Long shmSize;
 
     // memory in bytes
@@ -401,6 +400,7 @@ public class RunImageConfiguration implements Serializable {
 
     /**
      * @deprecated use {@link #getContainerNamePattern} instead
+     * @return NamingStrategy naming strategy
      */
     @Deprecated
     public NamingStrategy getNamingStrategy() {
@@ -600,6 +600,9 @@ public class RunImageConfiguration implements Serializable {
 
         /**
          * @deprecated use {@link #containerNamePattern} instead
+         *
+         * @param namingStrategy naming strategy
+         * @return Builder object
          */
         @Deprecated
         public Builder namingStrategy(String namingStrategy) {
@@ -611,6 +614,9 @@ public class RunImageConfiguration implements Serializable {
 
         /**
          * @deprecated use {@link #containerNamePattern} instead
+         *
+         * @param namingStrategy naming strategy
+         * @return builder object
          */
         @Deprecated
         public Builder namingStrategy(NamingStrategy namingStrategy) {

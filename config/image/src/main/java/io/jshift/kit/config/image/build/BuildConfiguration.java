@@ -55,7 +55,7 @@ public class BuildConfiguration implements Serializable {
     private String from;
 
     /**
-     * Extended version for <from>
+     * Extended version for ;&lt;from;&gt;
      */
     private Map<String, String> fromExt;
 

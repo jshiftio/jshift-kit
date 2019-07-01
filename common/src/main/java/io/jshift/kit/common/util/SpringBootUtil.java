@@ -27,6 +27,9 @@ public class SpringBootUtil {
     /**
      * Returns the spring boot configuration (supports `application.properties` and `application.yml`)
      * or an empty properties object if not found
+     *
+     * @param compileClassLoader URLClassLoader for resource access
+     * @return spring boot configuration as Properties
      */
     public static Properties getSpringBootApplicationProperties(URLClassLoader compileClassLoader) {
         URL ymlResource = compileClassLoader.findResource("application.yml");
@@ -39,6 +42,9 @@ public class SpringBootUtil {
 
     /**
      * Returns the given properties resource on the project classpath if found or an empty properties object if not
+     *
+     * @param resource URL of the resource
+     * @return Properties resource
      */
     protected static Properties getPropertiesResource(URL resource) {
         Properties answer = new Properties();
@@ -54,6 +60,9 @@ public class SpringBootUtil {
 
     /**
      * Determine the spring-boot devtools version for the current project
+     *
+     * @param mavenProject MavenProject of that project
+     * @return optional string having spring boot devtools version
      */
     public static Optional<String> getSpringBootDevToolsVersion(MavenProject mavenProject) {
         return getSpringBootVersion(mavenProject);
@@ -61,6 +70,9 @@ public class SpringBootUtil {
 
     /**
      * Determine the spring-boot major version for the current project
+     *
+     * @param mavenProject Maven Project
+     * @return optional string having spring boot version
      */
     public static Optional<String> getSpringBootVersion(MavenProject mavenProject) {
         return Optional.ofNullable(MavenUtil.getDependencyVersion(mavenProject, SpringBootConfigurationHelper.SPRING_BOOT_GROUP_ID, SpringBootConfigurationHelper.SPRING_BOOT_ARTIFACT_ID));

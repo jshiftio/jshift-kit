@@ -42,7 +42,7 @@ public enum OpenShiftBuildStrategy {
      * Check if the given type is same as the type stored in OpenShift
      *
      * @param type to check
-     * @return
+     * @return boolean value whether type is same or not.
      */
     public boolean isSame(String type) {
         return type != null &&

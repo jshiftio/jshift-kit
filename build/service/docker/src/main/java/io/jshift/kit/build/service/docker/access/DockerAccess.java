@@ -37,7 +37,7 @@ public interface DockerAccess {
      * Get a container
      *
      * @param containerIdOrName container id or name
-     * @return <code>ContainerDetails<code> representing the container or null if none could be found
+     * @return <code>ContainerDetails</code> representing the container or null if none could be found
      * @throws DockerAccessException if the container could not be inspected
      */
     ContainerDetails getContainer(String containerIdOrName) throws DockerAccessException;
@@ -46,7 +46,7 @@ public interface DockerAccess {
      * Get an exec container which is the result of executing a command in a running container.
      *
      * @param containerIdOrName exec container id or name
-     * @return <code>ExecDetails<code> representing the container or null if none could be found
+     * @return <code>ExecDetails</code> representing the container or null if none could be found
      * @throws DockerAccessException if the container could not be inspected
      */
     ExecDetails getExecContainer(String containerIdOrName) throws DockerAccessException;
@@ -56,6 +56,7 @@ public interface DockerAccess {
      *
      * @param name image name to check
      * @return true if the image exists
+     * @throws DockerAccessException docker access exception
      */
     boolean hasImage(String name) throws DockerAccessException;
 
@@ -64,6 +65,7 @@ public interface DockerAccess {
      *
      * @param name name to lookup
      * @return the image id or <code>null</code>
+     * @throws DockerAccessException docker access exception
      */
     String getImageId(String name) throws DockerAccessException;
 
@@ -94,6 +96,7 @@ public interface DockerAccess {
      *
      * @param containerId id of the running container which the exec container will be created for
      * @param arguments container exec commands to run
+     * @return container created
      * @throws DockerAccessException if the container could not be created.
      */
     String createExecContainer(String containerId, Arguments arguments) throws DockerAccessException;
@@ -105,6 +108,7 @@ public interface DockerAccess {
      *
      * @param configuration container configuration
      * @param containerName name container should be created with or <code>null</code> for a docker provided name
+     * @return created container
      * @throws DockerAccessException if the container could not be created.
      */
     String createContainer(ContainerCreateConfig configuration, String containerName) throws DockerAccessException;
@@ -243,7 +247,7 @@ public interface DockerAccess {
     /**
      * List all networks
      *
-     * @return list of <code>Network<code> objects
+     * @return list of <code>Network</code> objects
      * @throws DockerAccessException if the networks could not be listed
      */
     List<Network> listNetworks() throws DockerAccessException;
@@ -252,9 +256,9 @@ public interface DockerAccess {
      * Create a custom network from the given configuration.
      *
      * @param configuration network configuration
+     * @return created network
      * @throws DockerAccessException if the container could not be created.
      */
-
     String createNetwork(NetworkCreateConfig configuration) throws DockerAccessException;
 
     /**
@@ -268,6 +272,8 @@ public interface DockerAccess {
 
     /**
      * Lifecycle method for this access class which must be called before any other method is called.
+     *
+     * @throws DockerAccessException docker access exception
      */
     void start() throws DockerAccessException;
 

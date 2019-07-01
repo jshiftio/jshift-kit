@@ -20,8 +20,11 @@ public enum DockerFileOption
         return key;
     }
 
-    /**
+    /**\
      * Appends the option with the giv
+     *
+     * @param sb string builder
+     * @param value object as value
      */
     public void addTo(StringBuilder sb, Object value) {
         sb.append("--");

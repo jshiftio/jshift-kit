@@ -83,7 +83,7 @@ public class DockerAssemblyManager {
      * @param buildConfig configuration for how to build the image
      * @param log KitLogger used to display warning if permissions are to be normalized
      * @return file holding the path to the created assembly tar file
-     * @throws MojoExecutionException
+     * @throws IOException IO exception
      */
     public File createDockerTarArchive(String imageName, MavenBuildContext params, BuildConfiguration buildConfig, KitLogger log)
             throws IOException {
@@ -100,7 +100,7 @@ public class DockerAssemblyManager {
      * @param log KitLogger used to display warning if permissions are to be normalized
      * @param finalCustomizer finalCustomizer to be applied to the tar archive
      * @return file holding the path to the created assembly tar file
-     * @throws MojoExecutionException
+     * @throws IOException IO exception
      */
     public File createDockerTarArchive(String imageName, final MavenBuildContext params, final BuildConfiguration buildConfig, KitLogger log, ArchiverCustomizer finalCustomizer)
             throws IOException {
@@ -237,6 +237,16 @@ public class DockerAssemblyManager {
     /**
      * Extract all files with a tracking archiver. These can be used to track changes in the filesystem and triggering
      * a rebuild of the image if needed ('docker:watch')
+     *
+     * @param name name of assembly
+     * @param buildConfig build configuration
+     * @param mojoParams maven build context
+     * @param log kit logger
+     * @return assembly files
+     * @throws InvalidAssemblerConfigurationException
+     * @throws ArchiveCreationException
+     * @throws AssemblyFormattingException
+     * @throws IOException
      */
     public AssemblyFiles getAssemblyFiles(String name, BuildConfiguration buildConfig, MavenBuildContext mojoParams, KitLogger log)
             throws InvalidAssemblerConfigurationException, ArchiveCreationException, AssemblyFormattingException, IOException {

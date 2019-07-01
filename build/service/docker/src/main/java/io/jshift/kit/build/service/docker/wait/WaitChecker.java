@@ -19,7 +19,7 @@ public interface WaitChecker {
 
     /**
      * Get the label to be used in the log
-     * @return
+     * @return string value of log label
      */
     String getLogLabel();
 }

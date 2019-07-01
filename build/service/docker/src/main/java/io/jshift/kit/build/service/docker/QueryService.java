@@ -140,7 +140,7 @@ public class QueryService {
      *
      * @param containerName container name
      * @return true if a container with this name exists, false otherwise.
-     * @throws DockerAccessException
+     * @throws DockerAccessException docker access exception
      */
     public boolean hasContainer(String containerName) throws DockerAccessException {
         return getContainer(containerName) != null;
@@ -151,9 +151,8 @@ public class QueryService {
      *
      * @param networkName network name
      * @return true if a network with this name exists, false otherwise.
-     * @throws DockerAccessException
+     * @throws DockerAccessException docker access exception
      */
-
     public boolean hasNetwork(String networkName) throws DockerAccessException {
         return getNetworkByName(networkName) != null;
     }

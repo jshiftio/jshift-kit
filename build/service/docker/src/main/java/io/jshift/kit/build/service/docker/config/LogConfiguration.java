@@ -54,7 +54,7 @@ public class LogConfiguration implements Serializable {
     /**
      * If explicitly enabled, or configured in any way and NOT explicitly disabled, return true.
      *
-     * @return
+     * @return whether its activated or not
      */
     public boolean isActivated() {
         return enabled == Boolean.TRUE ||
@@ -64,7 +64,7 @@ public class LogConfiguration implements Serializable {
     /**
      * Returns true if all options (except enabled) are null, used to decide value of enabled.
      *
-     * @return
+     * @return whether its blank or not
      */
     private boolean isBlank() {
         return prefix == null && date == null && color == null && file == null && driver == null;
@@ -82,10 +82,8 @@ public class LogConfiguration implements Serializable {
 
     public static class LogDriver implements Serializable {
 
-        /** @parameter */
         private String name;
 
-        /** @parameter */
         private Map<String, String> opts;
 
         public LogDriver() {};

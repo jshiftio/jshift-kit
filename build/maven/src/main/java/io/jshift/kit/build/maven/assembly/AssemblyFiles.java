@@ -69,6 +69,8 @@ public class AssemblyFiles {
 
     /**
      * Returns true if there are no entries
+     *
+     * @return boolean value whether empty or not
      */
     public boolean isEmpty() {
         return entries.isEmpty();

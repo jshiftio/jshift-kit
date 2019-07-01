@@ -59,8 +59,8 @@ public class DefaultNamespaceEnricher extends BaseEnricher {
     /**
      * This method will create a default Namespace or Project if a namespace property is
      * specified in the xml resourceConfig or as a parameter to a mojo.
-     * @param platformMode
-     * @param builder
+     * @param platformMode platform mode whether it's Kubernetes or Openshift
+     * @param builder list of kubernetes resources
      */
     @Override
     public void create(PlatformMode platformMode, KubernetesListBuilder builder) {
@@ -92,8 +92,8 @@ public class DefaultNamespaceEnricher extends BaseEnricher {
     /**
      * This method will annotate all the items in the KubernetesListBuilder with the
      * created new namespace or project.
-     * @param platformMode
-     * @param builder
+     * @param platformMode platform mode whether it's Kubernetes/Openshift
+     * @param builder list of Kubernetes resources
      */
     @Override
     public void enrich(PlatformMode platformMode, KubernetesListBuilder builder) {
