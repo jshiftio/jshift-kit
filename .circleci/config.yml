@@ -33,6 +33,21 @@ jobs:
         paths:
         - ~/.m2
   
+  javadoc:
+    machine: true
+    steps:
+    - checkout
+    - restore_cache:
+        key: jshift-kit-{{ checksum "pom.xml" }}
+    - run:
+        command: |
+          # Run javadoc build
+          mvn javadoc:jar
+    - save_cache:
+        key: jshift-kit-{{ checksum "pom.xml" }}
+        paths:
+        - ~/.m2
+  
   sonar:
     machine: true
     steps:
@@ -80,6 +95,7 @@ workflows:
   all:
     jobs:
     - build
+    - javadoc
     - test
     - sonar-pr
     - sonar:
