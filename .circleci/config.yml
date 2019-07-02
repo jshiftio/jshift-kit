@@ -41,6 +41,8 @@ jobs:
         key: jshift-kit-{{ checksum "pom.xml" }}
     - run:
         command: |
+          # Run Maven build
+          mvn clean install -DskipTests
           # Run javadoc build
           mvn javadoc:jar
     - save_cache:
