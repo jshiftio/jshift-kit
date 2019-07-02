@@ -21,12 +21,12 @@
   <parent>
     <groupId>io.jshift</groupId>
     <artifactId>jshift-kit-parent</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>jshift-kit-doc</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
 
   <name>Jshift Kit :: Documentation</name>

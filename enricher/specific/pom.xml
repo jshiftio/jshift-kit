@@ -22,12 +22,12 @@
   <parent>
     <groupId>io.jshift</groupId>
     <artifactId>jshift-kit-parent</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <relativePath>../../parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>jshift-maven-enricher-specific</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1.0</version>
 
   <name>Jshift Maven :: Enricher :: Specific</name>
 
