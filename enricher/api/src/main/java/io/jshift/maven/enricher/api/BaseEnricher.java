@@ -48,6 +48,12 @@ public class BaseEnricher implements Enricher {
     protected EnricherContext enricherContext;
     public static final String FABRIC8_GENERATED_CONTAINERS = "FABRIC8_GENERATED_CONTAINERS";
     public static final String NEED_IMAGECHANGE_TRIGGERS = "IMAGECHANGE_TRIGGER";
+    public static final String IMAGE_CHANGE_TRIGGERS = "jshift.openshift.imageChangeTriggers";
+    public static final String OPENSHIFT_TRIM_IMAGE_IN_CONTAINER_SPEC = "jshift.openshift.trimImageInContainerSpec";
+    public static final String OPENSHIFT_ENABLE_AUTOMATIC_TRIGGER = "jshift.openshift.enableAutomaticTrigger";
+    public static final String SIDECAR = "jshift.sidecar";
+    public static final String ENRICH_ALL_WITH_IMAGE_TRIGGERS = "jshift.openshift.enrichAllWithImageChangeTrigger";
+    public static final String OPENSHIFT_DEPLOY_TIMEOUT_SECONDS = "jshift.openshift.deployTimeoutSeconds";
 
     protected KitLogger log;
 
@@ -129,52 +135,8 @@ public class BaseEnricher implements Enricher {
         return containers;
     }
 
-    protected Boolean isAutomaticTriggerEnabled(MavenEnricherContext enricherContext, Boolean defaultValue) {
-        if(enricherContext.getProperty("jshift.openshift.enableAutomaticTrigger") != null) {
-            return Boolean.parseBoolean(enricherContext.getProperty("jshift.openshift.enableAutomaticTrigger").toString());
-        } else {
-            return defaultValue;
-        }
-    }
-
-    protected Long getOpenshiftDeployTimeoutInSeconds(MavenEnricherContext enricherContext, Long defaultValue) {
-        if (enricherContext.getProperty("jshift.openshift.deployTimeoutSeconds") != null) {
-            return Long.parseLong(enricherContext.getProperty("jshift.openshift.deployTimeoutSeconds").toString());
-        } else {
-            return defaultValue;
-        }
-    }
-
-    protected Boolean getImageChangeTriggerFlag(Boolean defaultValue) {
-        if (getContext().getProperty("jshift.openshift.imageChangeTriggers") != null) {
-            return Boolean.parseBoolean(getContext().getProperty("jshift.openshift.imageChangeTriggers").toString());
-        } else {
-            return defaultValue;
-        }
-    }
-
-    protected Boolean getTrimImageInContainerSpecFlag(Boolean defaultValue) {
-        if (getContext().getProperty("jshift.openshift.trimImageInContainerSpec") != null) {
-            return Boolean.parseBoolean(getContext().getProperty("jshift.openshift.trimImageInContainerSpec").toString());
-        } else {
-            return defaultValue;
-        }
-    }
-
-    protected Boolean enrichAllWithImageChangeTrigger(MavenEnricherContext enricherContext, Boolean defaultValue) {
-        if(enricherContext.getProperty("jshift.openshift.enrichAllWithImageChangeTrigger") != null) {
-            return Boolean.parseBoolean(enricherContext.getProperty("jshift.openshift.enrichAllWithImageChangeTrigger").toString());
-        } else {
-            return defaultValue;
-        }
-    }
-
-    protected Boolean getSidecarFlag(Boolean defaultValue) {
-        if (getContext().getProperty("jshift.sidecar") != null) {
-            return Boolean.parseBoolean(getContext().getProperty("jshift.sidecar").toString());
-        } else {
-            return defaultValue;
-        }
+    protected Long getOpenshiftDeployTimeoutInSeconds(Long defaultValue) {
+        return Long.parseLong(getValueFromConfig(OPENSHIFT_DEPLOY_TIMEOUT_SECONDS, defaultValue.toString()));
     }
 
     /**
@@ -229,5 +191,31 @@ public class BaseEnricher implements Enricher {
         }
         processingInstructionsMap.put(key, String.join(",", containerNames));
         enricherContext.setProcessingInstructions(processingInstructionsMap);
+    }
+
+    /**
+     * Getting a property value from configuration
+     *
+     * @param propertyName name of property
+     * @param defaultValue default value if not defined (true or false)
+     * @return property value
+     */
+    protected Boolean getValueFromConfig(String propertyName, Boolean defaultValue) {
+        return Boolean.parseBoolean(getValueFromConfig(propertyName, defaultValue.toString()));
+    }
+
+    /**
+     * Getting a property value from configuration
+     *
+     * @param propertyName name of property
+     * @param defaultValue default value if not defined
+     * @return property value
+     */
+    protected String getValueFromConfig(String propertyName, String defaultValue) {
+        if (getContext().getProperty(propertyName) != null) {
+            return getContext().getProperty(propertyName).toString();
+        } else {
+            return defaultValue;
+        }
     }
 }
