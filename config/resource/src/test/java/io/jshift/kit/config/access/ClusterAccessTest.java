@@ -15,6 +15,7 @@
  */
 package io.jshift.kit.config.access;
 
+import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -55,6 +56,16 @@ public class ClusterAccessTest {
         rootpaths.setPaths(paths);
 
         mockServer.expect().get().withPath("/" ).andReturn(200, rootpaths).always();
+        mockServer.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
+                .addNewGroup()
+                .withApiVersion("v1")
+                .withName("autoscaling.k8s.io")
+                .endGroup()
+                .addNewGroup()
+                .withApiVersion("v1")
+                .withName("security.openshift.io")
+                .endGroup()
+                .build()).always();
 
         ClusterAccess clusterAccess = new ClusterAccess(null, client);
 
