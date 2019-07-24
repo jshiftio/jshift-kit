@@ -2,7 +2,7 @@
 
 [![Circle CI](https://circleci.com/gh/jshiftio/jshift-kit/tree/master.svg?style=shield)](https://circleci.com/gh/jshiftio/jshift-kit/tree/master)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=jshiftio_jshift-kit&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=jshiftio_jshift-kit)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jshiftio_jshift-kit&metric=alert_status)](https://sonarcloud.io/dashboard?id=jshiftio_jshift-kit)
+[![Gitter](https://badges.gitter.im/jshift-community/community.svg)](https://gitter.im/jshift-community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=jshiftio_jshift-kit&metric=coverage)](https://sonarcloud.io/dashboard?id=jshiftio_jshift-kit)
 
 This project contains various building blocks for the jshift developer toolbox.
