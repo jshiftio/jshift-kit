@@ -103,7 +103,7 @@ public class ProfileUtilTest {
     @Test
     public void mergeProfiles() throws Exception {
         Profile profile = ProfileUtil.findProfile("merge-1", getProfileDir());
-        assertFalse(profile.getEnricherConfig().use("jshift-project"));
+        assertFalse(profile.getEnricherConfig().use("jshift-project-label"));
         assertTrue(profile.getEnricherConfig().use("jshift-image"));
     }
 
