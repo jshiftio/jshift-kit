@@ -29,7 +29,7 @@
       - java.app
 - name: merge-1
   enricher:
-    excludes: [ jshift-project ]
+    excludes: [ jshift-project-label ]
     includes: [ jshift-image ]
 - name: minimal
   extends: simple
